@@ -45,7 +45,6 @@ public class Main extends JavaPlugin {
 			@Override
 			public void run() {
 				for(Player p : Bukkit.getOnlinePlayers()){
-					Points.setPoints(p, PlayerFile.getPoints(p));
 					Lobby.setupLobby(p);
 					TabHandler.update(p);
 					BarManager.removeBar(p);

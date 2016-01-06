@@ -92,7 +92,6 @@ public class PlayerListener implements Listener {
 		final Player player = event.getPlayer();
 		BarManager.removeBar(player);
 		PlayerFile.createConfig(player);
-		Bukkit.getPluginManager().getPlugin("DrizzardWars").getLogger().info("Current GameState: " + Game.getGameState());
 		if(Game.getGameState().equals(GameState.LOBBY)){
 			String msg = MessageFile.getMessage("player.join");
 			msg = MessageHandler.formatPlayer(msg, player);
@@ -108,7 +107,6 @@ public class PlayerListener implements Listener {
 				player.teleport(toJoin.getSpawnpoint());
 				player.getInventory().clear();
 				Game.setupGameInventory(player);
-				ScoreboardHandler.update(player);
 //				PlayerHandler.setPlayerPlaying(player, true);
 				TabHandler.setColor(player);
 				BarManager.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
@@ -142,7 +140,6 @@ public class PlayerListener implements Listener {
 			}
 		}else{
 			PlayerHandler.setSpectating(player,true);
-			TabHandler.updateAll();
 			Lobby.setupLobby(player);
 		}
 
@@ -154,14 +151,6 @@ public class PlayerListener implements Listener {
 		}
 
 		PlayerHandler.hideHiddenPlayers(player);
-
-		new BukkitRunnable(){
-			@Override
-			public void run() {
-				Points.setPoints(player, PlayerFile.getPoints(player));
-				TabHandler.updateAll();
-			}
-		}.runTaskLater(pl, 10L);
 	}
 
 	@EventHandler
@@ -177,11 +166,6 @@ public class PlayerListener implements Listener {
 		}
 		PlayerFile.setPoints(player, Points.getPoints(player));
 		PlayerHandler.quit(player);
-		new BukkitRunnable(){
-			public void run(){
-				TabHandler.updateAll();
-			}
-		}.runTaskLater(pl, 5L);
 
 		// Kill off a team if the player who left was the only player in that team and Game.getPhase() > 3
 		if(Game.isGameStarted() && Game.getPhase()>3){
@@ -306,7 +290,6 @@ public class PlayerListener implements Listener {
 				if (!player.hasPermission("drwars.spectator")) {
 					PlayerHandler.quit(player);
 					player.kickPlayer(MessageHandler.format(MessageFile.getMessage("kick.lost")));
-					TabHandler.updateAll();
 					return;
 				}
 			}

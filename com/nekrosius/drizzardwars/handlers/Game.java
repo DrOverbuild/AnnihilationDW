@@ -107,7 +107,6 @@ public class Game {
 			
 		}
 		Game.startPhases(map);
-		TabHandler.updateAll();
 	}
 	
 	public static void finish(Team winner) {
@@ -141,7 +140,6 @@ public class Game {
 					//PlayerHandler.setPlayerPlaying(p, false);
 					Lobby.setupLobby(p);
 					//TagAPI.refreshPlayer(p);
-					TabHandler.updateAll();
 				}
 
 				for(Team team : TeamManager.getTeams()){

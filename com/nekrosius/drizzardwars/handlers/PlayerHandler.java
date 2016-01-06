@@ -185,14 +185,12 @@ public class PlayerHandler {
 	public static void teamNexusIsDestroyed(Player player){
 		if(player.hasPermission("drwars.spectator")){
 			PlayerHandler.setSpectating(player, true);
-			TabHandler.updateAll();
 			Lobby.setupLobby(player);
 			return;
 		}else {
 			PlayerHandler.quit(player);
 			//PlayerHandler.setTeamOfPlayer(player, null);
 		}
-		TabHandler.updateAll();
 	}
 
 	public static void setPlayerGold(Player player, Integer gold){

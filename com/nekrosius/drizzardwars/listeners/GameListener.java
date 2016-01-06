@@ -406,7 +406,7 @@ public class GameListener implements Listener{
 				for(Player p : TeamManager.getTeam(damager).getPlayers()){
 						ScoreboardHandler.update(p);
 				}
-				damager.getInventory().addItem(ItemStackGenerator.createItem(Material.GOLD_INGOT, /*PlayerHandler.amountOfGold(victim) + */3, 0, null, null));
+				damager.getInventory().addItem(new ItemStack(Material.GOLD_INGOT,3));
 				victim.setHealth(0);
 			}
 		}else if(event.getDamager() instanceof Arrow && event.getEntity() instanceof Player) {
@@ -440,7 +440,7 @@ public class GameListener implements Listener{
 						if(Bukkit.getPlayer(p) != null)
 							ScoreboardHandler.update(Bukkit.getPlayer(p));
 					}
-					damager.getInventory().addItem(ItemStackGenerator.createItem(Material.GOLD_INGOT, /*PlayerHandler.amountOfGold(victim) + */3, 0, null, null));
+					damager.getInventory().addItem(new ItemStack(Material.GOLD_INGOT,3));
 					victim.setHealth(0);
 				}
 			}
