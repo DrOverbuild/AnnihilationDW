@@ -39,15 +39,6 @@ public class TeamManager {
 				createdTeams++;
 			}else break;
 		}
-		/*
-		new BukkitRunnable(){
-			@Override
-			public void run() {
-				System.out.println(TeamManager.hasTeam("BenRush"));
-			}
-		}.runTaskTimer(this, 20L, 20L);
-		// TODO remove
-		*/
 	}
 	
 	public Main getMainPlugin()
@@ -107,16 +98,6 @@ public class TeamManager {
 	public static void removeTeam(Team team) {
 		teams.remove(team);
 	}
-	
-//	public static boolean hasTeam(Player player) {
-//		for(Team team:getTeams()){
-//			for(String pName:team.getAllPlayers()){
-//				if (player.getName().equals(pName)) return true;
-//			}
-//		}
-//
-//		return false;
-//	}
 
 	public static boolean hasTeam(OfflinePlayer player){
 		for(Team team:getTeams()){
@@ -159,20 +140,6 @@ public class TeamManager {
 
 		return null;
 	}
-
-//	public static Team getTeam(Player player) {
-//		if(!Game.isGameStarted()){
-//			return null;
-//		}
-//
-//		for(Team t:getTeams()) {
-//			for (String s : t.getAllPlayers()) {
-//				if (s.equals(player.getName())) return t;
-//			}
-//		}
-//
-//		return null;
-//	}
 	
 	public static void setPlayerTeam(Player player, Team newTeam) {
 		if(player == null) return;
@@ -229,7 +196,6 @@ public class TeamManager {
 		for(Player p : players){
 			p.setHealth(0d);
 		}
-//		TeamManager.removeTeam(team);
 		ScoreboardHandler.updateAll();
 		TeamManager.hasWinner();
 	}

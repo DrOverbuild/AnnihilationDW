@@ -142,7 +142,7 @@ public class PlayerListener implements Listener {
 			Lobby.setupLobby(player);
 		}
 
-		ScoreboardHandler.update(player);
+		ScoreboardHandler.updateAll();
 
 		for(Player p : Bukkit.getOnlinePlayers()){
 			player.showPlayer(p);
@@ -182,7 +182,6 @@ public class PlayerListener implements Listener {
 		}
 
 		// The following ends the game if there's only one team left after player has left.
-		List<Team> teams = TeamManager.getAliveTeams();
 		if(Main.getAlivePlayers().size() == 2 && Game.isGameStarted()) {
 			Team t = TeamManager.getTeam(player);
 			if(t!=null){
@@ -197,46 +196,49 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
 		final Player player = event.getPlayer();
-		if(TeamManager.hasTeam(player)){
-			Team team = TeamManager.getTeam(player);
-			if(team!=null) {
+		Team team = TeamManager.getTeam(player);
+		if(team != null){
+			if(Game.getRespawnTimer() > 0) {
 				event.setRespawnLocation(team.getSpectatorSpawnpoint());
+				PlayerHandler.setSpectating(player, true);
+			}else{
+				event.setRespawnLocation(team.getSpawnpoint());
 			}
-			PlayerHandler.setSpectating(player, true);
-			if(team != null) {
-				if (team.getNexusHealth() <= 0) {
-					PlayerHandler.teamNexusIsDestroyed(player);
-				}
+
+			if (team.getNexusHealth() <= 0) {
+				PlayerHandler.teamNexusIsDestroyed(player);
 			}
+
 			if(Game.isGameStarted()){
-				respawnTimer.put(player.getName(), Game.getRespawnTimer());
-				new BukkitRunnable()
-				{
-					public void run(){
-						if(!player.isOnline()){
-							Main.println("Stopped respawn timer for " + player.getName() + " because he logged off.");
-							this.cancel();
-							return;
-						}
-						if(respawnTimer.get(player.getName()) != null){
-							player.setLevel(respawnTimer.get(player.getName()));
-							respawnTimer.put(player.getName(), respawnTimer.get(player.getName()) - 1);
-							if(respawnTimer.get(player.getName()) < 0){
-								respawnTimer.remove(player.getName());
-								Team t = TeamManager.getTeam(player);
-								if(t != null){
-									player.teleport(t.getSpawnpoint());
+				if(Game.getRespawnTimer() > 0) {
+					respawnTimer.put(player.getName(), Game.getRespawnTimer());
+					new BukkitRunnable() {
+						public void run() {
+							if (!player.isOnline()) {
+								Main.println("Stopped respawn timer for " + player.getName() + " because he logged off.");
+								this.cancel();
+								return;
+							}
+							if (respawnTimer.get(player.getName()) != null) {
+								player.setLevel(respawnTimer.get(player.getName()));
+								respawnTimer.put(player.getName(), respawnTimer.get(player.getName()) - 1);
+								if (respawnTimer.get(player.getName()) < 0) {
+									respawnTimer.remove(player.getName());
+									Team t = TeamManager.getTeam(player);
+									if (t != null) {
+										player.teleport(t.getSpawnpoint());
+									}
+									PlayerHandler.setSpectating(player, false);
+									Lobby.setupLobby(player, false);
+									this.cancel();
 								}
-								PlayerHandler.setSpectating(player, false);
-								Lobby.setupLobby(player, false);
+							} else {
+								Main.println("Stopping task for respawn timer for " + player.getName() + ".");
 								this.cancel();
 							}
-						}else{
-							Main.println("Stopping task for respawn timer for " + player.getName() + ".");
-							this.cancel();
 						}
-					}
-				}.runTaskTimer(pl, 0L, 20L);
+					}.runTaskTimer(pl, 0L, 20L);
+				}
 			}
 		}
 		Lobby.setupLobby(player);
@@ -285,7 +287,6 @@ public class PlayerListener implements Listener {
 		Team t = TeamManager.getTeam(player);
 		if(t != null) {
 			if (t.getNexusHealth() <= 0) {
-//			t.removePlayer(player);
 				if (!player.hasPermission("drwars.spectator")) {
 					PlayerHandler.quit(player);
 					player.kickPlayer(MessageHandler.format(MessageFile.getMessage("kick.lost")));
