@@ -56,11 +56,11 @@ public class TeamManager {
 	}
 	
 	public static boolean isFull(Team team) {
-		if(team.getPlayersAsString().size() >= ConfigFile.config.getInt("team-size")){
+		if(team.getAllPlayers().size() >= ConfigFile.config.getInt("team-size")){
 			return true;
 		}else{
 			for(Team team2 : getTeams()){
-				if(team2.getPlayersAsString().size() + 1 >= team.getPlayersAsString().size()) return false;
+				if(team2.getAllPlayers().size() + 1 >= team.getAllPlayers().size()) return false;
 			}
 		}
 		return true;
@@ -70,7 +70,7 @@ public class TeamManager {
 		int max = -1;
 		Team mostKills = null;
 		for(Team team : getTeams()) {
-			if(team.getKills() > max && team.getNexusHealth() > 0 && team.getPlayersAsString().size() > 0){
+			if(team.getKills() > max && team.getNexusHealth() > 0 && team.getAllPlayers().size() > 0){
 				max = team.getKills();
 				mostKills = team;
 			}
@@ -82,8 +82,8 @@ public class TeamManager {
 		int min = 999999;
 		Team toJoin = null;
 		for(Team team : getTeams()) {
-			if(team.getPlayersAsString().size() < min && team.getNexusHealth() > 0){
-				min = team.getPlayersAsString().size();
+			if(team.getAllPlayers().size() < min && team.getNexusHealth() > 0){
+				min = team.getAllPlayers().size();
 				toJoin = team;
 			}
 		}
@@ -110,7 +110,7 @@ public class TeamManager {
 	
 //	public static boolean hasTeam(Player player) {
 //		for(Team team:getTeams()){
-//			for(String pName:team.getPlayersAsString()){
+//			for(String pName:team.getAllPlayers()){
 //				if (player.getName().equals(pName)) return true;
 //			}
 //		}
@@ -120,7 +120,7 @@ public class TeamManager {
 
 	public static boolean hasTeam(OfflinePlayer player){
 		for(Team team:getTeams()){
-			for(String p:team.getPlayersAsString()){
+			for(String p:team.getAllPlayers()){
 				if(player.getName().equals(p)) return true;
 			}
 		}
@@ -131,7 +131,7 @@ public class TeamManager {
 	public static boolean allTeamsFull() {
 		int max = ConfigFile.config.getInt("team-size");
 		for(Team team : getTeams()) {
-			if(team.getPlayersAsString().size() < max) return false;
+			if(team.getAllPlayers().size() < max) return false;
 		}
 		return true;
 	}
@@ -152,7 +152,7 @@ public class TeamManager {
 		}
 
 		for(Team t:getTeams()) {
-			for (String s : t.getPlayersAsString()) {
+			for (String s : t.getAllPlayers()) {
 				if (s.equals(player.getName())) return t;
 			}
 		}
@@ -166,7 +166,7 @@ public class TeamManager {
 //		}
 //
 //		for(Team t:getTeams()) {
-//			for (String s : t.getPlayersAsString()) {
+//			for (String s : t.getAllPlayers()) {
 //				if (s.equals(player.getName())) return t;
 //			}
 //		}
@@ -225,7 +225,7 @@ public class TeamManager {
 		if(team.getNexusHealth() > 0){
 			team.setNexusHealth(0);
 		}
-		Player[] players = team.getPlayers().toArray(new Player[]{});
+		Player[] players = team.getAlivePlayers().toArray(new Player[]{});
 		for(Player p : players){
 			p.setHealth(0d);
 		}

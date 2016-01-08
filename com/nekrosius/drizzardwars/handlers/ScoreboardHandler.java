@@ -5,15 +5,12 @@ import com.nekrosius.drizzardwars.managers.PartyManager;
 import com.nekrosius.drizzardwars.utils.WordWrap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
 import com.nekrosius.drizzardwars.utils.SimpleScoreboard;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ScoreboardHandler {
@@ -63,6 +60,12 @@ public class ScoreboardHandler {
 
 				}
 			}
+
+			org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam("lobby");
+			newTeam.setPrefix(ChatColor.GREEN + "");
+			for(Player p: Bukkit.getOnlinePlayers()){
+				newTeam.addPlayer(p);
+			}
 		} else {
 			sb = new SimpleScoreboard(ChatColor.GOLD + "" + ChatColor.BOLD + MapManager.getActiveMap().getName());
 			if (!PlayerHandler.isSpectating(player)) {
@@ -85,16 +88,24 @@ public class ScoreboardHandler {
 			} else {
 				sb.add(MessageHandler.formatInteger(MessageFile.getMessage("time.seconds"), Game.getPhaseTime()), -4);
 			}
-		}
 
-		for (org.bukkit.scoreboard.Team t : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
-			org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam(t.getName());
-			newTeam.setDisplayName(t.getDisplayName());
-			newTeam.setPrefix(t.getPrefix());
-			for (OfflinePlayer p : t.getPlayers()) {
-				newTeam.addPlayer(p);
+			for(Team t:TeamManager.getAliveTeams()){
+				org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam(t.getCodeName());
+				newTeam.setPrefix(t.getColor() + "");
+				for(Player p: t.getAlivePlayers()){
+					newTeam.addPlayer(p);
+				}
 			}
 		}
+
+//		for (org.bukkit.scoreboard.Team t : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
+//			org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam(t.getName());
+//			newTeam.setDisplayName(t.getDisplayName());
+//			newTeam.setPrefix(t.getPrefix());
+//			for (OfflinePlayer p : t.getAlivePlayers()) {
+//				newTeam.addPlayer(p);
+//			}
+//		}
 
 		sb.build();
 		sb.send(player);

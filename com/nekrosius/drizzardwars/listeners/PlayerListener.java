@@ -35,7 +35,6 @@ import com.nekrosius.drizzardwars.managers.TeamManager;
 import com.nekrosius.drizzardwars.utils.Convert;
 
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.scheduler.BukkitTask;
 
 public class PlayerListener implements Listener {
 	
@@ -170,7 +169,7 @@ public class PlayerListener implements Listener {
 		// Kill off a team if the player who left was the only player in that team and Game.getPhase() > 3
 		if(Game.isGameStarted() && Game.getPhase()>3){
 			for(Team t:TeamManager.getTeams()){
-				if(t.getPlayers().size() == 0 && t.getNexusHealth() > 0){
+				if(t.getAlivePlayers().size() == 0 && t.getNexusHealth() > 0){
 					TeamManager.destroyTeam(t);
 				}
 			}
@@ -187,7 +186,7 @@ public class PlayerListener implements Listener {
 		if(Main.getAlivePlayers().size() == 2 && Game.isGameStarted()) {
 			Team t = TeamManager.getTeam(player);
 			if(t!=null){
-				if(t.getPlayers().size() < 2){
+				if(t.getAlivePlayers().size() < 2){
 					TeamManager.destroyTeam(t);
 				}
 			}
@@ -305,13 +304,13 @@ public class PlayerListener implements Listener {
 			PlayerHandler.setPlayerGold(player, gold);
 		}
 
-//		player.spigot().respawn();
-		new BukkitRunnable(){
-			@Override
-			public void run() {
-				player.spigot().respawn();
-			}
-		}.runTaskLater(pl, 1L);
+		player.spigot().respawn();
+//		new BukkitRunnable(){
+//			@Override
+//			public void run() {
+//				player.spigot().respawn();
+//			}
+//		}.runTaskLater(pl, 1L);
 	}
 	
 	@EventHandler

@@ -125,7 +125,7 @@ public class Game {
 		ProtectedChestManager.clearProtectedBlocks();
 
 		if (winner != null) {
-			for(Player p:winner.getPlayers()){
+			for(Player p:winner.getAlivePlayers()){
 				Points.addPoints(p,Points.getWinPoints());
 			}
 		}
@@ -168,7 +168,7 @@ public class Game {
 		ScoreboardHandler.updateAll();
 
 		for(Team t : TeamManager.getTeams()){
-			for(Player p:t.getPlayers()){
+			for(Player p:t.getAlivePlayers()){
 				plugin.getTitleManager().getPhaseTitle(getPhase()).send(p);
 				p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
 				Phase.sendPhaseMessage(p, getPhase());
@@ -180,7 +180,7 @@ public class Game {
 
 		List<Team> remove = new ArrayList<>();
 		for(Team t:TeamManager.getTeams()){
-			if(t.getPlayers().size() == 0 && getPhase() > 3){
+			if(t.getAlivePlayers().size() == 0 && getPhase() > 3){
 				remove.add(t);
 			}
 		}
@@ -237,7 +237,7 @@ public class Game {
 			return;
 		}
 		for(Team t : TeamManager.getTeams()){
-			for(Player p:t.getPlayers()){
+			for(Player p:t.getAlivePlayers()){
 				p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
 				Phase.sendPhaseMessage(p, getPhase());
 				//BossBarAPI.setMessage(p, MessageHandler.getPhaseMessage(getPhase()), phaseTime / 20);

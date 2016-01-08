@@ -43,7 +43,6 @@ import com.nekrosius.drizzardwars.handlers.mapsetup.Signs;
 import com.nekrosius.drizzardwars.managers.TeamManager;
 import com.nekrosius.drizzardwars.utils.Convert;
 import com.nekrosius.drizzardwars.utils.ExperienceManager;
-import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 
 import de.slikey.effectlib.effect.ExplodeEffect;
 
@@ -191,7 +190,7 @@ public class GameListener implements Listener{
 						eff.setDynamicOrigin(new DynamicLocation(team.getNexusLocation()));
 						eff.start();
 						team.getNexusLocation().getWorld().playSound(team.getNexusLocation(), Sound.ITEM_BREAK, 1F, 1F);
-						for(String p : team.getPlayersAsString()){
+						for(String p : team.getAllPlayers()){
 							if(Bukkit.getPlayer(p) != null)
 							MessageHandler.sendMessage(Bukkit.getPlayer(p), MessageHandler.nexusDmg);
 						}
@@ -403,7 +402,7 @@ public class GameListener implements Listener{
 					MessageHandler.sendMessage(p, MessageHandler.formatPlayer(MessageFile.getMessage("player.kill"), victim, damager));
 				}
 				TeamManager.getTeam(damager).addKill();
-				for(Player p : TeamManager.getTeam(damager).getPlayers()){
+				for(Player p : TeamManager.getTeam(damager).getAlivePlayers()){
 						ScoreboardHandler.update(p);
 				}
 				damager.getInventory().addItem(new ItemStack(Material.GOLD_INGOT,3));
@@ -436,7 +435,7 @@ public class GameListener implements Listener{
 						MessageHandler.sendMessage(p, MessageHandler.formatPlayer(MessageFile.getMessage("player.kill"), victim, damager));
 					}
 					TeamManager.getTeam(damager).addKill();
-					for(String p : TeamManager.getTeam(damager).getPlayersAsString()){
+					for(String p : TeamManager.getTeam(damager).getAllPlayers()){
 						if(Bukkit.getPlayer(p) != null)
 							ScoreboardHandler.update(Bukkit.getPlayer(p));
 					}
