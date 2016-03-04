@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.Main;
-import com.nekrosius.drizzardwars.api.events.JoinGameEvent;
 import com.nekrosius.drizzardwars.files.MapFile;
 import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.handlers.MessageHandler;
@@ -24,11 +23,7 @@ public class DWCommand implements CommandExecutor{
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		
-		// TODO remove
-		Bukkit.getPluginManager().callEvent(new JoinGameEvent((Player) sender, null));
-		
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {		
 		if(args.length == 0){
 			if(!(sender instanceof Player)){
 				sender.sendMessage(MessageFile.getMessage("commands.not-player"));

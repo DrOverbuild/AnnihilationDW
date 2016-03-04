@@ -13,7 +13,7 @@ public class AbilitiesMenu {
 	public static void setup(Player player) {
 		Inventory inv = Bukkit.createInventory(player, getSize(Ability.abilities.size()), ChatColor.BOLD + "Abilities Menu");
 		for(Ability ability : Ability.abilities) {
-			inv.addItem(ItemStackGenerator.createItem(ability.getIcon(), 0, ability.getIconData(), ChatColor.RED + ability.getName(), null));
+			inv.addItem(ItemStackGenerator.createItem(ability.getIcon(), 0, ability.getIconData(), ChatColor.RED + ability.getName(), ability.getDescription()));
 		}
 		player.openInventory(inv);
 	}

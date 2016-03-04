@@ -18,7 +18,7 @@ public class Ability implements Listener {
 	private String name;
 	private Material icon;
 	private int iconData = 0;
-	private List<String> description;
+	private List<String> description = new ArrayList<String>();
 	
 	/**
 	 * Adds ability to the system
@@ -69,6 +69,27 @@ public class Ability implements Listener {
 	 */
 	public void setIconData(int iconData) {
 		this.iconData = iconData;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public List<String> getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(List<String> description) {
+		this.description = description;
+	}
+	
+	/**
+	 * Adds line to existing description
+	 */
+	public void addDescription(String line) {
+		this.description.add(line);
 	}
 	
 }
