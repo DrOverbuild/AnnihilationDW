@@ -1,17 +1,18 @@
 package com.nekrosius.drizzardwars.handlers;
 
-import com.nekrosius.drizzardwars.files.MessageFile;
-import com.nekrosius.drizzardwars.managers.PartyManager;
-import com.nekrosius.drizzardwars.utils.WordWrap;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.managers.MapManager;
+import com.nekrosius.drizzardwars.managers.PartyManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
 import com.nekrosius.drizzardwars.utils.SimpleScoreboard;
-
-import java.util.List;
+import com.nekrosius.drizzardwars.utils.WordWrap;
 
 public class ScoreboardHandler {
 
@@ -32,9 +33,10 @@ public class ScoreboardHandler {
 				i++;
 			}
 			sb.add(MessageHandler.formatInteger(MessageHandler.untilStart, Game.getCountdown()), -1);
-			sb.add(ChatColor.GRAY + "Puntos: " + ChatColor.RED + "" + Points.getPoints(player), -2);
+			sb.add(ChatColor.GRAY + StringUtils.capitalize(MessageHandler.format(MessageFile.getMessage("general.points")))
+					+ ": " + ChatColor.RED + Points.getPoints(player), -2);
 			sb.add("", -3);
-			sb.add("PARTY", -4);
+			sb.add(MessageHandler.format(MessageFile.getMessage("party.scoreboard.header")), -4);
 			int j = -5;
 			if (PartyManager.hasParty(player)) {
 				List<Player> players = PartyManager.getParty(player).getPlayers();
@@ -52,7 +54,7 @@ public class ScoreboardHandler {
 					j--;
 				}
 			} else {
-				List<StringBuilder> lines = WordWrap.wordWrap(MessageFile.formatMessage("party.alone"),20);
+				List<StringBuilder> lines = WordWrap.wordWrap(MessageFile.formatMessage("party.scoreboard.alone"),20);
 
 				for (StringBuilder builder : lines) {
 					sb.add(builder.toString(), j);

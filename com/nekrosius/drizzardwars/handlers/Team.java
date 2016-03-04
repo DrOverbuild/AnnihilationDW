@@ -2,18 +2,15 @@ package com.nekrosius.drizzardwars.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import com.nekrosius.drizzardwars.files.MapFile;
-import com.nekrosius.drizzardwars.utils.Convert;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.files.ConfigFile;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.nekrosius.drizzardwars.files.MapFile;
+import com.nekrosius.drizzardwars.utils.Convert;
 
 public class Team {
 

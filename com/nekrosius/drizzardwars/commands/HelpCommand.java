@@ -1,16 +1,15 @@
 package com.nekrosius.drizzardwars.commands;
 
-import com.avaje.ebeaninternal.server.cluster.mcast.Message;
-import com.nekrosius.drizzardwars.Main;
-import com.nekrosius.drizzardwars.files.MessageFile;
-import com.nekrosius.drizzardwars.handlers.MessageHandler;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.nekrosius.drizzardwars.files.MessageFile;
+import com.nekrosius.drizzardwars.handlers.MessageHandler;
 
 /**
  * Created by jasper on 12/22/15.

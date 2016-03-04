@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.nekrosius.drizzardwars.handlers.*;
-import com.nekrosius.drizzardwars.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -14,8 +12,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.nekrosius.drizzardwars.abilities.Berserker;
 import com.nekrosius.drizzardwars.files.ConfigFile;
-import com.nekrosius.drizzardwars.files.PlayerFile;
+import com.nekrosius.drizzardwars.handlers.Game;
+import com.nekrosius.drizzardwars.handlers.Lobby;
+import com.nekrosius.drizzardwars.handlers.MessageHandler;
+import com.nekrosius.drizzardwars.handlers.PlayerHandler;
+import com.nekrosius.drizzardwars.handlers.TabHandler;
+import com.nekrosius.drizzardwars.managers.BarManager;
+import com.nekrosius.drizzardwars.managers.CommandManager;
+import com.nekrosius.drizzardwars.managers.FileManager;
+import com.nekrosius.drizzardwars.managers.ListenerManager;
+import com.nekrosius.drizzardwars.managers.MapManager;
+import com.nekrosius.drizzardwars.managers.PartyManager;
+import com.nekrosius.drizzardwars.managers.TeamManager;
+import com.nekrosius.drizzardwars.managers.TitleManager;
 import com.nekrosius.drizzardwars.utils.Convert;
 
 import de.slikey.effectlib.EffectLib;
@@ -41,6 +52,7 @@ public class Main extends JavaPlugin {
 
 	public void onEnable() {
 		load();
+		loadDefaultAbilities();
 		new BukkitRunnable(){
 			@Override
 			public void run() {
@@ -71,6 +83,13 @@ public class Main extends JavaPlugin {
 		em = new EffectManager(lib);
 		tlm = new TitleManager(this);
 		MessageHandler.loadMessages();
+	}
+	
+	/**
+	 * Adds default abilities
+	 */
+	private void loadDefaultAbilities() {
+		new Berserker();
 	}
 
 	public FileManager getFileManager() {
@@ -191,17 +210,22 @@ public class Main extends JavaPlugin {
 		return 0;
 	}
 	
-	private static boolean isNumber(char c) {
-		if(c == '0') return true;
-		else if(c == '1') return true;
-		else if(c == '2') return true;
-		else if(c == '3') return true;
-		else if(c == '2') return true;
-		else if(c == '5') return true;
-		else if(c == '6') return true;
-		else if(c == '7') return true;
-		else if(c == '8') return true;
-		else if(c == '9') return true;
+	/**
+	 * 
+	 * @param symbol
+	 * @return returns if given symbol is a number
+	 */
+	private static boolean isNumber(char symbol) {
+		if(symbol == '0') return true;
+		else if(symbol == '1') return true;
+		else if(symbol == '2') return true;
+		else if(symbol == '3') return true;
+		else if(symbol == '2') return true;
+		else if(symbol == '5') return true;
+		else if(symbol == '6') return true;
+		else if(symbol == '7') return true;
+		else if(symbol == '8') return true;
+		else if(symbol == '9') return true;
 		return false;
 	}
 

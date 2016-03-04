@@ -1,7 +1,8 @@
 package com.nekrosius.drizzardwars.commands;
 
-import com.nekrosius.drizzardwars.files.ConfigFile;
-import com.nekrosius.drizzardwars.handlers.ScoreboardHandler;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,11 +14,8 @@ import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.handlers.MessageHandler;
 import com.nekrosius.drizzardwars.handlers.Party;
+import com.nekrosius.drizzardwars.handlers.ScoreboardHandler;
 import com.nekrosius.drizzardwars.managers.PartyManager;
-import org.bukkit.scoreboard.ScoreboardManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PartyCommand implements CommandExecutor {
 
@@ -69,7 +67,7 @@ public class PartyCommand implements CommandExecutor {
 	}
 
 	public void create(Player player){
-		if(!player.hasPermission("drwars.vip")) {
+		if(!player.hasPermission("drwars.party")) {
 			MessageHandler.sendMessage(player, MessageFile.getMessage("commands.not-vip"));
 			return;
 		}
@@ -142,7 +140,7 @@ public class PartyCommand implements CommandExecutor {
 	}
 
 	public void invite(Player player, String toInvite){
-		if(!player.hasPermission("drwars.vip")) {
+		if(!player.hasPermission("drwars.party")) {
 			MessageHandler.sendMessage(player, MessageFile.getMessage("commands.not-vip"));
 			return;
 		}

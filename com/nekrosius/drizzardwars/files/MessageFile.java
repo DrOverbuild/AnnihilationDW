@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nekrosius.drizzardwars.handlers.MessageHandler;
-import com.nekrosius.drizzardwars.utils.ConfigLoader;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.handlers.MessageHandler;
+import com.nekrosius.drizzardwars.utils.ConfigLoader;
 
 public class MessageFile {
 	
@@ -117,6 +115,8 @@ public class MessageFile {
 			config.addDefault("party.args", "&cInvalid arguments. Type \"/party help\" to view help.");
 			config.addDefault("party.alone", "&aYou are not in a party. Type \"&6/party create&a\" to create one.");
 			config.addDefault("party.full","&cThe party is full.");
+			config.addDefault("party.scoreboard.header","PARTY");
+			config.addDefault("party.scoreboard.alone","&aYou are not in a party. Type \"&6/party create&a\" to create one.");
 			config.addDefault("time.remaining", "&aT. Remaining");
 			config.addDefault("time.minutes","&a%t minutes");
 			config.addDefault("time.seconds", "&a%t seconds");
@@ -216,6 +216,12 @@ public class MessageFile {
 		}
 		if(!config.contains("party.full")){
 			config.set("party.full", "&cThe party is full.");
+		}
+		if(!config.contains("party.scoreboard.header")){
+			config.set("party.scoreboard.header","PARTY");
+		}
+		if(!config.contains("party.scoreboard.alone")){
+			config.set("party.scoreboard.alone", "&aYou are not in a party. Type \"&6/party create&a\" to create one.");
 		}
 		if(!config.contains("phases.descriptions.1")){
 			config.set("phases.descriptions.1","Initial phase. Prepare for battle.");

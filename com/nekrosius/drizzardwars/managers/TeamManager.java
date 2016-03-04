@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nekrosius.drizzardwars.files.MessageFile;
-import com.nekrosius.drizzardwars.handlers.MessageHandler;
-import com.nekrosius.drizzardwars.handlers.ScoreboardHandler;
+import com.nekrosius.drizzardwars.handlers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,8 +14,6 @@ import org.bukkit.entity.Player;
 import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.files.TeamsFile;
-import com.nekrosius.drizzardwars.handlers.Game;
-import com.nekrosius.drizzardwars.handlers.Team;
 import com.nekrosius.drizzardwars.utils.Convert;
 
 public class TeamManager {

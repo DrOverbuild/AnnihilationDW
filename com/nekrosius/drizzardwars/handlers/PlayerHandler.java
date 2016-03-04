@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nekrosius.drizzardwars.files.MapFile;
-import com.nekrosius.drizzardwars.files.MessageFile;
-import com.nekrosius.drizzardwars.managers.BarManager;
-import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -16,21 +12,25 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.nekrosius.drizzardwars.api.objects.Ability;
+import com.nekrosius.drizzardwars.files.MapFile;
+import com.nekrosius.drizzardwars.managers.BarManager;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
 
 public class PlayerHandler {
 
-	static Map<String, Integer> playerVote = new HashMap<String, Integer>();
-	static Map<String, Boolean> playerPlaying = new HashMap<String, Boolean>();
-	static Map<String, String> playerKit = new HashMap<String, String>();
+	static Map<String, Integer> vote = new HashMap<String, Integer>();
+	static Map<String, Boolean> playing = new HashMap<String, Boolean>();
+	static Map<String, String > kit = new HashMap<String, String>();
 	static Map<String, Integer> compassStatus = new HashMap<String, Integer>();
-	static Map<String, Boolean> playerSpectating = new HashMap<String, Boolean>();
-	static Map<String, Integer> playerGold = new HashMap<>();
+	static Map<String, Boolean> spectating = new HashMap<String, Boolean>();
+	static Map<String, Integer> gold = new HashMap<String, Integer>();
+	static Map<String, Ability> ability = new HashMap<String, Ability>();
 	static List<String> hidden = new ArrayList<String>();
 	
 	public static void quit(Player player) {
-		playerVote.remove(player.getName());
+		vote.remove(player.getName());
 		compassStatus.remove(player.getName());
 		boolean isHidden = isPlayerHidden(player);
 		for(Player p : Bukkit.getOnlinePlayers()){
@@ -63,11 +63,11 @@ public class PlayerHandler {
 			}
 			MapManager.getMap(map).addVote();
 		}
-		playerVote.put(player.getName(), map);
+		vote.put(player.getName(), map);
 	}
 	
 	public static Integer getPlayerVote(Player player){
-		if(playerVote.get(player.getName()) != null) return playerVote.get(player.getName());
+		if(vote.get(player.getName()) != null) return vote.get(player.getName());
 		return 0;
 	}
 
@@ -78,22 +78,22 @@ public class PlayerHandler {
 	}
 
 	public static void clearPlayersPlayingMap(){
-		String[] strings = playerPlaying.keySet().toArray(new String[]{});
+		String[] strings = playing.keySet().toArray(new String[]{});
 		for(String s:strings){
-			playerPlaying.remove(s);
+			playing.remove(s);
 		}
 	}
 
-	public static void setPlayerPlaying(Player player, Boolean playing) {
-		playerPlaying.put(player.getName(), playing);
+	public static void setPlayerPlaying(Player player, Boolean status) {
+		playing.put(player.getName(), status);
 	}
 	
-	public static void setPlayerKit(Player player, String kit) {
-		playerKit.put(player.getName(), kit);
+	public static void setPlayerKit(Player player, String name) {
+		kit.put(player.getName(), name);
 	}
 	
 	public static String getPlayerKit(Player player) {
-		return playerKit.get(player.getName());
+		return kit.get(player.getName());
 	}
 	
 	public static int getCompassStatus(Player player) {
@@ -108,7 +108,7 @@ public class PlayerHandler {
 	}
 	
 	public static boolean isSpectating(Player player){
-		if(playerSpectating.get(player.getName()) != null) return playerSpectating.get(player.getName());
+		if(spectating.get(player.getName()) != null) return spectating.get(player.getName());
 		return false;
 	}
 	
@@ -137,7 +137,7 @@ public class PlayerHandler {
 			player.setAllowFlight(false);
 			PlayerHandler.unhidePlayer(player);
 		}
-		playerSpectating.put(player.getName(), bool);
+		spectating.put(player.getName(), bool);
 	}
 	
 	public static List<String> getHiddenPlayers() {
@@ -193,19 +193,33 @@ public class PlayerHandler {
 		}
 	}
 
-	public static void setPlayerGold(Player player, Integer gold){
+	public static void setPlayerGold(Player player, Integer amount){
 		if(gold == null){
-			playerGold.remove(player);
-		}else{
-			playerGold.put(player.getName(),gold);
+			gold.remove(player);
+		}
+		else{
+			gold.put(player.getName(), amount);
 		}
 	}
 
 	public static Integer getPlayerGold(Player player) {
-		return  playerGold.get(player.getName());
+		return gold.get(player.getName());
 	}
 
 	public static void clearPlayerGold(){
-		playerGold.clear();
+		gold.clear();
 	}
+	
+	public static void setAbility(Player player, Ability ab) {
+		ability.put(player.getName(), ab);
+	}
+	
+	public static boolean hasAbility(Player player) {
+		return ability.get(player.getName()) != null;
+	}
+	
+	public static Ability getAbility(Player player) {
+		return ability.get(player.getName());
+	}
+	
 }

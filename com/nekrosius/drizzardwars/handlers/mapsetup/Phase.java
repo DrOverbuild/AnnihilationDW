@@ -1,15 +1,17 @@
 package com.nekrosius.drizzardwars.handlers.mapsetup;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.nekrosius.drizzardwars.files.MessageFile;
-import com.nekrosius.drizzardwars.handlers.MessageHandler;
-import com.nekrosius.drizzardwars.handlers.Team;
-import com.nekrosius.drizzardwars.utils.WordWrap;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.nekrosius.drizzardwars.files.MessageFile;
+import com.nekrosius.drizzardwars.handlers.Team;
 import com.nekrosius.drizzardwars.managers.TeamManager;
+import com.nekrosius.drizzardwars.utils.WordWrap;
 
 public class Phase {
 

@@ -3,11 +3,10 @@ package com.nekrosius.drizzardwars.files;
 import java.io.File;
 import java.io.IOException;
 
-import com.nekrosius.drizzardwars.utils.ConfigLoader;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.utils.ConfigLoader;
 
 public class MapFile {
 
