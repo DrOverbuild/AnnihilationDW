@@ -60,18 +60,13 @@ public class GameListener implements Listener{
 		if(PlayerHandler.isSpectating(player)){ event.setCancelled(true); return; }
 		if(player.getItemInHand().getType().equals(Material.COMPASS)) {
 			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+				PlayerHandler.setCompassStatus(player, PlayerHandler.nextCompassStatus(player));
 				ItemMeta meta = player.getItemInHand().getItemMeta();
-				Team team;
-				if(TeamManager.getTeam(PlayerHandler.getCompassStatus(player)) == null) team = TeamManager.getTeam(0);
-				else team = TeamManager.getTeam(PlayerHandler.getCompassStatus(player));
+				Team team = TeamManager.getTeam(PlayerHandler.getCompassStatus(player));
+				if(team == null) team = TeamManager.getTeam(0);
 				player.setCompassTarget(team.getNexusLocation());
 				meta.setDisplayName(MessageHandler.formatString(MessageFile.getMessage("compass.target"), team.getColor() + team.getName()));
 				player.getItemInHand().setItemMeta(meta);
-				if(PlayerHandler.getCompassStatus(player) + 1 >= TeamManager.getTeams().size()){
-					PlayerHandler.setCompassStatus(player, 0);
-				}else{
-					PlayerHandler.setCompassStatus(player, PlayerHandler.getCompassStatus(player) + 1);
-				}
 			}
 		}
 		else if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {

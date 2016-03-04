@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.files.MessageFile;
+import com.sun.deploy.util.MacIconEncoder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,6 +20,7 @@ import com.nekrosius.drizzardwars.files.MapFile;
 import com.nekrosius.drizzardwars.managers.BarManager;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class PlayerHandler {
 
@@ -105,6 +109,18 @@ public class PlayerHandler {
 	
 	public static void setCompassStatus(Player player, int status) {
 		compassStatus.put(player.getName(), status);
+	}
+
+	public static int nextCompassStatus(Player player) {
+		int currentStatus = getCompassStatus(player);
+		int nextStatus = currentStatus + 1;
+		List<Team> aliveTeams = TeamManager.getAliveTeams();
+		while(!aliveTeams.contains(TeamManager.getTeam(nextStatus))){
+			nextStatus++;
+			if(nextStatus >= TeamManager.getTeams().size()) nextStatus = 0;
+			if(nextStatus == currentStatus) break;
+		}
+		return nextStatus;
 	}
 	
 	public static boolean isSpectating(Player player){
@@ -221,5 +237,4 @@ public class PlayerHandler {
 	public static Ability getAbility(Player player) {
 		return ability.get(player.getName());
 	}
-	
 }

@@ -15,6 +15,8 @@ import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.files.TeamsFile;
 import com.nekrosius.drizzardwars.utils.Convert;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class TeamManager {
 
@@ -195,5 +197,22 @@ public class TeamManager {
 		}
 		ScoreboardHandler.updateAll();
 		TeamManager.hasWinner();
+
+		for(Player p:Bukkit.getOnlinePlayers()){
+			Team target = getTeam(PlayerHandler.getCompassStatus(p));
+			if(target != null&&target.equals(team)){
+				PlayerHandler.setCompassStatus(p, PlayerHandler.nextCompassStatus(p));
+				for(ItemStack item:p.getInventory().getContents()){
+					if(item.getType().equals(Material.COMPASS)){
+						ItemMeta meta = item.getItemMeta();
+						Team t = TeamManager.getTeam(PlayerHandler.getCompassStatus(p));
+						if(t == null) t = TeamManager.getTeam(0);
+						p.setCompassTarget(t.getNexusLocation());
+						meta.setDisplayName(MessageHandler.formatString(MessageFile.getMessage("compass.target"), t.getColor() + t.getName()));
+						item.setItemMeta(meta);
+					}
+				}
+			}
+		}
 	}
 }
