@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import com.nekrosius.drizzardwars.handlers.*;
+import com.nekrosius.drizzardwars.handlers.mapsetup.Phase;
 import com.nekrosius.drizzardwars.managers.BarManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -102,11 +103,10 @@ public class PlayerListener implements Listener {
 		}else if(Game.getGameState().equals(GameState.IN_GAME)){
 			if(!PlayerHandler.isPlayerPlaying(player)) {
 				Team toJoin = TeamManager.getTeamToJoin();
-				PlayerHandler.setTeamOfPlayer(player, toJoin);
-				player.teleport(toJoin.getSpawnpoint());
-				player.getInventory().clear();
-				Game.setupGameInventory(player);
-//				PlayerHandler.setPlayerPlaying(player, true);
+				Game.setupPlayer(player, toJoin);
+				
+				Phase.sendPhaseMessage(player, Game.getPhase());
+				
 				TabHandler.setColor(player);
 				BarManager.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
 				//BossBarAPI.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
@@ -169,8 +169,11 @@ public class PlayerListener implements Listener {
 		// Kill off a team if the player who left was the only player in that team and Game.getPhase() > 3
 		if(Game.isGameStarted() && Game.getPhase()>3){
 			for(Team t:TeamManager.getTeams()){
-				if(t.getAlivePlayers().size() == 0 && t.getNexusHealth() > 0){
-					TeamManager.destroyTeam(t);
+				if(t.getAlivePlayers().size() == 1){
+					Team t2 = TeamManager.getTeam(player);
+					if(t2!=null&&t2.equals(t)) {
+						TeamManager.destroyTeam(t);
+					}
 				}
 			}
 		}
@@ -182,14 +185,15 @@ public class PlayerListener implements Listener {
 		}
 
 		// The following ends the game if there's only one team left after player has left.
-		if(Main.getAlivePlayers().size() == 2 && Game.isGameStarted()) {
-			Team t = TeamManager.getTeam(player);
-			if(t!=null){
-				if(t.getAlivePlayers().size() < 2){
-					TeamManager.destroyTeam(t);
-				}
-			}
-		}
+		// This is redundant because line 175 will end the game if conditions are right.
+//		if(Game.isGameStarted()) {
+//			Team t = TeamManager.getTeam(player);
+//			if(t!=null){
+//				if(t.getAlivePlayers().size() < 2){
+//					TeamManager.destroyTeam(t);
+//				}
+//			}
+//		}
 
 	}
 	

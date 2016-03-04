@@ -3,7 +3,6 @@ package com.nekrosius.drizzardwars.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nekrosius.drizzardwars.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -15,6 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.api.events.JoinGameEvent;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.files.MapFile;
 import com.nekrosius.drizzardwars.files.MessageFile;
@@ -22,6 +22,11 @@ import com.nekrosius.drizzardwars.handlers.mapsetup.Blocks;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Phase;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Protect;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Signs;
+import com.nekrosius.drizzardwars.managers.BarManager;
+import com.nekrosius.drizzardwars.managers.MapManager;
+import com.nekrosius.drizzardwars.managers.PartyManager;
+import com.nekrosius.drizzardwars.managers.ProtectedChestManager;
+import com.nekrosius.drizzardwars.managers.TeamManager;
 import com.nekrosius.drizzardwars.utils.Convert;
 import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 
@@ -49,6 +54,8 @@ public class Game {
 		setRespawnTimer(ConfigFile.config.getInt("respawn.time"));
 		PartyManager.setAddedParties(new ArrayList<Party>());
 		setPhase(0);
+		Main.println("Loading world " + map.getName() + " to start game.");
+		Main.println("Number of players online: " + Bukkit.getOnlinePlayers().size());
 		MapManager.createWorld(map);
 		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
 		new TeamManager(plugin, MapFile.config.getInt("team.amount"));
@@ -57,56 +64,52 @@ public class Game {
 		ProtectedChestManager.clearProtectedBlocks();
 		Points.setupPoints();
 		Signs.setupShops();
+		
+		// Adding players to the teams
+		
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			PlayerHandler.unhidePlayer(p);
-			PlayerHandler.setSpectating(p, false);
-			if(PartyManager.hasParty(p)){
+			
+			// Taking care of parties
+			
+			if(PartyManager.hasParty(p)) {
 				Party party = PartyManager.getParty(p);
 				if(!PartyManager.isPartyAdded(party)){
 					Team toJoin = TeamManager.getTeamToJoin();
+					
 					for(Player partyPlayer : party.getPlayers()){
-						PlayerHandler.setTeamOfPlayer(partyPlayer, toJoin);
-						partyPlayer.teleport(toJoin.getSpawnpoint());
-						partyPlayer.getInventory().clear();
-						setupGameInventory(partyPlayer);
-						ScoreboardHandler.update(partyPlayer);
-//						PlayerHandler.setPlayerPlaying(partyPlayer, true);
-						PlayerHandler.setSpectating(partyPlayer, false);
-						//TabHandler.setColor(partyPlayer);
-						//TagPlayer tagplayer = new TagPlayer(partyPlayer);
-						//TagManager tagmanager =  new TagManager(tagplayer);
-						//tagmanager.setTag(toJoin.getColor() + partyPlayer.getName());
+						setupPlayer(partyPlayer, toJoin);
 					}
+					
 					Player leader = party.getLeader();
-					PlayerHandler.setTeamOfPlayer(leader, toJoin);
-					leader.teleport(toJoin.getSpawnpoint());
-					leader.getInventory().clear();
-					setupGameInventory(leader);
-					ScoreboardHandler.update(leader);
-					//PlayerHandler.setPlayerPlaying(leader, true);
-					PlayerHandler.setSpectating(leader, false);
-					//TabHandler.setColor(leader);
-					//TagPlayer tagplayer = new TagPlayer(leader);
-					//TagManager tagmanager =  new TagManager(tagplayer);
-					//tagmanager.setTag(toJoin.getColor() + leader.getName());
+					setupPlayer(leader, toJoin);
+					
 					PartyManager.addAddedParty(party);
 				}
-			} else{
-				Team toJoin = TeamManager.getTeamToJoin();
-				PlayerHandler.setTeamOfPlayer(p, toJoin);
-				p.teleport(toJoin.getSpawnpoint());
-				p.getInventory().clear();
-				setupGameInventory(p);
-				ScoreboardHandler.update(p);
-//				PlayerHandler.setPlayerPlaying(p, true);
-				//TabHandler.setColor(p);
-				//TagPlayer tagplayer = new TagPlayer(p);
-				//TagManager tagmanager =  new TagManager(tagplayer);
-				//tagmanager.setTag(toJoin.getColor() + p.getName());
 			}
 			
+			// Sole players
+			
+			else {
+				setupPlayer(p, TeamManager.getTeamToJoin());
+			}
 		}
 		Game.startPhases(map);
+	}
+	
+	/**
+	 * Prepares player for the game
+	 * @param player 
+	 * @param team which will be joined
+	 */
+	public static void setupPlayer(Player player, Team team) {
+		PlayerHandler.unhidePlayer(player);
+		PlayerHandler.setSpectating(player , false);
+		PlayerHandler.setTeamOfPlayer(player, team);
+		player.teleport(team.getSpawnpoint());
+		player.getInventory().clear();
+		setupGameInventory(player);
+		ScoreboardHandler.update(player);
+		Bukkit.getPluginManager().callEvent(new JoinGameEvent(player, team));
 	}
 	
 	public static void finish(Team winner) {
