@@ -21,6 +21,10 @@ commands:
     help:
         description: Get Help
         usage: /<command>
+    ability:
+        description: Select ability
+        aliases: [ab, abilities]
+        usage: /<command>
 permissions:
     drwars.*:
         default: op
@@ -29,6 +33,7 @@ permissions:
             drwars.vip: true
             drwars.spectator: true
             drwars.chance: true
+            drwars.party: true
     drwars.vip:
         default: op
         description: Grants VIP permissions
@@ -40,3 +45,6 @@ permissions:
         description: Gives a chance to join full game when someone leaves
         children:
             drwars.spectator: true
+    drwars.party:
+        default: op
+        description: Gives access to create a party
