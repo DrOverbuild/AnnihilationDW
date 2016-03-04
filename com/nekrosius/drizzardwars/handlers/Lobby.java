@@ -22,7 +22,7 @@ public class Lobby {
 	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("DrizzardWars");
 
 	public static void setupLobby(final Player player, boolean teleportPlayer){
-		if(Game.getGameState().equals(GameState.LOBBY)){
+		if(Game.getGameState().equals(GameState.LOBBY) && !Game.isCountdownStarted()){
 			if(Bukkit.getOnlinePlayers().size() >= ConfigFile.config.getInt("minimum-player-amount")){
 				Game.startCountdown();
 			}

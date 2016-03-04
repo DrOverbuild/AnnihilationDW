@@ -137,12 +137,19 @@ public class PlayerListener implements Listener {
 				respawnTimer.remove(player.getName());
 				Lobby.setupLobby(player);
 			}
+
+			if(Game.getPhase() > 3){
+				PlayerHandler.setSpectating(player, true);
+			}
+
 		}else{
 			PlayerHandler.setSpectating(player,true);
 			Lobby.setupLobby(player);
 		}
 
 		ScoreboardHandler.updateAll();
+
+
 
 		for(Player p : Bukkit.getOnlinePlayers()){
 			player.showPlayer(p);
@@ -170,8 +177,10 @@ public class PlayerListener implements Listener {
 		if(Game.isGameStarted() && Game.getPhase()>3){
 			for(Team t:TeamManager.getTeams()){
 				if(t.getAlivePlayers().size() == 1){
+					Main.println("Team " + t.getName() + " has 1 player.");
 					Team t2 = TeamManager.getTeam(player);
-					if(t2!=null&&t2.equals(t)) {
+					Main.println("Player was from team " + t2);
+					if(t2!=null&&t2.getName().equals(t.getName())) {
 						TeamManager.destroyTeam(t);
 					}
 				}
