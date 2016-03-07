@@ -52,7 +52,7 @@ public class Main extends JavaPlugin {
 
 	public void onEnable() {
 		load();
-		loadDefaultAbilities();
+//		loadDefaultAbilities();
 		new BukkitRunnable(){
 			@Override
 			public void run() {
