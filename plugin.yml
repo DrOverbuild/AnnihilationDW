@@ -1,6 +1,6 @@
 name: DrizzardWars
 author: BenRush
-version: 3.1
+version: 3.0.3
 main: com.nekrosius.drizzardwars.Main
 commands:
     drizzardwars:
@@ -21,10 +21,10 @@ commands:
     help:
         description: Get Help
         usage: /<command>
-    ability:
-        description: Select ability
-        aliases: [ab, abilities]
-        usage: /<command>
+#    ability:
+#        description: Select ability
+#        aliases: [ab, abilities]
+#        usage: /<command>
 permissions:
     drwars.*:
         default: op
