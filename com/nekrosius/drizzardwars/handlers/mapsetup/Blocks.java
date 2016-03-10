@@ -22,31 +22,31 @@ import com.nekrosius.drizzardwars.utils.Convert;
 
 public class Blocks {
 	
-	//REGENERATING
+	//REGENERATING -- MAP SETUP
 	static Map<String, Integer> regeneratingBlockStatus = new HashMap<String, Integer>();
 	static Map<String, Block> regeneratingBlock = new HashMap<String, Block>();
 	static Map<String, List<String>> regeneratingBlockInfo = new HashMap<String, List<String>>();
 	
-	//UNPLACEABLE
+	//UNPLACEABLE -- MAP SETUP
 	static Map<String, Integer> unplaceableBlockStatus = new HashMap<String, Integer>();
 	static Map<String, Block> unplaceableBlock = new HashMap<String, Block>();
 	private static Map<Material, Boolean> unplaceable = new HashMap<Material, Boolean>();
 	private static Map<Material, Integer> unplaceableData = new HashMap<Material, Integer>();
 	
-	//DIAMONDS
+	//DIAMONDS -- MAP SETUP
 	private static List<Location> diamondSpawns = new ArrayList<Location>();
 	
-	//TEAM AMOUNT
+	//TEAM AMOUNT -- MAP SETUP
 	static Map<String, Integer> teamAmountStatus = new HashMap<String, Integer>();
 	
 	//INFO
-	private static Map<Material, Integer> Data = new HashMap<Material, Integer>();
-	private static Map<Material, String> DropType = new HashMap<Material, String>();
-	private static Map<Material, Material> BrokeBlock = new HashMap<Material, Material>();
-	private static Map<Material, ItemStack> Reward = new HashMap<Material, ItemStack>();
+	private static Map<Material, Integer> data = new HashMap<Material, Integer>();
+	private static Map<Material, String> dropType = new HashMap<Material, String>();
+	private static Map<Material, Material> brokeBlock = new HashMap<Material, Material>();
+	private static Map<Material, ItemStack> reward = new HashMap<Material, ItemStack>();
 	private static Map<Material, String> rewardAmount = new HashMap<Material, String>();
-	private static Map<Material, Integer> Timer = new HashMap<Material, Integer>();
-	private static Map<Material, Integer> XpReward = new HashMap<Material, Integer>();
+	private static Map<Material, Integer> timer = new HashMap<Material, Integer>();
+	private static Map<Material, Integer> xpReward = new HashMap<Material, Integer>();
 	
 	public static void setupBlocks(Maps map) {
 		MapFile.createConfig(MapManager.mapsPath + map.getName());
@@ -269,35 +269,35 @@ public class Blocks {
 	//-------------------------------------------------------------//
 	
 	public static Integer getData(Material material) {
-		return Data.get(material);
+		return data.get(material);
 	}
 	
 	public static void setData(Material material, int data) {
-		Data.put(material, data);
+		Blocks.data.put(material, data);
 	}
 	
 	public static String getDropType(Material material) {
-		return DropType.get(material);
+		return dropType.get(material);
 	}
 	
 	public static void setDropType(Material material, String type) {
-		DropType.put(material, type);
+		dropType.put(material, type);
 	}
 	
 	public static Material getBrokeBlock(Material material) {
-		return BrokeBlock.get(material);
+		return brokeBlock.get(material);
 	}
 	
 	public static void setBrokeBlock(Material material, Material type) {
-		BrokeBlock.put(material, type);
+		brokeBlock.put(material, type);
 	}
 	
 	public static ItemStack getReward(Material material) {
-		return Reward.get(material);
+		return reward.get(material);
 	}
 	
 	public static void setReward(Material material, ItemStack type) {
-		Reward.put(material, type);
+		reward.put(material, type);
 	}
 	
 	public static int getRewardAmount(Material material) {
@@ -317,19 +317,19 @@ public class Blocks {
 	}
 	
 	public static int getTimer(Material material) {
-		return Timer.get(material);
+		return timer.get(material);
 	}
 	
 	public static void setTimer(Material material, int type) {
-		Timer.put(material, type);
+		timer.put(material, type);
 	}
 	
 	public static int getXpReward(Material material) {
-		return XpReward.get(material);
+		return xpReward.get(material);
 	}
 	
 	public static void setXpReward(Material material, int type) {
-		XpReward.put(material, type);
+		xpReward.put(material, type);
 	}
 	
 	
