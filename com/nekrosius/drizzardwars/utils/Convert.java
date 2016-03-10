@@ -9,7 +9,7 @@ import org.bukkit.World;
 import com.nekrosius.drizzardwars.managers.MapManager;
 
 /*
- * Util by BENAS "BENRUSH" NEKROÐIUS
+ * Util by BENAS "BENRUSH" NEKROï¿½IUS
  * Converts
  */
 
@@ -45,28 +45,76 @@ public class Convert {
 		return loc;
 	}
 
-	public static int StringToTime(String str) {
-		String[] st = str.split(" ");
-		int time = 0;
-		try{
-			time = Integer.parseInt(st[0]);
-		}catch(NumberFormatException e){
-			e.printStackTrace();
+//	public static int StringToTime(String str) {
+//		String[] st = str.split(" ");
+//		int time = 0;
+//		try{
+//			time = Integer.parseInt(st[0]);
+//		}catch(NumberFormatException e){
+//			e.printStackTrace();
+//		}
+//		time *= 20;
+//		String format = st[1];
+//		if(format.toLowerCase().startsWith("s")){
+//			time *= 1;
+//		}
+//		else if(format.toLowerCase().startsWith("m")){
+//			time *= 60;
+//		}
+//		else if(format.toLowerCase().startsWith("h")){
+//			time *= 3600;
+//		}
+//		return time;
+//	}
+
+	public static int StringToTime(String str){
+		String[] times = str.split(":");
+		int hours = 0;
+		int minutes = 0;
+		int seconds = 0;
+		int index = 0;
+
+		if(times.length > 2){
+			try{
+				hours = Integer.parseInt(times[index]);
+				index++;
+			}catch (NumberFormatException e){}
 		}
-		time *= 20;
-		String format = st[1];
-		if(format.equals("s") || format.equals("sec") || format.equals("second") || format.equals("seconds")){
-			time *= 1;
+
+		if(times.length > 1){
+			try{
+				minutes = Integer.parseInt(times[index]);
+				index++;
+			}catch (NumberFormatException e){}
 		}
-		else if(format.equals("m") || format.equals("min") || format.equals("minute") || format.equals("minutes")){
-			time *= 60;
+
+		if(times.length > 0){
+			try{
+				seconds = Integer.parseInt(times[index]);
+			}catch (NumberFormatException e){}
 		}
-		else if(format.equals("h") || format.equals("hour") || format.equals("hours")){
-			time *= 60;
-		}
-		return time;
+		return  hours*72000 + minutes*1200 + seconds*20;
 	}
-	
+
+	public static String ticksToReadableTimeFormat(int i){
+		StringBuilder str = new StringBuilder("");
+		if(i > 72000){
+			str.append(i / 72000).append(" hours, ");
+			i = i%72000;
+		}
+
+		if(i > 1200){
+			str.append(i / 1200).append(" minutes, ");
+			i = i % 1200;
+		}
+
+		if(i > 20){
+			str.append(i / 20).append(" seconds");
+		}
+
+		return str.toString();
+	}
+
 	public static ChatColor StringToChatColor(String str) {
 		if(str.equalsIgnoreCase("aqua")) return ChatColor.AQUA;
 		else if(str.equalsIgnoreCase("black")) return ChatColor.BLACK;

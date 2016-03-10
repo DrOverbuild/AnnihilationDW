@@ -309,7 +309,8 @@ public class MapSetupListener implements Listener{
 		if(Phase.getPhaseTimeStatus(player) == 1){
 			String msg = event.getMessage();
 			int time = Convert.StringToTime(msg);
-			player.sendMessage(ChatColor.GRAY + "You've set phase time to " + ChatColor.GOLD + msg);
+			player.sendMessage(ChatColor.GRAY + "You've set phase time to " + ChatColor.GOLD + Convert.ticksToReadableTimeFormat(time)
+					+ ChatColor.GRAY + " (" + time + " ticks)");
 			Phase.setPhaseTimeStatus(player, 0);
 			MapFile.createConfig(player.getWorld().getName());
 			MapFile.config.set("phase-time", time);

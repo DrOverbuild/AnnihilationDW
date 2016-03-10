@@ -294,7 +294,7 @@ public class InventoryListener implements Listener{
 				player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(ChatColor.GRAY + "To set Phase Time, write to");
 				player.sendMessage(ChatColor.GRAY + "chat message in this format:");
-				player.sendMessage(ChatColor.WHITE + "<TIME> <SECOND/MINUTE/HOUR>");
+				player.sendMessage(ChatColor.WHITE + "hh:mm:ss");
 				player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 			}
 			//SET WEAPON SHOP
