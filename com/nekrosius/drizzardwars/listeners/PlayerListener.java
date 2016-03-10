@@ -157,6 +157,14 @@ public class PlayerListener implements Listener {
 		}
 
 		PlayerHandler.hideHiddenPlayers(player);
+
+		if(PlayerHandler.getHiddenPlayers().size()>0){
+			StringBuilder sb = new StringBuilder("Hidden players: ");
+			for(String s:PlayerHandler.getHiddenPlayers()){
+				sb.append(s).append(" ");
+			}
+			Main.println(sb.toString());
+		}
 	}
 
 	@EventHandler
