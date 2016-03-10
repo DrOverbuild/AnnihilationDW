@@ -167,6 +167,8 @@ public class GameListener implements Listener{
 				return;
 			}
 		}
+
+		// NEXUS DAMAGE
 		else if(event.getBlock().getType().equals(Material.ENDER_STONE)) {
 			event.setCancelled(true);
 			if(Game.getPhase() == 1){
@@ -200,6 +202,8 @@ public class GameListener implements Listener{
 				TeamManager.destroyTeam(remove);
 			}
 		}
+
+		// PROTECTED AREAS
 		for(int i = 0; true; i++) {
 			if(Protect.getFirstPoint(i) == null) break;
 			Vector min = Vector.getMinimum(Protect.getFirstPoint(i).toVector(), Protect.getSecondPoint(i).toVector());
@@ -209,7 +213,9 @@ public class GameListener implements Listener{
 				return;
 			}
 		}
-		if(Blocks.getDropType(event.getBlock().getType()) != null){
+
+		// REGENERATING BLOCKS
+		if(Blocks.blockRegenerates(event.getBlock().getType())){
 			final Material m = event.getBlock().getType();
 			if(Blocks.getBrokeBlock(m).equals(Material.COBBLESTONE)) event.setCancelled(true);
 			event.getBlock().setType(Blocks.getBrokeBlock(m));
@@ -239,7 +245,6 @@ public class GameListener implements Listener{
 		}
 
 		// PROTECTED CHESTS/FURNACES
-
 		if(ProtectedChestManager.playerHasAccessToBlock(event.getPlayer(),event.getBlock())) {
 			if (ProtectedChestManager.blockIsProtected(event.getBlock())) {
 				event.getPlayer().sendMessage(MessageHandler.formatString(MessageFile.getMessage("protection.removed"), event.getBlock().getType().toString()));

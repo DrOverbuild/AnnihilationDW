@@ -267,7 +267,11 @@ public class Blocks {
 	
 	
 	//-------------------------------------------------------------//
-	
+
+	public static boolean blockRegenerates(Material material){
+		return dropType.containsKey(material);
+	}
+
 	public static Integer getData(Material material) {
 		return data.get(material);
 	}
