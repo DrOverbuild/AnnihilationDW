@@ -1,11 +1,6 @@
 package com.nekrosius.drizzardwars.listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -160,7 +155,19 @@ public class InventoryListener implements Listener{
 					if(Bukkit.getWorld(folder) == null) {
 						Bukkit.createWorld(new WorldCreator(folder));
 					}
-					player.teleport(Bukkit.getWorld(folder).getSpawnLocation());
+					World world = Bukkit.getWorld(folder);
+					if(world != null) {
+						Location spawn = world.getSpawnLocation();
+						if(spawn != null) {
+							player.teleport(spawn);
+						}else{
+							player.sendMessage(ChatColor.RED + "Error loading map " + map.getName() + ": spawn point is null.");
+							return;
+						}
+					}else {
+						player.sendMessage(ChatColor.RED + "Error loading map " + map.getName());
+						return;
+					}
 				}
 				player.setGameMode(GameMode.CREATIVE);
 				MapsSetupMenu.setupMapMenu(player, map);
