@@ -459,8 +459,8 @@ public class MapSetupListener implements Listener{
 				}
 				player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(ChatColor.GRAY + "For how much time block should be destroyed?");
-				player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GOLD + "[TIME] [UNIT]");
-				player.sendMessage(ChatColor.GRAY + "For example: " + ChatColor.GOLD + "30 seconds");
+				player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GOLD + "hh:mm:ss");
+				player.sendMessage(ChatColor.GRAY + "For example: " + ChatColor.GOLD + "00:00:30" + ChatColor.GRAY + " for 30 seconds");
 				player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 				Blocks.setRegeneratingBlockStatus(player, 4);
 			}else if(Blocks.getRegeneratingBlockStatus(player) == 4) {
