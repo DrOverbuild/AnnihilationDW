@@ -203,13 +203,15 @@ public class TeamManager {
 			if(target != null&&target.equals(team)){
 				PlayerHandler.setCompassStatus(p, PlayerHandler.nextCompassStatus(p));
 				for(ItemStack item:p.getInventory().getContents()){
-					if(item.getType().equals(Material.COMPASS)){
-						ItemMeta meta = item.getItemMeta();
-						Team t = TeamManager.getTeam(PlayerHandler.getCompassStatus(p));
-						if(t == null) t = TeamManager.getTeam(0);
-						p.setCompassTarget(t.getNexusLocation());
-						meta.setDisplayName(MessageHandler.formatString(MessageFile.getMessage("compass.target"), t.getColor() + t.getName()));
-						item.setItemMeta(meta);
+					if(item != null) {
+						if (item.getType().equals(Material.COMPASS)) {
+							ItemMeta meta = item.getItemMeta();
+							Team t = TeamManager.getTeam(PlayerHandler.getCompassStatus(p));
+							if (t == null) t = TeamManager.getTeam(0);
+							p.setCompassTarget(t.getNexusLocation());
+							meta.setDisplayName(MessageHandler.formatString(MessageFile.getMessage("compass.target"), t.getColor() + t.getName()));
+							item.setItemMeta(meta);
+						}
 					}
 				}
 			}
