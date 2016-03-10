@@ -1,5 +1,6 @@
 package com.nekrosius.drizzardwars.listeners;
 
+import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.managers.ProtectedChestManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.*;
@@ -459,8 +460,17 @@ public class GameListener implements Listener{
 
 	@EventHandler
 	public void onWeatherChange(WeatherChangeEvent e){
-		if(e.getWorld().getName().equalsIgnoreCase("lobby")&&e.toWeatherState()){
-			e.setCancelled(true);
+		if(e.toWeatherState()) {
+			if (ConfigFile.config.getString("spawn-location") == null) {
+				if (e.getWorld().getName().equalsIgnoreCase(Bukkit.getWorlds().get(0).getName())) {
+					e.setCancelled(true);
+				}
+			} else {
+				Location loc = Convert.StringToLocation(ConfigFile.config.getString("spawn-location"), true, false);
+				if(loc.getWorld().getName().equals(e.getWorld().getName())){
+					e.setCancelled(true);
+				}
+			}
 		}
 	}
 	
