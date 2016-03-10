@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -454,6 +455,13 @@ public class GameListener implements Listener{
 	@EventHandler
 	public void pickupItem(PlayerPickupItemEvent event) {
 		if(PlayerHandler.isSpectating(event.getPlayer())){ event.setCancelled(true); return; }
+	}
+
+	@EventHandler
+	public void onWeatherChange(WeatherChangeEvent e){
+		if(e.getWorld().getName().equalsIgnoreCase("lobby")&&e.toWeatherState()){
+			e.setCancelled(true);
+		}
 	}
 	
 	public Main getMainPlugin() {
