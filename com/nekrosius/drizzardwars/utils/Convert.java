@@ -97,6 +97,10 @@ public class Convert {
 	}
 
 	public static String ticksToReadableTimeFormat(int i){
+		if(i<20){
+			return "0 seconds";
+		}
+
 		StringBuilder str = new StringBuilder("");
 		if(i > 72000){
 			str.append(i / 72000).append(" hours, ");

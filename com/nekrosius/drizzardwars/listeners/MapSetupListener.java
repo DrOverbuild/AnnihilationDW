@@ -465,14 +465,9 @@ public class MapSetupListener implements Listener{
 				Blocks.setRegeneratingBlockStatus(player, 4);
 			}else if(Blocks.getRegeneratingBlockStatus(player) == 4) {
 				player.sendMessage(event.getMessage());
-				if(event.getMessage().contains(" ")){
-					int time = Convert.StringToTime(event.getMessage());
-					Blocks.addRegeneratingBlockInfo(player, time+"");
-				}else{
-					player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GOLD + "[TIME] [UNIT]");
-					player.sendMessage(ChatColor.GRAY + "For example: " + ChatColor.GOLD + "30 seconds");
-					return;
-				}
+				int time = Convert.StringToTime(event.getMessage());
+				Blocks.addRegeneratingBlockInfo(player, time+"");
+				player.sendMessage(ChatColor.GRAY + "You have set regenerating time to " + ChatColor.GOLD + Convert.ticksToReadableTimeFormat(time));
 				player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(ChatColor.GRAY + "When this block is broken, would you like it");
 				player.sendMessage(ChatColor.GRAY + "To become " + ChatColor.GOLD + "Cobblestone" + ChatColor.GRAY + " or " + ChatColor.GOLD + "Air");
