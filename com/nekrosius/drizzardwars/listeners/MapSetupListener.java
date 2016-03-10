@@ -79,29 +79,32 @@ public class MapSetupListener implements Listener{
 		
 		//UNPLACEABLE BLOCK WAND
 		else if(player.getItemInHand().getType().equals(Material.DIAMOND_SPADE)) {
-			if(player.getItemInHand().getItemMeta().getDisplayName() == null) return;
-			if(!(player.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_AQUA + "Unplaceable Block Wand"))) return;
-			event.setCancelled(true);
-			Block block = event.getClickedBlock();
-			Blocks.setUnplaceableBlock(player, block);
-			Blocks.setUnplaceableBlockStatus(player, 1);
-			MapFile.createConfig(player.getWorld().getName());
-			if(MapFile.config.getStringList("blocks.unplaceable").contains(block.getType().toString() + "," + block.getData())){
+			if (event.getClickedBlock() != null) {
+				if (player.getItemInHand().getItemMeta().getDisplayName() == null) return;
+				if (!(player.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_AQUA + "Unplaceable Block Wand")))
+					return;
+				event.setCancelled(true);
+				Block block = event.getClickedBlock();
+				Blocks.setUnplaceableBlock(player, block);
+				Blocks.setUnplaceableBlockStatus(player, 1);
+				MapFile.createConfig(player.getWorld().getName());
+				if (MapFile.config.getStringList("blocks.unplaceable").contains(block.getType().toString() + "," + block.getData())) {
+					player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
+					player.sendMessage(ChatColor.GRAY + "You have selected " + ChatColor.GOLD + block.getType().toString());
+					player.sendMessage(ChatColor.GRAY + "This block is already added!");
+					player.sendMessage(ChatColor.GRAY + "Do you want to " + ChatColor.GOLD + "Remove" + ChatColor.GRAY + " it?");
+					player.sendMessage(ChatColor.GRAY + "If not, write " + ChatColor.GOLD + "Cancel");
+					player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
+					Blocks.setUnplaceableBlockStatus(player, -1);
+					return;
+				}
 				player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 				player.sendMessage(ChatColor.GRAY + "You have selected " + ChatColor.GOLD + block.getType().toString());
-				player.sendMessage(ChatColor.GRAY + "This block is already added!");
-				player.sendMessage(ChatColor.GRAY + "Do you want to " + ChatColor.GOLD + "Remove" + ChatColor.GRAY + " it?");
-				player.sendMessage(ChatColor.GRAY + "If not, write " + ChatColor.GOLD + "Cancel");
+				player.sendMessage(ChatColor.GRAY + "To stop setup write " + ChatColor.GOLD + "CANCEL");
+				player.sendMessage(ChatColor.GRAY + "Do you want add " + ChatColor.GOLD + "this" + ChatColor.GRAY + " data type");
+				player.sendMessage(ChatColor.GRAY + "or " + ChatColor.GOLD + "all" + ChatColor.GRAY + " types of this block");
 				player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
-				Blocks.setUnplaceableBlockStatus(player, -1);
-				return;
 			}
-			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
-			player.sendMessage(ChatColor.GRAY + "You have selected " + ChatColor.GOLD + block.getType().toString());
-			player.sendMessage(ChatColor.GRAY + "To stop setup write " + ChatColor.GOLD + "CANCEL");
-			player.sendMessage(ChatColor.GRAY + "Do you want add " + ChatColor.GOLD + "this" + ChatColor.GRAY + " data type");
-			player.sendMessage(ChatColor.GRAY + "or " + ChatColor.GOLD + "all" + ChatColor.GRAY + " types of this block");
-			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//DIAMOND SPAWNS
 		else if(player.getItemInHand().getType().equals(Material.DIAMOND)) {
