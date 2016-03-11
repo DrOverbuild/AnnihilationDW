@@ -23,10 +23,8 @@ public class PlayerFile {
 		(new File("plugins" + File.separator + "DrizzardWars" + File.separator + "players" + File.separator + "")).mkdirs();
 		file = new File("plugins" + File.separator + "DrizzardWars" + File.separator + "players" + File.separator + player.getUniqueId().toString() + ".yml");
 		config = ConfigLoader.loadConfiguration(file);
-		if(!file.exists()){
-			config.addDefault("points", 0);
-			config.options().copyDefaults(true);
-		}
+		config.addDefault("points", 0);
+		config.options().copyDefaults(true);
 		saveConfig();
 	}
 	

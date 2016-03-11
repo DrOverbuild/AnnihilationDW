@@ -28,11 +28,11 @@ public class MapFile {
 	public static void createConfig(String path)
 	{
 		file = new File(path + File.separator + "config.yml");
+
 		config = ConfigLoader.loadConfiguration(file);
-		if(!file.exists()){
-			config.addDefault("phase-time", 6000);
-			config.options().copyDefaults(true);
-		}
+		config.addDefault("phase-time", 6000);
+		config.options().copyDefaults(true);
+
 		saveConfig();
 	}
 	

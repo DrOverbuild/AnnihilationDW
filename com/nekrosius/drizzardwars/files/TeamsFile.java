@@ -29,18 +29,16 @@ public class TeamsFile {
 		file = new File("plugins" + File.separator + "DrizzardWars",
 				"teams.yml");
 		config = ConfigLoader.loadConfiguration(file);
-		if(!file.exists()){
-			config.options().header("You can find color codes here:\nColor code list: http://jd.bukkit.org/rb/apidocs/org/bukkit/ChatColor.html\ndo not use: bold, magic, italic, strikethrough, underline, dark_aqua");
-			config.addDefault("red.name", "Red");
-			config.addDefault("red.color", "red");
-			config.addDefault("blue.name", "Blue");
-			config.addDefault("blue.color", "blue");
-			config.addDefault("green.name", "Green");
-			config.addDefault("green.color", "green");
-			config.addDefault("yellow.name", "Yellow");
-			config.addDefault("yellow.color", "yellow");
-			config.options().copyDefaults(true);
-		}
+		config.options().header("You can find color codes here:\nColor code list: http://jd.bukkit.org/rb/apidocs/org/bukkit/ChatColor.html\ndo not use: bold, magic, italic, strikethrough, underline, dark_aqua");
+		config.addDefault("red.name", "Red");
+		config.addDefault("red.color", "red");
+		config.addDefault("blue.name", "Blue");
+		config.addDefault("blue.color", "blue");
+		config.addDefault("green.name", "Green");
+		config.addDefault("green.color", "green");
+		config.addDefault("yellow.name", "Yellow");
+		config.addDefault("yellow.color", "yellow");
+		config.options().copyDefaults(true);
 		saveConfig();
 	}
 	
