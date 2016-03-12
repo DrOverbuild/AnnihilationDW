@@ -63,7 +63,6 @@ public class MessageFile {
 		config.addDefault("phases.descriptions.5", "Nexus damage doubled.");
 		config.addDefault("menu.save-successful", "&7Configuration files has been saved successfuly!");
 		config.addDefault("menu.reload-successful", "&7Configuration files has been reloaded successfuly!");
-		config.addDefault("scoreboard.until-start", "&7Until start: &c%t");
 		config.addDefault("shop.price", "&6Costs %t gold!");
 		config.addDefault("shop.cant-afford", "&cYou don't have enough gold!");
 		config.addDefault("commands.not-player", "This command can't be used by console!");
@@ -114,7 +113,7 @@ public class MessageFile {
 		config.addDefault("party.args", "&cInvalid arguments. Type \"/party help\" to view help.");
 		config.addDefault("party.alone", "&aYou are not in a party. Type \"&6/party create&a\" to create one.");
 		config.addDefault("party.full","&cThe party is full.");
-		config.addDefault("party.scoreboard.header","&6PARTY");
+//		config.addDefault("party.scoreboard.header","&6PARTY");
 		config.addDefault("party.scoreboard.alone","&aYou are not in a party. Type \"&6/party create&a\" to create one.");
 		config.addDefault("time.remaining", "&aT. Remaining");
 		config.addDefault("time.minutes","&a%t minutes");
@@ -122,6 +121,26 @@ public class MessageFile {
 		config.addDefault("protection.protected","&cThis %s is protected!");
 		config.addDefault("protection.now-protected","&cYou have protected this %s!");
 		config.addDefault("protection.removed","&cThis %s is no longer protected.");
+		config.addDefault("scoreboard.lobby.header", "&l&6Drizzard Wars");
+		List<String> contents1 = new ArrayList<>();
+		contents1.add("{maps}");
+		contents1.add("");
+		contents1.add("&8Until start: {until_start}s");
+		contents1.add("&8Points: {points}");
+		contents1.add("");
+		contents1.add("&6PARTY");
+		contents1.add("{party}");
+		config.addDefault("scoreboard.lobby.contents",contents1);
+		config.addDefault("scoreboard.in_game.header","&6&l{map_name}");
+		config.addDefault("scoreboard.in_game.team_health","{team_color}{team_name} Nexus");
+		List<String> contents2 = new ArrayList<>();
+		contents2.add("{team_health}");
+		contents2.add("{team_color}}Kills: {team_kills}");
+		contents2.add("");
+		contents2.add("{phase_message}");
+		contents2.add("&aTime Remaining");
+		contents2.add("&a{time_remaining}");
+		config.addDefault("scoreboard.in_game.contents",contents2);
 		config.options().copyDefaults(true);
 		saveConfig();
 	}

@@ -178,7 +178,8 @@ public class PlayerListener implements Listener {
 				MessageHandler.sendMessage(p, msg);
 			}
 		}
-		PlayerFile.setPoints(player, Points.getPoints(player));
+		Points.savePoints(event.getPlayer());
+		Points.removePlayerFromMap(event.getPlayer());
 		PlayerHandler.quit(player);
 
 		// Kill off a team if the player who left was the only player in that team and Game.getPhase() > 3

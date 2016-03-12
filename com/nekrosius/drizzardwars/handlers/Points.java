@@ -5,10 +5,13 @@ import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.files.ConfigFile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Points {
 
-//	static Map<String, Integer> playerPoints = new HashMap<String, Integer>();
-	
+	static Map<String, Integer> playerPoints = new HashMap<String, Integer>();
+
 	private static int kill;
 	private static int win;
 	private static int death;
@@ -20,20 +23,29 @@ public class Points {
 	}
 	
 	public static void setPoints(Player player, int points) {
-//		playerPoints.put(player.getName(), points);
-		PlayerFile.setPoints(player,points);
+		playerPoints.put(player.getName(), points);
+//		PlayerFile.setPoints(player,points);
 	}
 
 	public static void addPoints(Player player, int points){
-//		if(playerPoints.get(player.getName()) == null) setPoints(player, 0);
-//		setPoints(player, getPoints(player) + points);
-		PlayerFile.setPoints(player,getPoints(player) + points);
+		setPoints(player, getPoints(player) + points);
+//		PlayerFile.setPoints(player,getPoints(player) + points);
 	}
 	
 	public static int getPoints(Player player) {
-//		if(playerPoints.get(player.getName()) == null) setPoints(player, 0);
-//		return playerPoints.get(player.getName());
-		return PlayerFile.getPoints(player);
+		if(playerPoints.get(player.getName()) == null) setPoints(player, PlayerFile.getPoints(player));
+		return playerPoints.get(player.getName());
+//		return PlayerFile.getPoints(player);
+	}
+
+	public static void savePoints(Player p){
+		if(playerPoints.containsKey(p)) {
+			PlayerFile.setPoints(p, getPoints(p));
+		}
+	}
+
+	public static void removePlayerFromMap(Player p){
+		playerPoints.remove(p);
 	}
 
 	public static int getKillPoints() {

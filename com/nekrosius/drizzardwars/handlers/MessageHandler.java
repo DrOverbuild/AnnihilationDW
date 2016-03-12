@@ -2,6 +2,7 @@ package com.nekrosius.drizzardwars.handlers;
 
 import java.util.List;
 
+import com.avaje.ebeaninternal.server.cluster.mcast.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -19,6 +20,13 @@ public class MessageHandler {
 	public static String phase5;
 	public static String untilStart;
 	public static String nexusDmg;
+
+	public static List<String> scoreboardLobbyContents;
+	public static List<String> scoreboardInGameContents;
+	public static List<String> teamHealthContents;
+	public static String scoreboardLobbyHeader;
+	public static String scoreboardInGameHeader;
+	public static String scorebaordInGameTeamNexusHealth;
 	
 	public static void sendMessage(Player player, String str) {
 		if(str == null) return;
@@ -73,6 +81,13 @@ public class MessageHandler {
 		phase5 = format(MessageFile.getMessage("phases.5"));
 		untilStart = MessageFile.getMessage("scoreboard.until-start");
 		nexusDmg = format(MessageFile.getMessage("game.nexus-broken"));
+
+		scoreboardLobbyContents = MessageFile.getMessageList("scoreboard.lobby.contents");
+		scoreboardInGameContents = MessageFile.getMessageList("scoreboard.in_game.contents");
+		scoreboardLobbyHeader = MessageFile.getMessage("scoreboard.lobby.header");
+		scoreboardInGameHeader = MessageFile.getMessage("scoreboard.in_game.header");
+		scorebaordInGameTeamNexusHealth = MessageFile.getMessage("scoreboard.in_game.team_health");
+
 	}
 	
 	public static String getPhaseMessage(int phase){

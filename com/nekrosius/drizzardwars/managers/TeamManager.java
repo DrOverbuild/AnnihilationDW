@@ -26,6 +26,7 @@ public class TeamManager {
 	
 	public TeamManager(Main plugin, int amount)
 	{
+		MessageHandler.teamHealthContents = new ArrayList<>();
 		teams = new ArrayList<Team>();
 		pl = plugin;
 		int createdTeams = 0;
@@ -35,6 +36,8 @@ public class TeamManager {
 				String name = TeamsFile.config.getString(path + ".name");
 				ChatColor color = Convert.StringToChatColor(TeamsFile.config.getString(path + ".color"));
 				addTeam(new Team(color, name, codeName));
+				MessageHandler.teamHealthContents.add(MessageHandler.format(MessageFile.getMessage("scoreboard.in_game.team_health"))
+						.replace("{team_color}",color + "").replace("{team_name}",name));
 				createdTeams++;
 			}else break;
 		}
