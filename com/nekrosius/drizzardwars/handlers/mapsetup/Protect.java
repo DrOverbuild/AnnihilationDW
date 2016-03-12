@@ -1,29 +1,28 @@
 package com.nekrosius.drizzardwars.handlers.mapsetup;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.files.MapFile;
-import com.nekrosius.drizzardwars.handlers.Maps;
+import com.nekrosius.drizzardwars.handlers.Map;
 import com.nekrosius.drizzardwars.utils.Convert;
 
 public class Protect {
 	
-	private static Map<Player, Integer> protectionStatus = new HashMap<Player, Integer>();
-	private static Map<Player, String> name = new HashMap<Player, String>();
-	private static Map<Player, Boolean> pvp = new HashMap<Player, Boolean>();
-	private static Map<Player, Location> pointOne = new HashMap<Player, Location>();
-	private static Map<Player, Location> pointTwo = new HashMap<Player, Location>();
+	private static java.util.Map protectionStatus = new HashMap<Player, Integer>();
+	private static java.util.Map name = new HashMap<Player, String>();
+	private static java.util.Map pvp = new HashMap<Player, Boolean>();
+	private static java.util.Map pointOne = new HashMap<Player, Location>();
+	private static java.util.Map pointTwo = new HashMap<Player, Location>();
 	
-	private static Map<Integer, Location> first = new HashMap<Integer, Location>();
-	private static Map<Integer, Location> second = new HashMap<Integer, Location>();
+	private static java.util.Map first = new HashMap<Integer, Location>();
+	private static java.util.Map second = new HashMap<Integer, Location>();
 	
 	//-------------------------------------------------------------//
 	
-	public static void setupAreas(Maps map) {
+	public static void setupAreas(Map map) {
 		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
 		int i = 0;
 		if(MapFile.config.getConfigurationSection("areas") == null) return;

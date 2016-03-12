@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nekrosius.drizzardwars.handlers.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldCreator;
@@ -12,15 +13,14 @@ import org.bukkit.entity.Player;
 import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.files.MapFile;
-import com.nekrosius.drizzardwars.handlers.Maps;
 import com.nekrosius.drizzardwars.utils.Convert;
 import com.nekrosius.drizzardwars.utils.CopyWorld;
 
 public class MapManager {
 	
-	static List<Maps> maps = new ArrayList<Maps>();
+	static List<Map> maps = new ArrayList<Map>();
 	
-	private static Maps activeMap = null;
+	private static Map activeMap = null;
 	
 	private static Main pl;
 	public MapManager(Main plugin)
@@ -49,18 +49,18 @@ public class MapManager {
 			if((new File(mapsPath + str + File.separator).isDirectory())){
 				Main.unloadWorld(mapsPath + str, true);
 				MapFile.createConfig(mapsPath + str);
-				maps.add(new Maps(id, str));
+				maps.add(new Map(id, str));
 				id++;
 			}
 		}
 	}
 	
-	public static List<Maps> getMaps() {
+	public static List<Map> getMaps() {
 		return maps;
 	}
 	
-	public static Maps getMap(int id) {
-		for(Maps map : getMaps()) {
+	public static Map getMap(int id) {
+		for(Map map : getMaps()) {
 			if(map.getId() == id) {
 				return map;
 			}
@@ -68,8 +68,8 @@ public class MapManager {
 		return null;
 	}
 	
-	public static Maps getMap(String worldName){
-		for(Maps map : getMaps()){
+	public static Map getMap(String worldName){
+		for(Map map : getMaps()){
 			if(worldName.contains(map.getName())){
 				return map;
 			}
@@ -77,10 +77,10 @@ public class MapManager {
 		return null;
 	}
 	
-	public static Maps chooseMap() {
-		List<Maps> mostVotes = new ArrayList<Maps>();
+	public static Map chooseMap() {
+		List<Map> mostVotes = new ArrayList<Map>();
 		int max = maxVotes();
-		for(Maps map : getMaps()){
+		for(Map map : getMaps()){
 			if(map.getVotes() == max){
 				mostVotes.add(map);
 			}
@@ -95,7 +95,7 @@ public class MapManager {
 		}
 	}
 	
-	public static void createWorld(Maps map) {
+	public static void createWorld(Map map) {
 		if(Bukkit.getWorld(mapName) != null)
 			deleteWorld(mapName);
 		Location loc;
@@ -149,7 +149,7 @@ public class MapManager {
 	
 	public static int maxVotes() {
 		int max = -1;
-		for(Maps map : getMaps()){
+		for(Map map : getMaps()){
 			if(map.getVotes() > max){
 				max = map.getVotes();
 			}
@@ -172,12 +172,12 @@ public class MapManager {
 	}
 
 
-	public static Maps getActiveMap() {
+	public static Map getActiveMap() {
 		return activeMap;
 	}
 
 
-	public static void setActiveMap(Maps activeMap) {
+	public static void setActiveMap(Map activeMap) {
 		MapManager.activeMap = activeMap;
 	}
 	

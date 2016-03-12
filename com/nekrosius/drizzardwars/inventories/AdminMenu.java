@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.nekrosius.drizzardwars.handlers.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import com.nekrosius.drizzardwars.handlers.Game;
-import com.nekrosius.drizzardwars.handlers.Maps;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 
@@ -26,8 +26,8 @@ public class AdminMenu {
 		// 2 SLOT - MAP SETUP
 		List<String> maps = new ArrayList<String>();
 		maps.add(ChatColor.GOLD + "Setup your maps");
-		for(Maps map : MapManager.getMaps()){
-			maps.add(ChatColor.GRAY + "• " + map.getName());
+		for(Map map : MapManager.getMaps()){
+			maps.add(ChatColor.GRAY + "ï¿½ " + map.getName());
 		}
 		inv.setItem(1, ItemStackGenerator.createItem(Material.BLAZE_ROD, 0, 0,
 				ChatColor.GOLD + "" + ChatColor.BOLD + "Maps setup", maps));
@@ -42,19 +42,19 @@ public class AdminMenu {
 		// 4 SLOT - SAVE FILES
 		inv.setItem(3, ItemStackGenerator.createItem(Material.POWERED_RAIL, 0, 0,
 				ChatColor.GOLD + "" + ChatColor.BOLD + "Save files",
-				Arrays.asList(ChatColor.GRAY + "• translations.yml",
-						ChatColor.GRAY + "• kits.yml",
-						ChatColor.GRAY + "• teams.yml",
-						ChatColor.GRAY + "• shops.yml",
-						ChatColor.GRAY + "• config.yml")));
+				Arrays.asList(ChatColor.GRAY + "ï¿½ translations.yml",
+						ChatColor.GRAY + "ï¿½ kits.yml",
+						ChatColor.GRAY + "ï¿½ teams.yml",
+						ChatColor.GRAY + "ï¿½ shops.yml",
+						ChatColor.GRAY + "ï¿½ config.yml")));
 		// 5 SLOT - RELOAD FILES
 		inv.setItem(4, ItemStackGenerator.createItem(Material.DETECTOR_RAIL, 0, 0,
 				ChatColor.GOLD + "" + ChatColor.BOLD + "Reload files",
-				Arrays.asList(ChatColor.GRAY + "• translations.yml",
-						ChatColor.GRAY + "• kits.yml",
-						ChatColor.GRAY + "• teams.yml",
-						ChatColor.GRAY + "• shops.yml",
-						ChatColor.GRAY + "• config.yml")));
+				Arrays.asList(ChatColor.GRAY + "ï¿½ translations.yml",
+						ChatColor.GRAY + "ï¿½ kits.yml",
+						ChatColor.GRAY + "ï¿½ teams.yml",
+						ChatColor.GRAY + "ï¿½ shops.yml",
+						ChatColor.GRAY + "ï¿½ config.yml")));
 		player.openInventory(inv);
 	}
 }

@@ -3,7 +3,6 @@ package com.nekrosius.drizzardwars.handlers.mapsetup;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.files.MapFile;
-import com.nekrosius.drizzardwars.handlers.Maps;
+import com.nekrosius.drizzardwars.handlers.Map;
 import com.nekrosius.drizzardwars.handlers.Team;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
@@ -23,32 +22,32 @@ import com.nekrosius.drizzardwars.utils.Convert;
 public class Blocks {
 	
 	//REGENERATING -- MAP SETUP
-	static Map<String, Integer> regeneratingBlockStatus = new HashMap<String, Integer>();
-	static Map<String, Block> regeneratingBlock = new HashMap<String, Block>();
-	static Map<String, List<String>> regeneratingBlockInfo = new HashMap<String, List<String>>();
+	static java.util.Map regeneratingBlockStatus = new HashMap<String, Integer>();
+	static java.util.Map regeneratingBlock = new HashMap<String, Block>();
+	static java.util.Map regeneratingBlockInfo = new HashMap<String, List<String>>();
 	
 	//UNPLACEABLE -- MAP SETUP
-	static Map<String, Integer> unplaceableBlockStatus = new HashMap<String, Integer>();
-	static Map<String, Block> unplaceableBlock = new HashMap<String, Block>();
-	private static Map<Material, Boolean> unplaceable = new HashMap<Material, Boolean>();
-	private static Map<Material, Integer> unplaceableData = new HashMap<Material, Integer>();
+	static java.util.Map unplaceableBlockStatus = new HashMap<String, Integer>();
+	static java.util.Map unplaceableBlock = new HashMap<String, Block>();
+	private static java.util.Map unplaceable = new HashMap<Material, Boolean>();
+	private static java.util.Map unplaceableData = new HashMap<Material, Integer>();
 	
 	//DIAMONDS -- MAP SETUP
 	private static List<Location> diamondSpawns = new ArrayList<Location>();
 	
 	//TEAM AMOUNT -- MAP SETUP
-	static Map<String, Integer> teamAmountStatus = new HashMap<String, Integer>();
+	static java.util.Map teamAmountStatus = new HashMap<String, Integer>();
 	
 	//INFO
-	private static Map<Material, Integer> data = new HashMap<Material, Integer>();
-	private static Map<Material, String> dropType = new HashMap<Material, String>();
-	private static Map<Material, Material> brokeBlock = new HashMap<Material, Material>();
-	private static Map<Material, ItemStack> reward = new HashMap<Material, ItemStack>();
-	private static Map<Material, String> rewardAmount = new HashMap<Material, String>();
-	private static Map<Material, Integer> timer = new HashMap<Material, Integer>();
-	private static Map<Material, Integer> xpReward = new HashMap<Material, Integer>();
+	private static java.util.Map data = new HashMap<Material, Integer>();
+	private static java.util.Map dropType = new HashMap<Material, String>();
+	private static java.util.Map brokeBlock = new HashMap<Material, Material>();
+	private static java.util.Map reward = new HashMap<Material, ItemStack>();
+	private static java.util.Map rewardAmount = new HashMap<Material, String>();
+	private static java.util.Map timer = new HashMap<Material, Integer>();
+	private static java.util.Map xpReward = new HashMap<Material, Integer>();
 	
-	public static void setupBlocks(Maps map) {
+	public static void setupBlocks(Map map) {
 		MapFile.createConfig(MapManager.mapsPath + map.getName());
 		// REGENERATING
 		List<String> blocks;

@@ -1,5 +1,6 @@
 package com.nekrosius.drizzardwars.listeners;
 
+import com.nekrosius.drizzardwars.handlers.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,14 +18,7 @@ import com.nekrosius.drizzardwars.files.MapFile;
 import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.files.ShopFile;
 import com.nekrosius.drizzardwars.files.TeamsFile;
-import com.nekrosius.drizzardwars.handlers.Game;
-import com.nekrosius.drizzardwars.handlers.Kits;
-import com.nekrosius.drizzardwars.handlers.Maps;
-import com.nekrosius.drizzardwars.handlers.MessageHandler;
-import com.nekrosius.drizzardwars.handlers.PlayerHandler;
-import com.nekrosius.drizzardwars.handlers.Points;
-import com.nekrosius.drizzardwars.handlers.TabHandler;
-import com.nekrosius.drizzardwars.handlers.Team;
+import com.nekrosius.drizzardwars.handlers.Map;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Blocks;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Phase;
 import com.nekrosius.drizzardwars.inventories.AdminMenu;
@@ -115,7 +109,7 @@ public class InventoryListener implements Listener{
 				MapsSetupMenu.setup(player);
 			} else if(event.getSlot() == 2){
 				if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Start game")){
-					Maps map = MapManager.chooseMap();
+					Map map = MapManager.chooseMap();
 					Game.start(map);
 				}else if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Stop game")){
 					Game.finish(TeamManager.getMostKills());
@@ -146,7 +140,7 @@ public class InventoryListener implements Listener{
 			if(event.getCurrentItem().getType().equals(Material.PAPER)) {
 				event.setCancelled(true);
 				int id = event.getSlot() + 1;
-				Maps map = MapManager.getMap(id);
+				Map map = MapManager.getMap(id);
 				String folder = "plugins/DrizzardWars/Maps/" + map.getName();
 				Bukkit.createWorld(new WorldCreator(folder));
 				MapFile.createConfig(folder);
