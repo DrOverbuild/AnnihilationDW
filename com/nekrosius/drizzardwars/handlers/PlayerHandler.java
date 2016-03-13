@@ -3,9 +3,6 @@ package com.nekrosius.drizzardwars.handlers;
 import java.util.*;
 import java.util.Map;
 
-import com.nekrosius.drizzardwars.Main;
-import com.nekrosius.drizzardwars.files.MessageFile;
-import com.sun.deploy.util.MacIconEncoder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -18,7 +15,6 @@ import com.nekrosius.drizzardwars.files.MapFile;
 import com.nekrosius.drizzardwars.managers.BarManager;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class PlayerHandler {
 
@@ -68,9 +64,9 @@ public class PlayerHandler {
 		}
 		vote.put(player.getName(), map);
 
-		MapManager.getVotableMaps().sort(new Comparator<com.nekrosius.drizzardwars.handlers.Map>() {
+		MapManager.getVotableMaps().sort(new Comparator<GameMap>() {
 			@Override
-			public int compare(com.nekrosius.drizzardwars.handlers.Map o1, com.nekrosius.drizzardwars.handlers.Map o2) {
+			public int compare(GameMap o1, GameMap o2) {
 				if(o1.getId() > o2.getId()) return -1;
 				if(o1.getId() < o2.getId()) return 1;
 				return 0;

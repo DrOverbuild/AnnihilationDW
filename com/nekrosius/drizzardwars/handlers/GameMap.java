@@ -1,12 +1,12 @@
 package com.nekrosius.drizzardwars.handlers;
 
-public class Map {
+public class GameMap {
 	
 	private int votes;
 	private String name;
 	private int id;
 	
-	public Map(int id, String name){
+	public GameMap(int id, String name){
 		setId(id);
 		setName(name);
 		setVotes(0);

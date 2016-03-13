@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.files.MapFile;
-import com.nekrosius.drizzardwars.handlers.Map;
+import com.nekrosius.drizzardwars.handlers.GameMap;
 import com.nekrosius.drizzardwars.handlers.Team;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
@@ -47,7 +47,7 @@ public class Blocks {
 	private static java.util.Map<Material, Integer> timer = new HashMap<>();
 	private static java.util.Map<Material, Integer> xpReward = new HashMap<>();
 	
-	public static void setupBlocks(Map map) {
+	public static void setupBlocks(GameMap map) {
 		MapFile.createConfig(MapManager.mapsPath + map.getName());
 		// REGENERATING
 		List<String> blocks;

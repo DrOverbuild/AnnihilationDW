@@ -3,9 +3,7 @@ package com.nekrosius.drizzardwars.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.avaje.ebeaninternal.server.cluster.mcast.Message;
 import com.nekrosius.drizzardwars.Main;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -41,12 +39,12 @@ public class ScoreboardHandler {
 					Main.println("Template = " + template);
 
 					if(template.toLowerCase().contains("{map_votes}")) {
-						for (Map m : MapManager.getVotableMaps()) {
+						for (GameMap m : MapManager.getVotableMaps()) {
 							Main.println("Map " + m.getId() + ": " + m.getName() + ", " + m.getVotes() + " votes");
 							sb.add(MessageHandler.format(formatMapVariables(template, m)), lineNumber--);
 						}
 					}else{
-						for (Map m : MapManager.getVotableMaps()) {
+						for (GameMap m : MapManager.getVotableMaps()) {
 							Main.println("Map " + m.getId() + ": " + m.getName() + ", " + m.getVotes() + " votes");
 							sb.add(MessageHandler.format(formatMapVariables(template, m)), m.getId());
 						}
@@ -109,7 +107,7 @@ public class ScoreboardHandler {
 		sb.send(player);
 	}
 
-	public static String formatMapVariables(String line, Map map){
+	public static String formatMapVariables(String line, GameMap map){
 		line = line.replace("{map_id}", map.getId() + "");
 		line = line.replace("{map_name}",map.getName());
 		line = line.replace("{map_votes}", map.getVotes()+"");

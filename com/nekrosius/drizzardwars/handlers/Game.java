@@ -46,9 +46,9 @@ public class Game {
 	private static int phaseTime;
 	private static GameState gameState = GameState.LOBBY;
 
-	private static Map map;
+	private static GameMap map;
 	
-	public static void start(Map map) {
+	public static void start(GameMap map) {
 		setCountdownStarted(false);
 		setGameState(GameState.IN_GAME);
 		setRespawnTimer(ConfigFile.config.getInt("respawn.time"));
@@ -133,7 +133,7 @@ public class Game {
 			}
 		}
 
-		for(Map m:MapManager.getMaps()){
+		for(GameMap m:MapManager.getMaps()){
 			m.setVotes(0);
 		}
 
@@ -163,7 +163,7 @@ public class Game {
 		}.runTaskLater(plugin,10*20);
 	}
 	
-	private static void startPhases(final Map map) {
+	private static void startPhases(final GameMap map) {
 		Signs.setupWeaponsShop();
 		Signs.setupBrewingShop();
 		if(!Game.isGameStarted()){
@@ -227,7 +227,7 @@ public class Game {
 		}.runTaskTimer(plugin, 20, 20);
 	}
 	
-	private static void startLastPhase(Map map) {
+	private static void startLastPhase(GameMap map) {
 		Signs.setupWeaponsShop();
 		Signs.setupBrewingShop();
 		if(!Game.isGameStarted()){

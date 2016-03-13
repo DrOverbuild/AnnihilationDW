@@ -2,7 +2,7 @@ package com.nekrosius.drizzardwars.inventories;
 
 import java.util.Arrays;
 
-import com.nekrosius.drizzardwars.handlers.Map;
+import com.nekrosius.drizzardwars.handlers.GameMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ public class MapsSetupMenu {
 	
 	public static void setup(Player player) {
 		Inventory inv = Bukkit.createInventory(player, getInventorySize(), "MapSetup menu");
-		for(Map map : MapManager.getMaps()){
+		for(GameMap map : MapManager.getMaps()){
 			inv.setItem(map.getId()-1, ItemStackGenerator.createItem(Material.PAPER, 0, 0
 					, ChatColor.RED + "" + ChatColor.BOLD + map.getName()
 					, Arrays.asList(ChatColor.GRAY + "Modify " + ChatColor.GOLD + map.getName())));
@@ -24,7 +24,7 @@ public class MapsSetupMenu {
 		player.openInventory(inv);
 	}
 	
-	public static void setupMapMenu(Player player, Map map) {
+	public static void setupMapMenu(Player player, GameMap map) {
 		Inventory inv = Bukkit.createInventory(player, 18, ChatColor.ITALIC + map.getName() + " menu");
 		inv.setItem(0, ItemStackGenerator.createItem(Material.CHAINMAIL_HELMET, 0, 0
 				, ChatColor.ITALIC + "Set Team Amount"

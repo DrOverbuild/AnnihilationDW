@@ -2,11 +2,11 @@ package com.nekrosius.drizzardwars.handlers.mapsetup;
 
 import java.util.HashMap;
 
+import com.nekrosius.drizzardwars.handlers.GameMap;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.files.MapFile;
-import com.nekrosius.drizzardwars.handlers.Map;
 import com.nekrosius.drizzardwars.utils.Convert;
 
 public class Protect {
@@ -22,7 +22,7 @@ public class Protect {
 	
 	//-------------------------------------------------------------//
 	
-	public static void setupAreas(Map map) {
+	public static void setupAreas(GameMap map) {
 		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
 		int i = 0;
 		if(MapFile.config.getConfigurationSection("areas") == null) return;

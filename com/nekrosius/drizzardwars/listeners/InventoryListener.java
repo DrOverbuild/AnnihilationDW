@@ -18,7 +18,7 @@ import com.nekrosius.drizzardwars.files.MapFile;
 import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.files.ShopFile;
 import com.nekrosius.drizzardwars.files.TeamsFile;
-import com.nekrosius.drizzardwars.handlers.Map;
+import com.nekrosius.drizzardwars.handlers.GameMap;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Blocks;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Phase;
 import com.nekrosius.drizzardwars.inventories.AdminMenu;
@@ -109,7 +109,7 @@ public class InventoryListener implements Listener{
 				MapsSetupMenu.setup(player);
 			} else if(event.getSlot() == 2){
 				if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Start game")){
-					Map map = MapManager.chooseMap();
+					GameMap map = MapManager.chooseMap();
 					Game.start(map);
 				}else if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Stop game")){
 					Game.finish(TeamManager.getMostKills());
@@ -140,7 +140,7 @@ public class InventoryListener implements Listener{
 			if(event.getCurrentItem().getType().equals(Material.PAPER)) {
 				event.setCancelled(true);
 				int id = event.getSlot() + 1;
-				Map map = MapManager.getMap(id);
+				GameMap map = MapManager.getMap(id);
 				String folder = "plugins/DrizzardWars/Maps/" + map.getName();
 				Bukkit.createWorld(new WorldCreator(folder));
 				MapFile.createConfig(folder);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.nekrosius.drizzardwars.handlers.Map;
+import com.nekrosius.drizzardwars.handlers.GameMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,7 +26,7 @@ public class AdminMenu {
 		// 2 SLOT - MAP SETUP
 		List<String> maps = new ArrayList<String>();
 		maps.add(ChatColor.GOLD + "Setup your maps");
-		for(Map map : MapManager.getMaps()){
+		for(GameMap map : MapManager.getMaps()){
 			maps.add(ChatColor.GRAY + "� " + map.getName());
 		}
 		inv.setItem(1, ItemStackGenerator.createItem(Material.BLAZE_ROD, 0, 0,
