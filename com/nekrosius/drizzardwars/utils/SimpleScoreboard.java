@@ -50,7 +50,7 @@ public class SimpleScoreboard {
  
         private String fixDuplicates(String text) {
                 while (scores.containsKey(text))
-                        text += "�r";
+                        text += " ";
                 if (text.length() > 48)
                         text = text.substring(0, 47);
                 return text;
