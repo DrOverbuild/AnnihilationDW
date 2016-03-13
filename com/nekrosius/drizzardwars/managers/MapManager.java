@@ -56,6 +56,8 @@ public class MapManager {
 				id++;
 			}
 		}
+
+		pickRandomVotableMaps();
 	}
 	
 	public static List<Map> getMaps() {

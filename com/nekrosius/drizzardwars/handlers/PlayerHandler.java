@@ -71,8 +71,8 @@ public class PlayerHandler {
 		MapManager.getVotableMaps().sort(new Comparator<com.nekrosius.drizzardwars.handlers.Map>() {
 			@Override
 			public int compare(com.nekrosius.drizzardwars.handlers.Map o1, com.nekrosius.drizzardwars.handlers.Map o2) {
-				if(o1.getId() < o2.getId()) return -1;
-				if(o1.getId() > o2.getId()) return 1;
+				if(o1.getId() > o2.getId()) return -1;
+				if(o1.getId() < o2.getId()) return 1;
 				return 0;
 			}
 		});

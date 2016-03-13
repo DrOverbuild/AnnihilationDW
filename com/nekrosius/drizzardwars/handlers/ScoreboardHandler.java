@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.avaje.ebeaninternal.server.cluster.mcast.Message;
+import com.nekrosius.drizzardwars.Main;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,9 +32,37 @@ public class ScoreboardHandler {
 
 			sb = new SimpleScoreboard(MessageHandler.format(MessageFile.getMessage("scoreboard.lobby.header")));
 
+			int lineNumber = 0;
+
+			for(String line:MessageHandler.scoreboardLobbyContents){
+				if(line.toLowerCase().contains("{maps}")){
+					String template = MessageFile.getMessage("scoreboard.lobby.maps");
+
+					Main.println("Template = " + template);
+
+					if(template.toLowerCase().contains("{map_votes}")) {
+						for (Map m : MapManager.getVotableMaps()) {
+							Main.println("Map " + m.getId() + ": " + m.getName() + ", " + m.getVotes() + " votes");
+							sb.add(MessageHandler.format(formatMapVariables(template, m)), lineNumber--);
+						}
+					}else{
+						for (Map m : MapManager.getVotableMaps()) {
+							Main.println("Map " + m.getId() + ": " + m.getName() + ", " + m.getVotes() + " votes");
+							sb.add(MessageHandler.format(formatMapVariables(template, m)), m.getId());
+						}
+					}
+				}else if(line.toLowerCase().contains("{party}")){
+					for(String line2 : getPartyLines(player)){
+						sb.add(MessageHandler.format(line2),lineNumber--);
+					}
+				}
+				else{
+					sb.add(MessageHandler.format(formatScoreboardVariables(line,player)), lineNumber--);
+				}
+			}
 
 //			int i = 1;
-//			for (Maps map : MapManager.getMaps()) {
+//			for (Map map : MapManager.getMaps()) {
 //				sb.add(ChatColor.RED + "" + i + ". " + ChatColor.GRAY + map.getName(), map.getVotes());
 //				i++;
 //			}
@@ -43,8 +72,6 @@ public class ScoreboardHandler {
 //			sb.add("", -3);
 //			sb.add(MessageHandler.format(MessageFile.getMessage("party.scoreboard.header")), -4);
 //			int j = -5;
-
-			// Put party lines here
 
 			org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam("lobby");
 			newTeam.setPrefix(ChatColor.GREEN + "");
@@ -82,11 +109,18 @@ public class ScoreboardHandler {
 		sb.send(player);
 	}
 
+	public static String formatMapVariables(String line, Map map){
+		line = line.replace("{map_id}", map.getId() + "");
+		line = line.replace("{map_name}",map.getName());
+		line = line.replace("{map_votes}", map.getVotes()+"");
+		return line;
+	}
+
 	public static String formatScoreboardVariables(String line,Player p) {
-		line = line.replace("{until_start",getUntilStart());
+		line = line.replace("{until_start}",getUntilStart());
 		line = line.replace("{until_start}",getUntilStart());
 		line = line.replace("{points}",getPlayerPoints(p));
-		line = line.replace("{map_name}",MapManager.getActiveMap().getName());
+		line = line.replace("{map_name}",getActiveMapName());
 		line = line.replace("{team_name}", getTeamName(p));
 		line = line.replace("{team_color", getTeamColor(p));
 		line = line.replace("{time_remaining}", getTimeRemaining());
@@ -107,6 +141,29 @@ public class ScoreboardHandler {
 			return team.getName();
 		}
 		return "";
+	}
+
+	private static String getActiveMapName(){
+		if(MapManager.getActiveMap() != null){
+			return MapManager.getActiveMap().getName();
+		}
+		return "";
+	}
+
+	public static String getUntilStart(){
+		return "" + Game.getCountdown();
+	}
+
+	private static String getPlayerPoints(Player p){
+		return "" + Points.getPoints(p);
+	}
+
+	private static String getTimeRemaining() {
+		if (Game.getPhaseTime() > 60) {
+			return MessageHandler.formatInteger(MessageFile.getMessage("time.minutes"), Game.getPhaseTime() / 60);
+		} else {
+			return MessageHandler.formatInteger(MessageFile.getMessage("time.seconds"), Game.getPhaseTime());
+		}
 	}
 
 	private static List<String> getPartyLines(Player player) {
@@ -133,21 +190,5 @@ public class ScoreboardHandler {
 		}
 
 		return partyLines;
-	}
-
-	public static String getUntilStart(){
-		return "" + Game.getCountdown();
-	}
-
-	public static String getPlayerPoints(Player p){
-		return "" + Points.getPoints(p);
-	}
-
-	public static String getTimeRemaining() {
-		if (Game.getPhaseTime() > 60) {
-			return MessageHandler.formatInteger(MessageFile.getMessage("time.minutes"), Game.getPhaseTime() / 60);
-		} else {
-			return MessageHandler.formatInteger(MessageFile.getMessage("time.seconds"), Game.getPhaseTime());
-		}
 	}
 }

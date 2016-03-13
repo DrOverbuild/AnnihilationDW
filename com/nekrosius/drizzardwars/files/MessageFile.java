@@ -123,12 +123,12 @@ public class MessageFile {
 		config.addDefault("protection.now-protected","&cYou have protected this %s!");
 		config.addDefault("protection.removed","&cThis %s is no longer protected.");
 		config.addDefault("scoreboard.lobby.header", "&l&6Drizzard Wars");
-		config.addDefault("scoreboard.lobby.maps","&8{map_id}. {map_name} votes: &c{map_votes}");
+		config.addDefault("scoreboard.lobby.maps","&c{map_id}. &7{map_name} votes: &c{map_votes}");
 		List<String> contents1 = new ArrayList<>();
 		contents1.add("{maps}");
 		contents1.add("");
-		contents1.add("&8Until start: &c{until_start}s");
-		contents1.add("&8Points: &c{points}");
+		contents1.add("&7Until start: &c{until_start}s");
+		contents1.add("&7Points: &c{points}");
 		contents1.add("");
 		contents1.add("&6PARTY");
 		contents1.add("{party}");
