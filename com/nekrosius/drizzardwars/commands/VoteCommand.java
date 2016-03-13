@@ -46,6 +46,11 @@ public class VoteCommand implements CommandExecutor {
 			}
 			// Count the vote
 			if(map > 0 && map <= MapManager.amountOfMaps()){
+				if(!MapManager.getVotableMaps().contains(MapManager.getMap(map))){
+					String str = MessageHandler.formatString(MessageFile.getMessage("vote.map-unavailable"),MapManager.getMap(map).getName());
+					MessageHandler.sendMessage(player,str);
+					return true;
+				}
 				PlayerHandler.setPlayerVote(player, map);
 				String str = MessageFile.getMessage("vote.successful");
 				str = MessageHandler.formatString(str, MapManager.getMap(map).getName());

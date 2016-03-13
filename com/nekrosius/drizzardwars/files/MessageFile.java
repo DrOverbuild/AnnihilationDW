@@ -88,6 +88,7 @@ public class MessageFile {
 		config.addDefault("vote.invalid-usage", "&7Usage: /votar <mapId>!");
 		config.addDefault("vote.cant-vote", "&cYou can't vote right now!");
 		config.addDefault("vote.reminder", "&7Use /vote <mapId> to vote for next map!");
+		config.addDefault("vote.map-unavailable","&cMap %s cannot be voted for at this moment.");
 		config.addDefault("kits.menu-name", "&6Choose your kit!");
 		config.addDefault("kits.vip-only", "&cThis kit can only be used by VIP!");
 		config.addDefault("kits.everyone", "&cThis kit can be used by everyone!");
@@ -122,11 +123,12 @@ public class MessageFile {
 		config.addDefault("protection.now-protected","&cYou have protected this %s!");
 		config.addDefault("protection.removed","&cThis %s is no longer protected.");
 		config.addDefault("scoreboard.lobby.header", "&l&6Drizzard Wars");
+		config.addDefault("scoreboard.lobby.maps","&8{map_id}. {map_name} votes: &c{map_votes}");
 		List<String> contents1 = new ArrayList<>();
 		contents1.add("{maps}");
 		contents1.add("");
-		contents1.add("&8Until start: {until_start}s");
-		contents1.add("&8Points: {points}");
+		contents1.add("&8Until start: &c{until_start}s");
+		contents1.add("&8Points: &c{points}");
 		contents1.add("");
 		contents1.add("&6PARTY");
 		contents1.add("{party}");
