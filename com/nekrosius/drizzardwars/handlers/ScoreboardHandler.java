@@ -59,18 +59,6 @@ public class ScoreboardHandler {
 				}
 			}
 
-//			int i = 1;
-//			for (Map map : MapManager.getMaps()) {
-//				sb.add(ChatColor.RED + "" + i + ". " + ChatColor.GRAY + map.getName(), map.getVotes());
-//				i++;
-//			}
-//			sb.add(MessageHandler.formatInteger(MessageHandler.untilStart, Game.getCountdown()), -1);
-//			sb.add(ChatColor.GRAY + StringUtils.capitalize(MessageHandler.format(MessageFile.getMessage("general.points")))
-//					+ ": " + ChatColor.RED + Points.getPoints(player), -2);
-//			sb.add("", -3);
-//			sb.add(MessageHandler.format(MessageFile.getMessage("party.scoreboard.header")), -4);
-//			int j = -5;
-
 			org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam("lobby");
 			newTeam.setPrefix(ChatColor.GREEN + "");
 			for(Player p: Bukkit.getOnlinePlayers()){
@@ -78,22 +66,25 @@ public class ScoreboardHandler {
 			}
 		} else {
 			sb = new SimpleScoreboard(formatScoreboardVariables(MessageHandler.format(MessageFile.getMessage("scoreboard.in_game.header")),player));
-//			if (!PlayerHandler.isSpectating(player)) {
-//				Team team = TeamManager.getTeam(player);
-//				if (team != null) {
-//					sb.add(team.getColor() + "Kills", team.getKills());
-//				}
-//			}
-//			for (Team team : TeamManager.getTeams()) {
-//				if (team.getNexusHealth() > 0) {
-//					sb.add(team.getColor() + team.getName() + " Nexus", team.getNexusHealth());
-//				}
-//			}
-//			sb.add("", -1);
-//			sb.add(MessageHandler.getPhaseMessage(Game.getPhase()), -2);
-//			sb.add(MessageHandler.format(MessageFile.getMessage("time.remaining")), -3);
 
+			int lineNumber = 0;
 
+			for(String line : MessageHandler.scoreboardInGameContents){
+				if(line.toLowerCase().contains("{team_health}")){
+					String template = MessageFile.getMessage("scoreboard.in_game.team_health");
+					if(template.toLowerCase().contains("{team_nexus_health}")){
+						for(Team team : TeamManager.getAliveTeams()){
+							sb.add(MessageHandler.format(formatTeamHealthVariables(template,team)),lineNumber--);
+						}
+					}else{
+						for(Team team : TeamManager.getAliveTeams()) {
+							sb.add(MessageHandler.format(formatTeamHealthVariables(template, team)),team.getNexusHealth());
+						}
+					}
+				}else{
+					sb.add(MessageHandler.format(formatScoreboardVariables(line,player)),lineNumber--);
+				}
+			}
 
 			for(Team t:TeamManager.getAliveTeams()){
 				org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam(t.getCodeName());
@@ -105,6 +96,13 @@ public class ScoreboardHandler {
 		}
 		sb.build();
 		sb.send(player);
+	}
+
+	public static String formatTeamHealthVariables(String line, Team team){
+		line = line.replace("{team_color}",team.getColor() + "");
+		line = line.replace("{team_name}", team.getName());
+		line = line.replace("{team_nexus_health}", team.getNexusLocation() + "");
+		return  line;
 	}
 
 	public static String formatMapVariables(String line, GameMap map){
@@ -120,9 +118,28 @@ public class ScoreboardHandler {
 		line = line.replace("{points}",getPlayerPoints(p));
 		line = line.replace("{map_name}",getActiveMapName());
 		line = line.replace("{team_name}", getTeamName(p));
-		line = line.replace("{team_color", getTeamColor(p));
+		line = line.replace("{team_color}", getTeamColor(p));
+		line = line.replace("{team_kills}",getTeamKills(p));
+		line = line.replace("{team_nexus_health}", getTeamNexusHealth(p));
 		line = line.replace("{time_remaining}", getTimeRemaining());
+		line = line.replace("{phase_message}", MessageHandler.getPhaseMessage(Game.getPhase()));
 		return line;
+	}
+
+	private static String getTeamKills(Player p) {
+		Team t = TeamManager.getTeam(p);
+		if(t != null){
+			return "" + t.getKills();
+		}
+		return "";
+	}
+
+	private static String getTeamNexusHealth(Player p){
+		Team t = TeamManager.getTeam(p);
+		if(t != null){
+			return "" + t.getNexusHealth();
+		}
+		return "";
 	}
 
 	private static String getTeamColor(Player p) {

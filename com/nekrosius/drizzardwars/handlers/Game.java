@@ -41,7 +41,7 @@ public class Game {
 
 	private static boolean countdownStarted;
 	private static boolean canVote;
-	private static int phase;
+	private static int phase = 0;
 	private static int respawnTimer = 0;
 	private static int phaseTime;
 	private static GameState gameState = GameState.LOBBY;

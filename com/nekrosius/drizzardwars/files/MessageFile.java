@@ -114,9 +114,7 @@ public class MessageFile {
 		config.addDefault("party.args", "&cInvalid arguments. Type \"/party help\" to view help.");
 		config.addDefault("party.alone", "&aYou are not in a party. Type \"&6/party create&a\" to create one.");
 		config.addDefault("party.full","&cThe party is full.");
-//		config.addDefault("party.scoreboard.header","&6PARTY");
 		config.addDefault("party.scoreboard.alone","&aYou are not in a party. Type \"&6/party create&a\" to create one.");
-		config.addDefault("time.remaining", "&aT. Remaining");
 		config.addDefault("time.minutes","&a%t minutes");
 		config.addDefault("time.seconds", "&a%t seconds");
 		config.addDefault("protection.protected","&cThis %s is protected!");
@@ -134,10 +132,10 @@ public class MessageFile {
 		contents1.add("{party}");
 		config.addDefault("scoreboard.lobby.contents",contents1);
 		config.addDefault("scoreboard.in_game.header","&6&l{map_name}");
-		config.addDefault("scoreboard.in_game.team_health","{team_color}{team_name} Nexus");
+		config.addDefault("scoreboard.in_game.team_health","{team_color}{team_name} Nexus: {team_nexus_health}");
 		List<String> contents2 = new ArrayList<>();
 		contents2.add("{team_health}");
-		contents2.add("{team_color}}Kills: {team_kills}");
+		contents2.add("{team_color}Kills: {team_kills}");
 		contents2.add("");
 		contents2.add("{phase_message}");
 		contents2.add("&aTime Remaining");
