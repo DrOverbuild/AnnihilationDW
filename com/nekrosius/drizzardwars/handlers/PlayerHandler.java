@@ -1,8 +1,6 @@
 package com.nekrosius.drizzardwars.handlers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
 
 import com.nekrosius.drizzardwars.Main;
@@ -55,6 +53,7 @@ public class PlayerHandler {
 	}
 	
 	public static void setPlayerVote(Player player, Integer map) {
+
 		if(map == null){
 			if(getPlayerVote(player) != null){
 				MapManager.getMap(getPlayerVote(player)).removeVote();
@@ -68,6 +67,15 @@ public class PlayerHandler {
 			MapManager.getMap(map).addVote();
 		}
 		vote.put(player.getName(), map);
+
+		MapManager.getVotableMaps().sort(new Comparator<com.nekrosius.drizzardwars.handlers.Map>() {
+			@Override
+			public int compare(com.nekrosius.drizzardwars.handlers.Map o1, com.nekrosius.drizzardwars.handlers.Map o2) {
+				if(o1.getId() < o2.getId()) return -1;
+				if(o1.getId() > o2.getId()) return 1;
+				return 0;
+			}
+		});
 	}
 	
 	public static Integer getPlayerVote(Player player){
