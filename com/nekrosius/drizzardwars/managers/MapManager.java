@@ -3,6 +3,7 @@ package com.nekrosius.drizzardwars.managers;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.nekrosius.drizzardwars.handlers.Map;
 import org.bukkit.Bukkit;
@@ -19,6 +20,8 @@ import com.nekrosius.drizzardwars.utils.CopyWorld;
 public class MapManager {
 	
 	static List<Map> maps = new ArrayList<Map>();
+
+	static List<Map> votableMaps = new ArrayList<Map>();
 	
 	private static Map activeMap = null;
 	
@@ -185,5 +188,27 @@ public class MapManager {
 		path = pl.getDataFolder() + File.separator;
 		mapsPath = path + "Maps" + File.separator;
 		mapName = path + "CurrentMap";
+	}
+
+	public static List<Map> getVotableMaps() {
+		return votableMaps;
+	}
+
+	public static void pickRandomVotableMaps(){
+		votableMaps.clear();
+
+		if(getMaps().size()>5){
+			Random r = new Random();
+			do{
+				int num = r.nextInt(getMaps().size());
+				if(!votableMaps.contains(getMaps().get(num))){
+					votableMaps.add(getMaps().get(num));
+				}
+			}while (votableMaps.size() <= 5);
+		}else{
+			for(Map m:getMaps()){
+				votableMaps.add(m);
+			}
+		}
 	}
 }

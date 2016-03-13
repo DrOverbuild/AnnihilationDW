@@ -132,6 +132,13 @@ public class Game {
 				Points.addPoints(p,Points.getWinPoints());
 			}
 		}
+
+		for(Map m:MapManager.getMaps()){
+			m.setVotes(0);
+		}
+
+		MapManager.pickRandomVotableMaps();
+
 		new BukkitRunnable(){
 			public void run(){
 				MapManager.deleteWorld(MapManager.mapName);
