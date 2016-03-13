@@ -28,7 +28,7 @@ public class ScoreboardHandler {
 		if (Game.getGameState().equals(GameState.LOBBY)) {
 
 
-			sb = new SimpleScoreboard(MessageHandler.format(MessageFile.getMessage("scoreboard.lobby.header")));
+			sb = new SimpleScoreboard(formatScoreboardVariables(MessageHandler.format(MessageFile.getMessage("scoreboard.lobby.header")),player));
 
 			int lineNumber = 0;
 
@@ -77,7 +77,7 @@ public class ScoreboardHandler {
 				newTeam.addPlayer(p);
 			}
 		} else {
-			sb = new SimpleScoreboard(MessageHandler.format(MessageFile.getMessage("scoreboard.in_game.header")));
+			sb = new SimpleScoreboard(formatScoreboardVariables(MessageHandler.format(MessageFile.getMessage("scoreboard.in_game.header")),player));
 //			if (!PlayerHandler.isSpectating(player)) {
 //				Team team = TeamManager.getTeam(player);
 //				if (team != null) {
