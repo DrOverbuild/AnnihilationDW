@@ -22,30 +22,30 @@ import com.nekrosius.drizzardwars.utils.Convert;
 public class Blocks {
 	
 	//REGENERATING -- MAP SETUP
-	static java.util.Map regeneratingBlockStatus = new HashMap<String, Integer>();
-	static java.util.Map regeneratingBlock = new HashMap<String, Block>();
-	static java.util.Map regeneratingBlockInfo = new HashMap<String, List<String>>();
+	static java.util.Map<String, Integer> regeneratingBlockStatus = new HashMap<>();
+	static java.util.Map<String, Block> regeneratingBlock = new HashMap<>();
+	static java.util.Map<String, List<String>> regeneratingBlockInfo = new HashMap<>();
 	
 	//UNPLACEABLE -- MAP SETUP
-	static java.util.Map unplaceableBlockStatus = new HashMap<String, Integer>();
-	static java.util.Map unplaceableBlock = new HashMap<String, Block>();
-	private static java.util.Map unplaceable = new HashMap<Material, Boolean>();
-	private static java.util.Map unplaceableData = new HashMap<Material, Integer>();
+	static java.util.Map<String, Integer> unplaceableBlockStatus = new HashMap<>();
+	static java.util.Map<String, Block> unplaceableBlock = new HashMap<>();
+	private static java.util.Map<Material, Boolean> unplaceable = new HashMap<>();
+	private static java.util.Map<Material, Integer> unplaceableData = new HashMap<>();
 	
 	//DIAMONDS -- MAP SETUP
 	private static List<Location> diamondSpawns = new ArrayList<Location>();
 	
 	//TEAM AMOUNT -- MAP SETUP
-	static java.util.Map teamAmountStatus = new HashMap<String, Integer>();
+	static java.util.Map<String, Integer> teamAmountStatus = new HashMap<>();
 	
 	//INFO
-	private static java.util.Map data = new HashMap<Material, Integer>();
-	private static java.util.Map dropType = new HashMap<Material, String>();
-	private static java.util.Map brokeBlock = new HashMap<Material, Material>();
-	private static java.util.Map reward = new HashMap<Material, ItemStack>();
-	private static java.util.Map rewardAmount = new HashMap<Material, String>();
-	private static java.util.Map timer = new HashMap<Material, Integer>();
-	private static java.util.Map xpReward = new HashMap<Material, Integer>();
+	private static java.util.Map<Material, Integer> data = new HashMap<>();
+	private static java.util.Map<Material, String> dropType = new HashMap<>();
+	private static java.util.Map<Material, Material> brokeBlock = new HashMap<>();
+	private static java.util.Map<Material, ItemStack> reward = new HashMap<>();
+	private static java.util.Map<Material, String> rewardAmount = new HashMap<>();
+	private static java.util.Map<Material, Integer> timer = new HashMap<>();
+	private static java.util.Map<Material, Integer> xpReward = new HashMap<>();
 	
 	public static void setupBlocks(Map map) {
 		MapFile.createConfig(MapManager.mapsPath + map.getName());

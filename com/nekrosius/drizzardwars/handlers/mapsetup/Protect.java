@@ -11,14 +11,14 @@ import com.nekrosius.drizzardwars.utils.Convert;
 
 public class Protect {
 	
-	private static java.util.Map protectionStatus = new HashMap<Player, Integer>();
-	private static java.util.Map name = new HashMap<Player, String>();
-	private static java.util.Map pvp = new HashMap<Player, Boolean>();
-	private static java.util.Map pointOne = new HashMap<Player, Location>();
-	private static java.util.Map pointTwo = new HashMap<Player, Location>();
+	private static java.util.Map<Player, Integer> protectionStatus = new HashMap<>();
+	private static java.util.Map<Player, String> name = new HashMap<>();
+	private static java.util.Map<Player, Boolean> pvp = new HashMap<>();
+	private static java.util.Map<Player, Location> pointOne = new HashMap<>();
+	private static java.util.Map<Player, Location> pointTwo = new HashMap<>();
 	
-	private static java.util.Map first = new HashMap<Integer, Location>();
-	private static java.util.Map second = new HashMap<Integer, Location>();
+	private static java.util.Map<Integer, Location> first = new HashMap<>();
+	private static java.util.Map<Integer, Location> second = new HashMap<>();
 	
 	//-------------------------------------------------------------//
 	
