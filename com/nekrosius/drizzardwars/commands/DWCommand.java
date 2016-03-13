@@ -23,7 +23,16 @@ public class DWCommand implements CommandExecutor{
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {		
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {	
+		/*
+		if(sender.isOp() && args.length > 0) {
+			PlayerHandler.addAbility((Player) sender, Ability.getAbility(args[0]));
+			Bukkit.getPluginManager().callEvent(new JoinGameEvent((Player) sender, null));
+			Main.println(sender.getName() + " ability is set to " + args[0]);
+			return true;
+		}
+		*/
+		
 		if(args.length == 0){
 			if(!(sender instanceof Player)){
 				sender.sendMessage(MessageFile.getMessage("commands.not-player"));

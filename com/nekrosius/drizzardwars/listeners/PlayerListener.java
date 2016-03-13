@@ -1,13 +1,11 @@
 package com.nekrosius.drizzardwars.listeners;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import com.nekrosius.drizzardwars.handlers.*;
-import com.nekrosius.drizzardwars.handlers.mapsetup.Phase;
-import com.nekrosius.drizzardwars.managers.BarManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,9 +27,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.api.objects.Ability;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.files.PlayerFile;
+import com.nekrosius.drizzardwars.handlers.Game;
+import com.nekrosius.drizzardwars.handlers.GameState;
+import com.nekrosius.drizzardwars.handlers.Lobby;
+import com.nekrosius.drizzardwars.handlers.MessageHandler;
+import com.nekrosius.drizzardwars.handlers.PlayerHandler;
+import com.nekrosius.drizzardwars.handlers.Points;
+import com.nekrosius.drizzardwars.handlers.ScoreboardHandler;
+import com.nekrosius.drizzardwars.handlers.TabHandler;
+import com.nekrosius.drizzardwars.handlers.Team;
+import com.nekrosius.drizzardwars.handlers.mapsetup.Phase;
+import com.nekrosius.drizzardwars.managers.BarManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
 import com.nekrosius.drizzardwars.utils.Convert;
 
@@ -48,6 +58,7 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
+		PlayerHandler.setAbilities(event.getPlayer(), new ArrayList<Ability>());
 		if(Bukkit.getOnlinePlayers().size() >= ConfigFile.config.getInt("team-size") * 4){
 			if(!event.getPlayer().hasPermission("drwars.spectator")){
 				event.disallow(Result.KICK_FULL, MessageHandler.format(MessageFile.getMessage("kick.full")));

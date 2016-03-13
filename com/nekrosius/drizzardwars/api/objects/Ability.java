@@ -5,15 +5,17 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.handlers.PlayerHandler;
 
 public class Ability implements Listener {
 	
 	public static List<Ability> abilities = new ArrayList<Ability>();
 	
-	Main plugin = (Main)Bukkit.getPluginManager().getPlugin("DrizzardWars");
+	public static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("DrizzardWars");
 	
 	private String name;
 	private Material icon;
@@ -90,6 +92,24 @@ public class Ability implements Listener {
 	 */
 	public void addDescription(String line) {
 		this.description.add(line);
+	}
+	
+	public boolean hasAbility(Ability ab, Player player) {
+		for(Ability abs : PlayerHandler.getAbilities(player)) {
+			if(abs.getName() == ab.getName()) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @param name of the ability to be searched
+	 * @return ability with specified name
+	 */
+	public static Ability getAbility(String name) {
+		for(Ability ab : abilities) {
+			if(ab.getName().equalsIgnoreCase(name)) return ab;
+		}
+		return null;
 	}
 	
 }

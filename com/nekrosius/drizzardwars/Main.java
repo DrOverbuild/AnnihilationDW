@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.nekrosius.drizzardwars.abilities.Archer;
+import com.nekrosius.drizzardwars.abilities.Assassin;
 import com.nekrosius.drizzardwars.abilities.Berserker;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.handlers.Game;
@@ -52,7 +54,7 @@ public class Main extends JavaPlugin {
 
 	public void onEnable() {
 		load();
-//		loadDefaultAbilities();
+		//loadDefaultAbilities();
 		new BukkitRunnable(){
 			@Override
 			public void run() {
@@ -89,6 +91,8 @@ public class Main extends JavaPlugin {
 	 * Adds default abilities
 	 */
 	private void loadDefaultAbilities() {
+		new Archer();
+		new Assassin();
 		new Berserker();
 	}
 

@@ -24,7 +24,7 @@ public class PlayerHandler {
 	static Map<String, Integer> compassStatus = new HashMap<String, Integer>();
 	static Map<String, Boolean> spectating = new HashMap<String, Boolean>();
 	static Map<String, Integer> gold = new HashMap<String, Integer>();
-	static Map<String, Ability> ability = new HashMap<String, Ability>();
+	static Map<String, List<Ability>> abilities = new HashMap<String, List<Ability>>();
 	static List<String> hidden = new ArrayList<String>();
 	
 	public static void quit(Player player) {
@@ -230,15 +230,21 @@ public class PlayerHandler {
 		gold.clear();
 	}
 	
-	public static void setAbility(Player player, Ability ab) {
-		ability.put(player.getName(), ab);
+	public static void addAbility(Player player, Ability ab) {
+		List<Ability> abs = getAbilities(player);
+		abs.add(ab);
+		setAbilities(player, abs);
+	}
+	
+	public static void setAbilities(Player player, List<Ability> ab) {
+		abilities.put(player.getName(), ab);
 	}
 	
 	public static boolean hasAbility(Player player) {
-		return ability.get(player.getName()) != null;
+		return abilities.get(player.getName()).isEmpty();
 	}
 	
-	public static Ability getAbility(Player player) {
-		return ability.get(player.getName());
+	public static List<Ability> getAbilities(Player player) {
+		return abilities.get(player.getName());
 	}
 }

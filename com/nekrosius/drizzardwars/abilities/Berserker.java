@@ -18,9 +18,9 @@ public class Berserker extends Ability {
 	 * gets 1 heart until a maximum of 13 hearts
 	 */
 	
-	private double STARTING_HEALTH = 18D;
-	private double MAX_HEALTH = 26D;
-	private double INCREASE = 2D;
+	public double STARTING_HEALTH = 18D;
+	public double MAX_HEALTH = 26D;
+	public double INCREASE = 2D;
 	
 	public Berserker() {
 		registerAbility(this);
@@ -42,8 +42,7 @@ public class Berserker extends Ability {
 		if(event.getEntity().getKiller() == null) return;
 		if(Game.getGameState() != GameState.IN_GAME) return;
 		Player killer = event.getEntity().getKiller();
-		if(! PlayerHandler.hasAbility(killer)) return;
-		if(! PlayerHandler.getAbility(killer).getName().equals( this.getName() )) return;
+		if(!hasAbility(this, killer)) return;
 		
 		// Adding 1 heart
 		
