@@ -219,7 +219,7 @@ public class GameListener implements Listener{
 			event.getBlock().setType(Blocks.getBrokeBlock(m));
 			Player player = event.getPlayer();
 			ExperienceManager expMan = new ExperienceManager(player);
-			expMan.changeExp(Blocks.getXpReward(m)*expMan.getXPMultiplier());
+			expMan.changeExp(Blocks.getXpReward(m));
 			ItemStack reward = Blocks.getReward(m);
 			reward.setAmount(Blocks.getRewardAmount(m));
 			if(Blocks.getDropType(m).equals("natural")){
@@ -467,14 +467,6 @@ public class GameListener implements Listener{
 					e.setCancelled(true);
 				}
 			}
-		}
-	}
-
-	@EventHandler
-	public void onXPChange(PlayerExpChangeEvent e){
-		if(e.getAmount() > 0){
-			ExperienceManager xpMan = new ExperienceManager(e.getPlayer());
-			e.setAmount(e.getAmount() * xpMan.getXPMultiplier());
 		}
 	}
 

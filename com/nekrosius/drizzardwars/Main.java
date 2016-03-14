@@ -131,7 +131,7 @@ public class Main extends JavaPlugin {
 	 * Not sure if this is really required, but could be helpful to some people... maybe...
 	 */
 	public void registerMultiplierPermissions(){
-		int max = ConfigFile.config.getInt("max-xp-multiplier",1);
+		int max = ConfigFile.config.getInt("max-points-multiplier",10);
 		for(int i = 1; i <= max; i++){
 			getServer().getPluginManager().addPermission(new Permission("dw.multiplier."+i, PermissionDefault.FALSE));
 		}

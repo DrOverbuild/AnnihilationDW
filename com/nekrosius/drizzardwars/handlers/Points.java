@@ -28,7 +28,7 @@ public class Points {
 	}
 
 	public static void addPoints(Player player, int points){
-		setPoints(player, getPoints(player) + points);
+		setPoints(player, getPoints(player) + points * getPointsMultiplier(player));
 //		PlayerFile.setPoints(player,getPoints(player) + points);
 	}
 	
@@ -70,5 +70,16 @@ public class Points {
 
 	public static void setDeathPoints(int death) {
 		Points.death = death;
+	}
+
+	public static int getPointsMultiplier(Player p){
+		int multiplier = 1;
+		for(int i = 1; i <= ConfigFile.config.getInt("max-points-multiplier",10); i++){
+			if(p.hasPermission("dw.multiplier."+i)){
+				multiplier = i;
+			}
+		}
+
+		return multiplier;
 	}
 }
