@@ -80,22 +80,6 @@ public class PlayerListener implements Listener {
 			}
 		}
 	}
-
-	// TODO nametags
-	/*
-	@EventHandler
-	public void onNameTag(AsyncPlayerReceiveNameTagEvent event) {
-		if(Game.isGameStarted()){
-			if(TeamManager.hasTeam(event.getNamedPlayer())){
-				event.setTag(TeamManager.getTeam(event.getNamedPlayer()).getColor() + event.getNamedPlayer().getName());
-			}else{
-				event.setTag(ChatColor.LIGHT_PURPLE + event.getNamedPlayer().getName());
-			}
-		}else{
-			event.setTag(ChatColor.GREEN + event.getNamedPlayer().getName());
-		}
-	}
-	*/
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {

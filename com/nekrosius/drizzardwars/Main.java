@@ -17,6 +17,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.nekrosius.drizzardwars.abilities.Archer;
 import com.nekrosius.drizzardwars.abilities.Assassin;
 import com.nekrosius.drizzardwars.abilities.Berserker;
+import com.nekrosius.drizzardwars.abilities.Defender;
+import com.nekrosius.drizzardwars.abilities.Enchanter;
 import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.handlers.Game;
 import com.nekrosius.drizzardwars.handlers.Lobby;
@@ -97,6 +99,8 @@ public class Main extends JavaPlugin {
 		new Archer();
 		new Assassin();
 		new Berserker();
+		new Defender();
+		new Enchanter();
 	}
 
 	public FileManager getFileManager() {
@@ -259,7 +263,5 @@ public class Main extends JavaPlugin {
 		}
 		return alivePlayers;
 	}
-	
-	// TODO private chests
 	
 }

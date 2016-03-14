@@ -113,8 +113,9 @@ public class GameListener implements Listener{
 		Player player = event.getPlayer();
 		event.getTabCompletions().clear();
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			p.sendMessage(ChatColor.GRAY + "(" + 
-		MessageHandler.all + ") [" + TeamManager.getTeam(player).getColor() + TeamManager.getTeam(player).getName() + ChatColor.GRAY + "] " + ChatColor.WHITE + player.getName() + ": " + event.getChatMessage());	
+			p.sendMessage(ChatColor.GRAY + "(" + MessageHandler.all 
+					+ ") [" + TeamManager.getTeam(player).getColor() + TeamManager.getTeam(player).getName() + ChatColor.GRAY + "] " 
+					+ ChatColor.WHITE + player.getName() + ": " + event.getChatMessage());	
 		}
 		Inventory inv = Bukkit.createInventory(null, 9);
 		player.openInventory(inv);
@@ -129,22 +130,30 @@ public class GameListener implements Listener{
 		if(PlayerHandler.isSpectating(player)){
 			for(Player p : Bukkit.getOnlinePlayers()){
 				if(PlayerHandler.isSpectating(p)){
-					event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all + ") [" + ChatColor.LIGHT_PURPLE + "Spectator" + ChatColor.GRAY + "] " + ChatColor.WHITE + player.getName() + ": " + message);
+					event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all 
+							+ ") [" + ChatColor.LIGHT_PURPLE + "Spectator" + ChatColor.GRAY + "] " 
+							+ ChatColor.WHITE + player.getName() + ": " + message);
 				}
 			}
 		}
 		else if(!TeamManager.hasTeam(player)){
-			event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all + ") [" + ChatColor.DARK_PURPLE + "Lobby" + ChatColor.GRAY + "] " + ChatColor.WHITE + player.getName() + ": " + message);
+			event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all 
+					+ ") [" + ChatColor.DARK_PURPLE + "Lobby" + ChatColor.GRAY + "] "
+					+ ChatColor.WHITE + player.getName() + ": " + message);
 		}else if(event.getMessage().startsWith("!")){
 			message = message.replace("!", "");
-			event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all + ") [" + TeamManager.getTeam(player).getColor() + TeamManager.getTeam(player).getName() + ChatColor.GRAY + "] " + ChatColor.WHITE + player.getName() + ": " + message);
+			event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all 
+					+ ") [" + TeamManager.getTeam(player).getColor() + TeamManager.getTeam(player).getName() + ChatColor.GRAY + "] "
+					+ ChatColor.WHITE + player.getName() + ": " + message);
 		}else{
 			event.setCancelled(true);
 			ChatColor color = TeamManager.getTeam(player).getColor();
 			String name = TeamManager.getTeam(player).getName();
 			for(Player p : Bukkit.getOnlinePlayers()) {
 				if(TeamManager.getTeam(p).equals(TeamManager.getTeam(player))){
-					p.sendMessage(ChatColor.GRAY + "(" + MessageHandler.team + ") [" + color + name + ChatColor.GRAY + "] " + ChatColor.WHITE + player.getName() + ": " + message);
+					p.sendMessage(ChatColor.GRAY + "(" + MessageHandler.team 
+							+ ") [" + color + name + ChatColor.GRAY 
+							+ "] " + ChatColor.WHITE + player.getName() + ": " + message);
 				}
 			}
 		}

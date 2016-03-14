@@ -9,14 +9,8 @@ import com.nekrosius.drizzardwars.api.events.JoinGameEvent;
 import com.nekrosius.drizzardwars.api.objects.Ability;
 import com.nekrosius.drizzardwars.handlers.Game;
 import com.nekrosius.drizzardwars.handlers.GameState;
-import com.nekrosius.drizzardwars.handlers.PlayerHandler;
 
 public class Berserker extends Ability {
-	
-	/**
-	 * Player starts with 9 hearts but for every kill
-	 * gets 1 heart until a maximum of 13 hearts
-	 */
 	
 	public double STARTING_HEALTH = 18D;
 	public double MAX_HEALTH = 26D;

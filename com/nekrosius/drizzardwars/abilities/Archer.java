@@ -13,13 +13,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.nekrosius.drizzardwars.api.events.JoinGameEvent;
 import com.nekrosius.drizzardwars.api.objects.Ability;
-import com.nekrosius.drizzardwars.handlers.PlayerHandler;
 
 public class Archer extends Ability {
 	
 	public String NAME = "Archer";
 	public Material ICON = Material.BOW;
-	public int INTERVAL_IN_SECONDS = 10;
+	public int INTERVAL_IN_SECONDS = 20;
 	public int ARROWS = 4;
 	public double DAMAGE_BOOST = 1D;
 	
