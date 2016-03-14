@@ -37,6 +37,7 @@ public class ConfigFile {
 		config.addDefault("points.death", 0);
 		config.addDefault("respawn.time", 5);
 		config.addDefault("party.player-limit",9);
+		config.addDefault("max-xp-multiplier",10);
 		config.addDefault("boss-bar",true);
 		config.options().copyDefaults(true);
 

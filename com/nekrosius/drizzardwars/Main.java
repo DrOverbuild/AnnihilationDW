@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -85,6 +87,7 @@ public class Main extends JavaPlugin {
 		em = new EffectManager(lib);
 		tlm = new TitleManager(this);
 		MessageHandler.loadMessages();
+		registerMultiplierPermissions();
 	}
 	
 	/**
@@ -122,6 +125,16 @@ public class Main extends JavaPlugin {
 	
 	public TitleManager getTitleManager() {
 		return tlm;
+	}
+
+	/**
+	 * Not sure if this is really required, but could be helpful to some people... maybe...
+	 */
+	public void registerMultiplierPermissions(){
+		int max = ConfigFile.config.getInt("max-xp-multiplier",1);
+		for(int i = 1; i <= max; i++){
+			getServer().getPluginManager().addPermission(new Permission("dw.multiplier."+i, PermissionDefault.FALSE));
+		}
 	}
 	
 	public static int getRandom(int min, int max) {

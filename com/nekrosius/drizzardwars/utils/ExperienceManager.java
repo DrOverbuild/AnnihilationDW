@@ -2,9 +2,14 @@ package com.nekrosius.drizzardwars.utils;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.Set;
 
+import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.files.ConfigFile;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
 /**
  * @author desht
@@ -266,5 +271,62 @@ public class ExperienceManager {
 			initLookupTables(level * 2);
 		}
 		return xpTotalToReachLevel[level];
+	}
+
+	public int getXPMultiplier(){
+		Player p = getPlayer();
+
+		int multiplier = 1;
+
+		for(int i = 1; i <= ConfigFile.config.getInt("max-xp-multiplier",1); i++){
+			if(p.hasPermission("dw.multiplier."+i)){
+				multiplier = i;
+			}
+		}
+
+		return multiplier;
+
+		// Below is the hard-coded, but sure way of getting an xp multiplier.
+		// Will definitely work, but has a max of 10 and is a lot of code.
+//		if(p.hasPermission("dw.multiplier.1")){
+//			return 1;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.2")){
+//			return 2;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.3")){
+//			return 3;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.4")){
+//			return 4;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.5")){
+//			return 5;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.6")){
+//			return 6;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.7")){
+//			return 7;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.8")){
+//			return 8;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.9")){
+//			return 9;
+//		}
+//
+//		if(p.hasPermission("dw.multiplier.10")){
+//			return 10;
+//		}
+
 	}
 }

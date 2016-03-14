@@ -17,11 +17,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatTabCompleteEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -223,7 +219,7 @@ public class GameListener implements Listener{
 			event.getBlock().setType(Blocks.getBrokeBlock(m));
 			Player player = event.getPlayer();
 			ExperienceManager expMan = new ExperienceManager(player);
-			expMan.changeExp(Blocks.getXpReward(m));
+			expMan.changeExp(Blocks.getXpReward(m)*expMan.getXPMultiplier());
 			ItemStack reward = Blocks.getReward(m);
 			reward.setAmount(Blocks.getRewardAmount(m));
 			if(Blocks.getDropType(m).equals("natural")){
@@ -473,7 +469,15 @@ public class GameListener implements Listener{
 			}
 		}
 	}
-	
+
+	@EventHandler
+	public void onXPChange(PlayerExpChangeEvent e){
+		if(e.getAmount() > 0){
+			ExperienceManager xpMan = new ExperienceManager(e.getPlayer());
+			e.setAmount(e.getAmount() * xpMan.getXPMultiplier());
+		}
+	}
+
 	public Main getMainPlugin() {
 		return pl;
 	}
