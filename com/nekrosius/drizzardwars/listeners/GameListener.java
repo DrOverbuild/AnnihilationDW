@@ -407,7 +407,7 @@ public class GameListener implements Listener{
 				for(Player p : TeamManager.getTeam(damager).getAlivePlayers()){
 						ScoreboardHandler.update(p);
 				}
-				damager.getInventory().addItem(new ItemStack(Material.GOLD_INGOT,3));
+				damager.getInventory().addItem(PlayerHandler.getKillReward());
 				victim.setHealth(0);
 			}
 		}else if(event.getDamager() instanceof Arrow && event.getEntity() instanceof Player) {
@@ -441,7 +441,7 @@ public class GameListener implements Listener{
 						if(Bukkit.getPlayer(p) != null)
 							ScoreboardHandler.update(Bukkit.getPlayer(p));
 					}
-					damager.getInventory().addItem(new ItemStack(Material.GOLD_INGOT,3));
+					damager.getInventory().addItem(PlayerHandler.getKillReward());
 					victim.setHealth(0);
 				}
 			}

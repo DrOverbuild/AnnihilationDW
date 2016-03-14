@@ -120,6 +120,10 @@ public class MessageFile {
 		config.addDefault("protection.protected","&cThis %s is protected!");
 		config.addDefault("protection.now-protected","&cYou have protected this %s!");
 		config.addDefault("protection.removed","&cThis %s is no longer protected.");
+		config.addDefault("currency.title", "&6Gold Ingot");
+		List<String> lore = new ArrayList<>();
+		lore.add("&3For use in the shops");
+		config.addDefault("currency.lore",lore);
 		config.addDefault("scoreboard.lobby.header", "&l&6Drizzard Wars");
 		config.addDefault("scoreboard.lobby.maps","&c{map_id}. &7{map_name} votes: &c{map_votes}");
 		List<String> contents1 = new ArrayList<>();

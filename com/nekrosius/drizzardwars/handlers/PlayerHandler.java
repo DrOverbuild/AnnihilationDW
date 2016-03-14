@@ -3,6 +3,7 @@ package com.nekrosius.drizzardwars.handlers;
 import java.util.*;
 import java.util.Map;
 
+import com.nekrosius.drizzardwars.files.MessageFile;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ import com.nekrosius.drizzardwars.files.MapFile;
 import com.nekrosius.drizzardwars.managers.BarManager;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class PlayerHandler {
 
@@ -228,6 +230,17 @@ public class PlayerHandler {
 
 	public static void clearPlayerGold(){
 		gold.clear();
+	}
+
+	public static ItemStack getKillReward(){
+		ItemStack is = new ItemStack(Material.GOLD_INGOT, 3);
+		if(MessageFile.getMessage("currency.title") != null && MessageFile.getMessage("currency.lore") != null) {
+			ItemMeta isMeta = is.getItemMeta();
+			isMeta.setDisplayName(MessageFile.formatMessage("currency.title"));
+			isMeta.setLore(MessageHandler.formatList(MessageFile.getMessageList("currency.lore")));
+			is.setItemMeta(isMeta);
+		}
+		return is;
 	}
 	
 	public static void addAbility(Player player, Ability ab) {

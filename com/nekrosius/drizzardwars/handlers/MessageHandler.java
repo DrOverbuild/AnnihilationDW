@@ -1,8 +1,8 @@
 package com.nekrosius.drizzardwars.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.avaje.ebeaninternal.server.cluster.mcast.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -44,6 +44,15 @@ public class MessageHandler {
 		if(str == null) return "";
 		str = ChatColor.translateAlternateColorCodes('&', str);
 		return str;
+	}
+
+	public static List<String> formatList(List<String> list){
+		List<String> newList = new ArrayList<>();
+		for(String str : list){
+			newList.add(format(str));
+		}
+
+		return newList;
 	}
 	
 	public static String formatPlayer(String str, Player player) {
