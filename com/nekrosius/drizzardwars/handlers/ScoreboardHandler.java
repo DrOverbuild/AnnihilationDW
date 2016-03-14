@@ -40,12 +40,10 @@ public class ScoreboardHandler {
 
 					if(template.toLowerCase().contains("{map_votes}")) {
 						for (GameMap m : MapManager.getVotableMaps()) {
-							Main.println("Map " + m.getId() + ": " + m.getName() + ", " + m.getVotes() + " votes");
 							sb.add(MessageHandler.format(formatMapVariables(template, m)), lineNumber--);
 						}
 					}else{
 						for (GameMap m : MapManager.getVotableMaps()) {
-							Main.println("Map " + m.getId() + ": " + m.getName() + ", " + m.getVotes() + " votes");
 							sb.add(MessageHandler.format(formatMapVariables(template, m)), m.getId());
 						}
 					}
