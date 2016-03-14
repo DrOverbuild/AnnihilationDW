@@ -1,6 +1,9 @@
 package com.nekrosius.drizzardwars.commands;
 
+import com.nekrosius.drizzardwars.handlers.Points;
+import com.nekrosius.drizzardwars.handlers.ScoreboardHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,9 +18,15 @@ import com.nekrosius.drizzardwars.inventories.MapsSetupMenu;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
 
+import java.util.Arrays;
+
 public class DWCommand implements CommandExecutor{
 	
 	private Main pl;
+
+	static ChatColor c1 = ChatColor.RED;
+	static ChatColor c2 = ChatColor.GRAY;
+
 	public DWCommand(Main plugin){
 		pl = plugin;
 	}
@@ -63,12 +72,109 @@ public class DWCommand implements CommandExecutor{
 							p.showPlayer(t);
 						}
 					}
+				}else if(args[0].equalsIgnoreCase("points")){
+					pointsCommand((Player)sender, commandLabel, new String[] {});
+					return true;
 				}
 			}
+
+			if(args.length > 1){
+				if(args[0].equalsIgnoreCase("points")){
+					String[] newArgs = Arrays.copyOfRange(args, 1,args.length);
+					pointsCommand((Player)sender, commandLabel, newArgs);
+				}
+			}
+
+
 		}
 		return true;
 	}
 
+	public void pointsCommand(Player sender, String cmdLabel, String[] args){
+		if(args.length == 0){
+			MessageHandler.sendMessage(sender, MessageHandler.formatInteger(MessageFile.getMessage("commands.points"), Points.getPoints(sender)));
+
+			if (sender.isOp()) {
+				sendCommandUsage(sender, cmdLabel + " points");
+			}
+			return;
+		}
+
+		if(!sender.isOp()){
+			sender.sendMessage(MessageFile.formatMessage("commands.not-op"));
+			return;
+		}
+
+		if(args.length == 1){
+			Player target = Bukkit.getPlayer(args[0]);
+			if(target == null){
+				sender.sendMessage(MessageHandler.format(MessageFile.getMessage("party.offline")));
+				return;
+			}
+			sender.sendMessage(MessageHandler.formatInteger(MessageHandler.formatString(
+					MessageFile.getMessage("commands.other-player-points"), target.getName()), Points.getPoints(target)));
+		}else if(args.length == 3){
+			if(Bukkit.getPlayer(args[1]) == null){
+				sender.sendMessage(MessageHandler.format(MessageFile.getMessage("party.offline")));
+				return;
+			}
+			Player target = Bukkit.getPlayer(args[1]);
+			if(args[0].equalsIgnoreCase("add")){
+				int amount;
+				try{
+					amount = Integer.parseInt(args[2]);
+				}catch(NumberFormatException e){
+					sender.sendMessage(ChatColor.RED + "Please type number!");
+					return;
+				}
+				Points.addPoints(target, amount);
+				sender.sendMessage(c2 + "You've added " + c1 + "" + amount + c2 + " points for " + c1 + target.getName());
+			}
+			else if(args[0].equalsIgnoreCase("set")) {
+				int amount;
+				try{
+					amount = Integer.parseInt(args[2]);
+				}catch(NumberFormatException e){
+					sender.sendMessage(ChatColor.RED + "Please type number!");
+					return;
+				}
+				Points.setPoints(target, amount);
+				sender.sendMessage(c2 + "You've set " + c1 + "" + amount + c2 + " points for " + c1 + target.getName());
+			}
+			else if(args[0].equalsIgnoreCase("withdraw")) {
+				int amount;
+				try{
+					amount = Integer.parseInt(args[2]);
+				}catch(NumberFormatException e){
+					sender.sendMessage(ChatColor.RED + "Please type number!");
+					return;
+				}
+				if(amount >= Points.getPoints(target)){
+					Points.setPoints(target, 0);
+				}else{
+					Points.setPoints(target, Points.getPoints(target) - amount);
+				}
+				sender.sendMessage(c2 + "You've removed " + c1 + "" + amount + c2 + " points for " + c1 + target.getName());
+			}
+			Points.savePoints(target);
+			ScoreboardHandler.update(target);
+		}else{
+			sendCommandUsage(sender,cmdLabel + " points");
+		}
+
+
+	}
+
+	public static void sendCommandUsage(CommandSender sender, String cmdLabel){
+		sender.sendMessage(c1 + "--- Commands ---");
+		sender.sendMessage(c1 + "/" + cmdLabel + " <playerName>:" + c2 + " gets number of points of <playerName>");
+		sender.sendMessage(c1 + "/" + cmdLabel + " add <playerName> <amount>" + c2 +
+				" adds specified amount of points to player's balance!");
+		sender.sendMessage(c1 + "/" + cmdLabel + " withdraw <playerName> <amount>" + c2 +
+				" removes specified amount of points from player's balance!");
+		sender.sendMessage(c1 + "/" + cmdLabel + " set <playerName> <amount>" + c2 +
+				" sets speciified amount of points as player's balance!");
+	}
 	
 	public Main getMainClass()
 	{

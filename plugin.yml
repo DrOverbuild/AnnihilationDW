@@ -14,10 +14,10 @@ commands:
     party:
         description: Create party
         usage: /<command>
-    points:
-        description: Manage points
-        aliases: [point, pts]
-        usage: /<command>
+#    points:
+#        description: Manage points
+#        aliases: [point, pts]
+#        usage: /<command>
     help:
         description: Get Help
         usage: /<command>

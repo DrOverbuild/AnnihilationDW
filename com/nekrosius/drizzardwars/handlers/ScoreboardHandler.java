@@ -36,8 +36,6 @@ public class ScoreboardHandler {
 				if(line.toLowerCase().contains("{maps}")){
 					String template = MessageFile.getMessage("scoreboard.lobby.maps");
 
-					Main.println("Template = " + template);
-
 					if(template.toLowerCase().contains("{map_votes}")) {
 						for (GameMap m : MapManager.getVotableMaps()) {
 							sb.add(MessageHandler.format(formatMapVariables(template, m)), lineNumber--);

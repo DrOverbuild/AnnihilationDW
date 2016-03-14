@@ -69,6 +69,7 @@ public class MessageFile {
 		config.addDefault("commands.not-op", "&cThis command is only for OPs!");
 		config.addDefault("commands.not-vip", "&cThis command is only for VIPs!");
 		config.addDefault("commands.points", "&7You have &c%t &7points!");
+		config.addDefault("commands.other-player-points","&7%s has &c%t&7 points!");
 		config.addDefault("commands.help","&e--------- &6DrizzardWars Help &e---------");
 		config.addDefault("commands.party_help.header","&e------------------- &6/party &e-------------------");
 		config.addDefault("commands.party_help.create","Create a party.");
@@ -79,9 +80,9 @@ public class MessageFile {
 		config.addDefault("commands.party_help.list","List players in your party.");
 		config.addDefault("commands.descriptions.dw", "Manage DrizzardWars.");
 		config.addDefault("commands.descriptions.help", "Show commands.");
-		config.addDefault("commands.descriptions.party", "Manage points.");
+		config.addDefault("commands.descriptions.party", "Manage parties.");
 		config.addDefault("commands.descriptions.votar", "Vote for a map.");
-		config.addDefault("commands.descriptions.points", "Configure DrizzardWars.");
+		config.addDefault("commands.descriptions.points", "Manage points.");
 		config.addDefault("vote.successful", "&7You've voted for &c%s!");
 		config.addDefault("vote.map-chosen", "&c%s &7will be next map!");
 		config.addDefault("vote.started", "&cYou can't vote right now!");

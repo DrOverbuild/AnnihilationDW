@@ -13,6 +13,10 @@ import com.nekrosius.drizzardwars.handlers.MessageHandler;
 import com.nekrosius.drizzardwars.handlers.Points;
 import com.nekrosius.drizzardwars.handlers.ScoreboardHandler;
 
+/**
+ * @deprecated Points are now managed with /dw points
+ */
+@Deprecated
 public class PointsCommand implements CommandExecutor {
 	
 	private Main pl;
@@ -20,8 +24,8 @@ public class PointsCommand implements CommandExecutor {
 		pl = plugin;
 	}
 
-	ChatColor c1 = ChatColor.RED;
-	ChatColor c2 = ChatColor.GRAY;
+	static ChatColor c1 = ChatColor.RED;
+	static ChatColor c2 = ChatColor.GRAY;
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
@@ -33,13 +37,7 @@ public class PointsCommand implements CommandExecutor {
 			}
 			if(args.length == 0){
 				MessageHandler.sendMessage(player, MessageHandler.formatInteger(MessageFile.getMessage("commands.points"), Points.getPoints(player)));
-				player.sendMessage(c1 + "--- Commands ---");
-				player.sendMessage(c1 + "/" + cmdLabel + " add <playerName> <amount> " + c2 + 
-						"adds specified amount of points to player's balance!");
-				player.sendMessage(c1 + "/" + cmdLabel + " withdraw <playerName> <amount> " + c2 + 
-						"removes specified amount of points from player's balance!");
-				player.sendMessage(c1 + "/" + cmdLabel + " set <playerName> <amount> " + c2 + 
-						"sets speciified amount of points as player's balance!");
+				sendCommandUsage(player,cmdLabel);
 				return true;
 			} else if(args.length == 3){
 				if(Bukkit.getPlayer(args[1]) == null){
@@ -87,28 +85,16 @@ public class PointsCommand implements CommandExecutor {
 				ScoreboardHandler.update(target);
 				
 			}else {
-				player.sendMessage(c1 + "--- Commands ---");
-				player.sendMessage(c1 + "/" + cmdLabel + " add <playerName> <amount> " + c2 + 
-						"adds specified amount of points to player's balance!");
-				player.sendMessage(c1 + "/" + cmdLabel + " withdraw <playerName> <amount> " + c2 + 
-						"removes specified amount of points from player's balance!");
-				player.sendMessage(c1 + "/" + cmdLabel + " set <playerName> <amount> " + c2 + 
-						"sets speciified amount of points as player's balance!");
+				sendCommandUsage(player, cmdLabel);
 			}
 		} else {
 			if(args.length == 0){
-				sender.sendMessage(c1 + "--- Commands ---");
-				sender.sendMessage(c1 + "/" + cmdLabel + " add <playerName> <amount> " + c2 + 
-						"adds specified amount of points to player's balance!");
-				sender.sendMessage(c1 + "/" + cmdLabel + " withdraw <playerName> <amount> " + c2 + 
-						"removes specified amount of points from player's balance!");
-				sender.sendMessage(c1 + "/" + cmdLabel + " set <playerName> <amount> " + c2 + 
-						"sets speciified amount of points as player's balance!");
+				sendCommandUsage(sender, cmdLabel);
 				return true;
 			} else if(args.length == 3){
 				if(Bukkit.getPlayer(args[1]) == null){
 					sender.sendMessage(MessageHandler.format(MessageFile.getMessage("party.offline")));
-					return true;	
+					return true;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
 				if(args[0].equalsIgnoreCase("add")){
@@ -151,13 +137,7 @@ public class PointsCommand implements CommandExecutor {
 				ScoreboardHandler.update(target);
 				
 			}else {
-				sender.sendMessage(c1 + "--- Commands ---");
-				sender.sendMessage(c1 + "/" + cmdLabel + " add <playerName> <amount> " + c2 + 
-						"adds specified amount of points to player's balance!");
-				sender.sendMessage(c1 + "/" + cmdLabel + " withdraw <playerName> <amount> " + c2 + 
-						"removes specified amount of points from player's balance!");
-				sender.sendMessage(c1 + "/" + cmdLabel + " set <playerName> <amount> " + c2 + 
-						"sets speciified amount of points as player's balance!");
+				sendCommandUsage(sender,cmdLabel);
 			}
 		}
 		return true;
@@ -165,5 +145,15 @@ public class PointsCommand implements CommandExecutor {
 	
 	public Main getPlugin() {
 		return pl;
+	}
+
+	public static void sendCommandUsage(CommandSender player, String cmdLabel){
+		player.sendMessage(c1 + "--- Commands ---");
+		player.sendMessage(c1 + "/" + cmdLabel + " add <playerName> <amount> " + c2 +
+				"adds specified amount of points to player's balance!");
+		player.sendMessage(c1 + "/" + cmdLabel + " withdraw <playerName> <amount> " + c2 +
+				"removes specified amount of points from player's balance!");
+		player.sendMessage(c1 + "/" + cmdLabel + " set <playerName> <amount> " + c2 +
+				"sets speciified amount of points as player's balance!");
 	}
 }
