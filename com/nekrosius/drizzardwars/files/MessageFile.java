@@ -43,8 +43,8 @@ public class MessageFile {
 		info.add("&6Enjoy your stay!");
 		info.add("&3---------------");
 		config.addDefault("player.join-information", info);
-		config.addDefault("player.join", "&c%p &8has joined the server!");
-		config.addDefault("player.leave", "&c%p &8has left the server!");
+		config.addDefault("player.join", "&c%p &8has joined the game! (%cp/%mp)");
+		config.addDefault("player.leave", "&c%p &8has left the game! (%cp/%mp)");
 		config.addDefault("player.kill", "%p&7 has killed %v!");
 		config.addDefault("game.until-start", "&6The game will start in &c%t sec.&6!");
 		config.addDefault("game.not-enough-players", "&7Game won't start. Minimum amount of players is &c%t!");

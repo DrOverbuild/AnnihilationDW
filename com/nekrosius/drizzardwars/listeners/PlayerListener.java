@@ -89,7 +89,8 @@ public class PlayerListener implements Listener {
 		PlayerFile.createConfig(player);
 		if(Game.getGameState().equals(GameState.LOBBY)){
 			String msg = MessageFile.getMessage("player.join");
-			msg = MessageHandler.formatPlayer(msg, player);
+			msg = MessageHandler.formatPlayer(msg, player).replace("%cp","" + Bukkit.getOnlinePlayers().size()).replace("%mp", ""
+					+ ConfigFile.config.getInt("minimum-player-amount"));
 			for(Player p : Bukkit.getOnlinePlayers()){
 				MessageHandler.sendMessage(p, msg);
 			}
@@ -168,7 +169,8 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		if(Game.getGameState().equals(GameState.LOBBY)){
 			String msg = MessageFile.getMessage("player.leave");
-			msg = MessageHandler.formatPlayer(msg, player);
+			msg = MessageHandler.formatPlayer(msg, player).replace("%cp","" + Bukkit.getOnlinePlayers().size()).replace("%mp", ""
+					+ ConfigFile.config.getInt("minimum-player-amount"));
 			for(Player p : Bukkit.getOnlinePlayers()){
 				MessageHandler.sendMessage(p, msg);
 			}
