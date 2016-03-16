@@ -25,12 +25,14 @@ public class Kits {
 		Material material;
 		String name;
 		int icon;
+		int iconData;
 		int price;
 		List<String> lore;
 		int i = 0;
 		for(String kit : KitsFile.config.getKeys(false)){
 			lore = new ArrayList<String>();
 			icon = KitsFile.config.getInt(kit + ".icon");
+			iconData = KitsFile.config.getInt(kit + ".icon-data",0);
 			material = Material.getMaterial(icon);
 			name = MessageHandler.format(KitsFile.config.getString(kit + ".name"));
 			price = KitsFile.config.getInt(kit + ".price");
@@ -47,7 +49,7 @@ public class Kits {
 			for(String desc : KitsFile.config.getStringList(kit + ".description")) {
 				lore.add(MessageHandler.format(desc));
 			}
-			inv.setItem(i, ItemStackGenerator.createItem(material, 0, 0, name, lore));
+			inv.setItem(i, ItemStackGenerator.createItem(material, 0, iconData, name, lore));
 			i++;
 		}
 		player.openInventory(inv);
@@ -130,10 +132,9 @@ public class Kits {
 			path = kit + ".items." + index;
 			id = KitsFile.config.getInt(path + ".id");
 			amount = KitsFile.config.getInt(path + ".amount");
-			data = KitsFile.config.getInt(path + ".data");
+			data = KitsFile.config.getInt(path + ".data",0);
 			if(amount == 0) amount = 1;
-			item = new ItemStack(Material.getMaterial(id), amount);
-			item.getData().setData((byte) data);
+			item = ItemStackGenerator.createItem(Material.getMaterial(id),amount,data,null,null);
 			for(String str : KitsFile.config.getStringList(path + ".enchantment")) {
 				String[] enchantments = str.split(", ");
 				enchId = Integer.parseInt(enchantments[0]);
