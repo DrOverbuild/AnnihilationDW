@@ -47,6 +47,12 @@ public class MapManager {
 		String[] files = file.list();
 		Bukkit.unloadWorld(mapName, false);
 		deleteWorld(mapName);
+
+		if (files.length == 0){
+			new WorldCreator(mapsPath + "Default Map").createWorld();
+			files = file.list();
+		}
+
 		int id = 1;
 		for(String str : files){
 			if((new File(mapsPath + str + File.separator).isDirectory())){
