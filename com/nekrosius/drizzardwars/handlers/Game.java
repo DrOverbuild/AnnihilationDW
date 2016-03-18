@@ -103,7 +103,8 @@ public class Game {
 	 */
 	public static void setupPlayer(Player player, Team team) {
 		PlayerHandler.unhidePlayer(player);
-		PlayerHandler.setSpectating(player , getPhase() > 3);
+		Main.println("Setting player spectating to " + (getPhase() > 3));
+		PlayerHandler.setSpectating(player, getPhase() > 3);
 		PlayerHandler.setTeamOfPlayer(player, team);
 		player.teleport((getPhase() > 3)?team.getSpectatorSpawnpoint():team.getSpawnpoint());
 		player.getInventory().clear();
