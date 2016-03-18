@@ -106,18 +106,6 @@ public class PlayerListener implements Listener {
 				TabHandler.setColor(player);
 				BarManager.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
 				//BossBarAPI.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
-//				int i = 0;
-//				for(Player p : Bukkit.getOnlinePlayers()){
-//					if(p != player){
-//						if(BossBarAPI.getMessage(p) != null){
-//							if(BossBarAPI.getHealth(p) > 1){
-//								BossBarAPI.setMessage(player, BossBarAPI.getMessage(p), (int)BossBarAPI.getHealth(p));
-//								break;
-//							}
-//						}
-//					}
-//					if(i == 30) break;
-//				}
 			}else{
 				BarManager.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
 				//BossBarAPI.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
@@ -183,9 +171,7 @@ public class PlayerListener implements Listener {
 		if(Game.isGameStarted() && Game.getPhase()>3){
 			for(Team t:TeamManager.getTeams()){
 				if(t.getAlivePlayers().size() == 1){
-					Main.println("Team " + t.getName() + " has 1 player.");
 					Team t2 = TeamManager.getTeam(player);
-					Main.println("Player was from team " + t2);
 					if(t2!=null&&t2.getName().equals(t.getName())) {
 						TeamManager.destroyTeam(t);
 					}
@@ -194,8 +180,8 @@ public class PlayerListener implements Listener {
 		}
 
 		if(Main.getAlivePlayers().size() == 1 && Game.isGameStarted()){
-			Game.finish(null);
 			Main.println("Finishing game because there are no players online who are not spectating.");
+			Game.finish(null);
 			return;
 		}
 

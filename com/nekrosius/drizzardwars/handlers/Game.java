@@ -103,9 +103,9 @@ public class Game {
 	 */
 	public static void setupPlayer(Player player, Team team) {
 		PlayerHandler.unhidePlayer(player);
-		PlayerHandler.setSpectating(player , false);
+		PlayerHandler.setSpectating(player , getPhase() > 3);
 		PlayerHandler.setTeamOfPlayer(player, team);
-		player.teleport(team.getSpawnpoint());
+		player.teleport((getPhase() > 3)?team.getSpectatorSpawnpoint():team.getSpawnpoint());
 		player.getInventory().clear();
 		setupGameInventory(player);
 		ScoreboardHandler.update(player);
@@ -243,6 +243,7 @@ public class Game {
 		phaseTime /= 20;
 		if(phaseTime <= 0){
 			Team team = TeamManager.getMostKills();
+			Main.println("Finishing game because we're starting last phase and phaseTime is less than or equal to 0.");
 			finish(team);
 			return;
 		}
@@ -263,6 +264,7 @@ public class Game {
 					if(phaseTime<=0){
 						this.cancel();
 						Team team = TeamManager.getMostKills();
+						Main.println("Finishing game because phaseTime reached 0.");
 						finish(team);
 					}
 				}else{

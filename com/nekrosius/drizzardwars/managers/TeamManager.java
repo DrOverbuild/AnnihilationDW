@@ -125,6 +125,7 @@ public class TeamManager {
 			if(team.getNexusHealth() > 0) ++aliveTeams;
 		}
 		if(aliveTeams == 1){
+			Main.println("Finishing game because only one team with a nexus health of 1 or more was found.");
 			Game.finish(getMostKills());
 		}
 	}

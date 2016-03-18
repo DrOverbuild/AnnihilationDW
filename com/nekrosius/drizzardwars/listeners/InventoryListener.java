@@ -112,6 +112,7 @@ public class InventoryListener implements Listener{
 					GameMap map = MapManager.chooseMap();
 					Game.start(map);
 				}else if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Stop game")){
+					Main.println("Finishing game because Operator ended game manually.");
 					Game.finish(TeamManager.getMostKills());
 				}
 			} else if(event.getSlot() == 3){
