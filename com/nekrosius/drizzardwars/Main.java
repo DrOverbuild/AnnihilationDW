@@ -257,7 +257,7 @@ public class Main extends JavaPlugin {
 	public static List<Player> getAlivePlayers(){
 		List<Player> alivePlayers = new ArrayList<>();
 		for(Player p:Bukkit.getOnlinePlayers()){
-			if(PlayerHandler.isSpectating(p)){
+			if(!PlayerHandler.isSpectating(p)){
 				alivePlayers.add(p);
 			}
 		}
