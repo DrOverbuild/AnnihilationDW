@@ -1,5 +1,6 @@
 package com.nekrosius.drizzardwars.handlers;
 
+import com.nekrosius.drizzardwars.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -32,14 +33,15 @@ public class TabHandler {
 
 		String name = player.getName();
 
-		if(player.getName().length() >= 14){
-			name = player.getName().substring(0, 14);
-		}
-
 		if(PlayerHandler.isSpectating(player)){
+			if(player.getName().length() >= 14){
+				name = player.getName().substring(0, 14);
+			}
 			ChatColor color = ChatColor.GRAY;
 			player.setPlayerListName(color+name);
+			Main.println("Setting player's tab color to Gray");
 		}else{
+			Main.println("Setting player's tab color to Normal");
 			player.setPlayerListName(player.getName());
 		}
 
