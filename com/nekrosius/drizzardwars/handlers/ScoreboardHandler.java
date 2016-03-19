@@ -47,6 +47,9 @@ public class ScoreboardHandler {
 					}
 				}else if(line.toLowerCase().contains("{party}")){
 					for(String line2 : getPartyLines(player)){
+						if(line2.length() > 47){
+							line2 = line2.substring(0,47);
+						}
 						sb.add(MessageHandler.format(line2),lineNumber--);
 					}
 				}
@@ -97,7 +100,10 @@ public class ScoreboardHandler {
 	public static String formatTeamHealthVariables(String line, Team team){
 		line = line.replace("{team_color}",team.getColor() + "");
 		line = line.replace("{team_name}", team.getName());
-		line = line.replace("{team_nexus_health}", team.getNexusLocation() + "");
+		line = line.replace("{team_nexus_health}", team.getNexusHealth() + "");
+		if(line.length() > 47){
+			line = line.substring(0,47);
+		}
 		return  line;
 	}
 
@@ -105,6 +111,9 @@ public class ScoreboardHandler {
 		line = line.replace("{map_id}", map.getId() + "");
 		line = line.replace("{map_name}",map.getName());
 		line = line.replace("{map_votes}", map.getVotes()+"");
+		if(line.length() > 47){
+			line = line.substring(0,47);
+		}
 		return line;
 	}
 
@@ -119,6 +128,9 @@ public class ScoreboardHandler {
 		line = line.replace("{team_nexus_health}", getTeamNexusHealth(p));
 		line = line.replace("{time_remaining}", getTimeRemaining());
 		line = line.replace("{phase_message}", MessageHandler.getPhaseMessage(Game.getPhase()));
+		if(line.length() > 47){
+			line = line.substring(0,47);
+		}
 		return line;
 	}
 
