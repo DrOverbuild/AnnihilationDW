@@ -76,7 +76,7 @@ public class PlayerListener implements Listener {
 			}
 
 			if (Game.getPhase() > 3 && !event.getPlayer().hasPermission("drwars.spectator")) {
-				event.disallow(Result.KICK_OTHER, MessageHandler.format(MessageFile.getMessage("kick.too-late")));
+				event.disallow(Result.KICK_OTHER, MessageHandler.format(MessageFile.getMessage("kick.after-phase-3")));
 			}
 		}
 	}

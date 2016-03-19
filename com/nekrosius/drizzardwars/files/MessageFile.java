@@ -103,6 +103,7 @@ public class MessageFile {
 		config.addDefault("kick.full", "&cServer is full! Try again later!");
 		config.addDefault("kick.too-late", "&cYou can no longer join!");
 		config.addDefault("kick.lost", "&cYour team has lost!");
+		config.addDefault("kick.after-phase-3","&cThe game is after phase 3!");
 		config.addDefault("party.create", "&7You've successfully created new party!");
 		config.addDefault("party.offline", "&cPlayer is not found!");
 		config.addDefault("party.invite", "&7You've invited %p to party!");
