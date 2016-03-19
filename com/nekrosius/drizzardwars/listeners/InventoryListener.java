@@ -223,6 +223,7 @@ public class InventoryListener implements Listener{
 				}
 				Bukkit.unloadWorld(world, true);
 				player.closeInventory();
+				Lobby.setupLobby(player);
 				AdminMenu.setup(player);
 			}
 			//NEXUS HELPER
