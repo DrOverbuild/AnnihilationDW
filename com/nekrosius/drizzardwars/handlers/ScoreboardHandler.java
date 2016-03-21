@@ -60,8 +60,16 @@ public class ScoreboardHandler {
 
 			org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam("lobby");
 			newTeam.setPrefix(ChatColor.GREEN + "");
+
+			org.bukkit.scoreboard.Team vipTeam = sb.getScoreboard().registerNewTeam("vip");
+			vipTeam.setPrefix(MessageFile.formatMessage("vip-prefix") + ChatColor.GREEN + "");
+
 			for(Player p: Bukkit.getOnlinePlayers()){
-				newTeam.addPlayer(p);
+				if(player.hasPermission("drwars.vip")){
+					vipTeam.addPlayer(p);
+				}else {
+					newTeam.addPlayer(p);
+				}
 			}
 		} else {
 			sb = new SimpleScoreboard(formatScoreboardVariables(MessageHandler.format(MessageFile.getMessage("scoreboard.in_game.header")),player));

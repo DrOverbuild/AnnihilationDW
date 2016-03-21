@@ -122,6 +122,7 @@ public class MessageFile {
 		config.addDefault("protection.protected","&cThis %s is protected!");
 		config.addDefault("protection.now-protected","&cYou have protected this %s!");
 		config.addDefault("protection.removed","&cThis %s is no longer protected.");
+		config.addDefault("vip-prefix","&f[&e&lVIP&f]");
 		config.addDefault("currency.title", "&6Gold Ingot");
 		List<String> lore = new ArrayList<>();
 		lore.add("&3For use in the shops");

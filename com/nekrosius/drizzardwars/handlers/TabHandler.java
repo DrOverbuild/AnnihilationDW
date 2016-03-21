@@ -1,6 +1,7 @@
 package com.nekrosius.drizzardwars.handlers;
 
 import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.files.MessageFile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,20 +17,12 @@ public class TabHandler {
 	//Temp solution
 
 	/**
-	 * All this method does is put the player in the lobby team if the gameState==LOBBY or, if the player is
-	 * spectating, change the list name to ChatColor.gray + player.getName(). If the player already has a team, then
-	 * his nametag and his name on the tab list is already the color of his team.
+	 * All this method does is, if the player is spectating, change the list name to ChatColor.gray + player.getName().
+	 * If the player already has a team, then his nametag and his name on the tab list is already the color of his team.
 	 * @param player
 	 */
 	public static void setColor(Player player){
-		if(Game.getGameState().equals(GameState.LOBBY)) {
-			org.bukkit.scoreboard.Team lobbyTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("lobby");
-			if (lobbyTeam == null) {
-				lobbyTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("lobby");
-			}
-			lobbyTeam.setPrefix(ChatColor.GREEN + "");
-			lobbyTeam.addPlayer(player);
-		}
+		// We don't need to do any team managing here if players can't see the main scoreboard.
 
 		String name = player.getName();
 
