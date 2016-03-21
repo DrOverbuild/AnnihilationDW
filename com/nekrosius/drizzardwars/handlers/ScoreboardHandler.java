@@ -62,7 +62,7 @@ public class ScoreboardHandler {
 			newTeam.setPrefix(ChatColor.GREEN + "");
 
 			org.bukkit.scoreboard.Team vipTeam = sb.getScoreboard().registerNewTeam("vip");
-			vipTeam.setPrefix(MessageFile.formatMessage("vip-prefix") + ChatColor.GREEN + "");
+			vipTeam.setPrefix(MessageFile.formatMessage("vip-prefix") + ChatColor.GREEN + " ");
 
 			for(Player p: Bukkit.getOnlinePlayers()){
 				if(player.hasPermission("drwars.vip")){
