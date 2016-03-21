@@ -5,15 +5,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.managers.MapManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public class VoteCommand implements CommandExecutor {
+public class VoteCommand implements CommandExecutor, TabCompleter{
 	
 	private Main pl;
 	public VoteCommand(Main plugin){
@@ -75,5 +79,24 @@ public class VoteCommand implements CommandExecutor {
 	public Main getMainClass()
 	{
 		return pl;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
+		Main.println("Tab Complete!");
+		Main.println("Command: " + cmd.getName());
+		Main.println("args.length: " + args.length);
+		if(args.length == 1){
+			Main.println("args[0]: " + args[0]);
+			List<String> completions = new ArrayList<>();
+			for(GameMap map: MapManager.getVotableMaps()){
+				if(map.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
+					completions.add(map.getName());
+				}
+			}
+			Collections.sort(completions);
+			return completions;
+		}
+		return null;
 	}
 }

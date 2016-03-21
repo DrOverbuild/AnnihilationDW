@@ -9,7 +9,9 @@ public class CommandManager {
 	public CommandManager(Main plugin) {
 		pl = plugin;
 		pl.getCommand("drizzardwars").setExecutor(new DWCommand(pl));
-		pl.getCommand("vote").setExecutor(new VoteCommand(pl));
+		VoteCommand voteCommand = new VoteCommand(pl);
+		pl.getCommand("vote").setExecutor(voteCommand);
+		pl.getCommand("vote").setTabCompleter(voteCommand);
 		pl.getCommand("party").setExecutor(new PartyCommand(pl));
 //		pl.getCommand("points").setExecutor(new PointsCommand(pl));
 		pl.getCommand("help").setExecutor(new HelpCommand());

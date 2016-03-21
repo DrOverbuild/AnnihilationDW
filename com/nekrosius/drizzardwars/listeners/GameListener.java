@@ -1,6 +1,8 @@
 package com.nekrosius.drizzardwars.listeners;
 
 import com.nekrosius.drizzardwars.files.ConfigFile;
+import com.nekrosius.drizzardwars.handlers.*;
+import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.ProtectedChestManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.*;
@@ -28,13 +30,6 @@ import org.bukkit.util.Vector;
 import com.nekrosius.drizzardwars.Main;
 import com.nekrosius.drizzardwars.files.MessageFile;
 import com.nekrosius.drizzardwars.files.ShopFile;
-import com.nekrosius.drizzardwars.handlers.Game;
-import com.nekrosius.drizzardwars.handlers.MessageHandler;
-import com.nekrosius.drizzardwars.handlers.PlayerHandler;
-import com.nekrosius.drizzardwars.handlers.Points;
-import com.nekrosius.drizzardwars.handlers.ScoreboardHandler;
-import com.nekrosius.drizzardwars.handlers.TabHandler;
-import com.nekrosius.drizzardwars.handlers.Team;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Blocks;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Protect;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Signs;

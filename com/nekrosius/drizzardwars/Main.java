@@ -2,12 +2,16 @@ package com.nekrosius.drizzardwars;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.nekrosius.drizzardwars.handlers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -20,11 +24,6 @@ import com.nekrosius.drizzardwars.abilities.Berserker;
 import com.nekrosius.drizzardwars.abilities.Defender;
 import com.nekrosius.drizzardwars.abilities.Enchanter;
 import com.nekrosius.drizzardwars.files.ConfigFile;
-import com.nekrosius.drizzardwars.handlers.Game;
-import com.nekrosius.drizzardwars.handlers.Lobby;
-import com.nekrosius.drizzardwars.handlers.MessageHandler;
-import com.nekrosius.drizzardwars.handlers.PlayerHandler;
-import com.nekrosius.drizzardwars.handlers.TabHandler;
 import com.nekrosius.drizzardwars.managers.BarManager;
 import com.nekrosius.drizzardwars.managers.CommandManager;
 import com.nekrosius.drizzardwars.managers.FileManager;
@@ -263,5 +262,4 @@ public class Main extends JavaPlugin {
 		}
 		return alivePlayers;
 	}
-	
 }
