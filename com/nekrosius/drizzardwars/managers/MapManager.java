@@ -2,6 +2,7 @@ package com.nekrosius.drizzardwars.managers;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -205,18 +206,12 @@ public class MapManager {
 	public static void pickRandomVotableMaps(){
 		votableMaps.clear();
 
-		if(getMaps().size()>5){
-			Random r = new Random();
-			do{
-				int num = r.nextInt(getMaps().size());
-				if(!votableMaps.contains(getMaps().get(num))){
-					votableMaps.add(getMaps().get(num));
-				}
-			}while (votableMaps.size() <= 5);
+		Collections.shuffle(maps);
+
+		if(maps.size() > 5) {
+			votableMaps.addAll(maps.subList(0, 5));
 		}else{
-			for(GameMap m:getMaps()){
-				votableMaps.add(m);
-			}
+			votableMaps.addAll(maps);
 		}
 	}
 }
