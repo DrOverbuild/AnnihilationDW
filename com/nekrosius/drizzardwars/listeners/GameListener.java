@@ -127,24 +127,28 @@ public class GameListener implements Listener{
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String message = event.getMessage();
+		String playerName = player.getName();
+		if(player.hasPermission("drwars.vip")){
+			playerName = MessageFile.formatMessage("vip-prefix") + " " + playerName;
+		}
 		if(PlayerHandler.isSpectating(player)){
 			for(Player p : Bukkit.getOnlinePlayers()){
 				if(PlayerHandler.isSpectating(p)){
 					event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all 
 							+ ") [" + ChatColor.LIGHT_PURPLE + "Spectator" + ChatColor.GRAY + "] " 
-							+ ChatColor.WHITE + player.getName() + ": " + message);
+							+ ChatColor.WHITE + playerName + ": " + message);
 				}
 			}
 		}
 		else if(!TeamManager.hasTeam(player)){
 			event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all 
 					+ ") [" + ChatColor.DARK_PURPLE + "Lobby" + ChatColor.GRAY + "] "
-					+ ChatColor.WHITE + player.getName() + ": " + message);
+					+ ChatColor.WHITE + playerName + ": " + message);
 		}else if(event.getMessage().startsWith("!")){
 			message = message.replace("!", "");
 			event.setFormat(ChatColor.GRAY + "(" + MessageHandler.all 
 					+ ") [" + TeamManager.getTeam(player).getColor() + TeamManager.getTeam(player).getName() + ChatColor.GRAY + "] "
-					+ ChatColor.WHITE + player.getName() + ": " + message);
+					+ ChatColor.WHITE + playerName + ": " + message);
 		}else{
 			event.setCancelled(true);
 			ChatColor color = TeamManager.getTeam(player).getColor();
@@ -153,7 +157,7 @@ public class GameListener implements Listener{
 				if(TeamManager.getTeam(p).equals(TeamManager.getTeam(player))){
 					p.sendMessage(ChatColor.GRAY + "(" + MessageHandler.team 
 							+ ") [" + color + name + ChatColor.GRAY 
-							+ "] " + ChatColor.WHITE + player.getName() + ": " + message);
+							+ "] " + ChatColor.WHITE + playerName + ": " + message);
 				}
 			}
 		}
