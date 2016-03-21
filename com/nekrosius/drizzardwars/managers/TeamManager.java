@@ -187,9 +187,11 @@ public class TeamManager {
 
 	public static void destroyTeam(Team team){
 		if(team == null)return;
-		String msg = MessageHandler.formatString(MessageFile.getMessage("team.destroyed"), team.getColor() + team.getName());
-		for(Player p : Bukkit.getOnlinePlayers()){
-			MessageHandler.sendMessage(p, msg);
+		if(!team.hasBeenDestroyedBefore()) {
+			String msg = MessageHandler.formatString(MessageFile.getMessage("team.destroyed"), team.getColor() + team.getName());
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				MessageHandler.sendMessage(p, msg);
+			}
 		}
 		team.getNexusLocation().getWorld().getBlockAt(team.getNexusLocation()).setType(Material.AIR);
 		if(team.getNexusHealth() > 0){

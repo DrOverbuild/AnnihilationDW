@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.nekrosius.drizzardwars.files.ConfigFile;
@@ -167,6 +168,10 @@ public class Team {
 		}else {
 			return this.getSpawnpoint();
 		}
+	}
+
+	public boolean hasBeenDestroyedBefore(){
+		return !getNexusLocation().getBlock().getType().equals(Material.ENDER_STONE);
 	}
 
 }
