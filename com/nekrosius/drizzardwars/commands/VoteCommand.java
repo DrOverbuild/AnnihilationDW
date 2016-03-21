@@ -83,11 +83,7 @@ public class VoteCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] args) {
-		Main.println("Tab Complete!");
-		Main.println("Command: " + cmd.getName());
-		Main.println("args.length: " + args.length);
 		if(args.length == 1){
-			Main.println("args[0]: " + args[0]);
 			List<String> completions = new ArrayList<>();
 			for(GameMap map: MapManager.getVotableMaps()){
 				if(map.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
