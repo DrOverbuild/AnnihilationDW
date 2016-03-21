@@ -4,6 +4,11 @@ public class GameMap {
 	
 	private int votes;
 	private String name;
+
+	/**
+	 * @deprecated Use GameMap#name instead.
+	 */
+	@Deprecated
 	private int id;
 	
 	public GameMap(int id, String name){
@@ -35,11 +40,17 @@ public class GameMap {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	/**
+	 * @deprecated Use GameMap#getName() instead.
+	 * @return
+	 */
+	@Deprecated
 	public int getId() {
 		return id;
 	}
 
+	@Deprecated
 	public void setId(int id) {
 		this.id = id;
 	}

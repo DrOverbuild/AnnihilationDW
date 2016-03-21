@@ -30,7 +30,7 @@ public class ScoreboardHandler {
 
 			sb = new SimpleScoreboard(formatScoreboardVariables(MessageHandler.format(MessageFile.getMessage("scoreboard.lobby.header")),player));
 
-			int lineNumber = 0;
+			int lineNumber = -1;
 
 			for(String line:MessageHandler.scoreboardLobbyContents){
 				if(line.toLowerCase().contains("{maps}")){
@@ -42,7 +42,7 @@ public class ScoreboardHandler {
 						}
 					}else{
 						for (GameMap m : MapManager.getVotableMaps()) {
-							sb.add(MessageHandler.format(formatMapVariables(template, m)), m.getId());
+							sb.add(MessageHandler.format(formatMapVariables(template, m)), m.getVotes());
 						}
 					}
 				}else if(line.toLowerCase().contains("{party}")){
@@ -74,7 +74,7 @@ public class ScoreboardHandler {
 		} else {
 			sb = new SimpleScoreboard(formatScoreboardVariables(MessageHandler.format(MessageFile.getMessage("scoreboard.in_game.header")),player));
 
-			int lineNumber = 0;
+			int lineNumber = -1;
 
 			for(String line : MessageHandler.scoreboardInGameContents){
 				if(line.toLowerCase().contains("{team_health}")){
@@ -116,7 +116,6 @@ public class ScoreboardHandler {
 	}
 
 	public static String formatMapVariables(String line, GameMap map){
-		line = line.replace("{map_id}", map.getId() + "");
 		line = line.replace("{map_name}",map.getName());
 		line = line.replace("{map_votes}", map.getVotes()+"");
 		if(line.length() > 47){

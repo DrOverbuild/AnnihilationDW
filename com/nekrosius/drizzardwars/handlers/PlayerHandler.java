@@ -69,8 +69,8 @@ public class PlayerHandler {
 		MapManager.getVotableMaps().sort(new Comparator<GameMap>() {
 			@Override
 			public int compare(GameMap o1, GameMap o2) {
-				if(o1.getId() > o2.getId()) return -1;
-				if(o1.getId() < o2.getId()) return 1;
+				if(o1.getVotes() > o2.getVotes()) return -1;
+				if(o1.getVotes() < o2.getVotes()) return 1;
 				return 0;
 			}
 		});

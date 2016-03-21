@@ -29,7 +29,7 @@ public class HelpCommand implements CommandExecutor{
 		messages.add(ChatColor.GOLD + "/dw points: " + ChatColor.RESET + MessageFile.formatMessage("commands.descriptions.points"));
 		messages.add(ChatColor.GOLD + "/help: " + ChatColor.RESET + MessageFile.formatMessage("commands.descriptions.help"));
 		messages.add(ChatColor.GOLD + "/party: " + ChatColor.RESET + MessageFile.formatMessage("commands.descriptions.party"));
-		messages.add(ChatColor.GOLD + "/votar: " + ChatColor.RESET + MessageFile.formatMessage("commands.descriptions.votar"));
+		messages.add(ChatColor.GOLD + "/vote: " + ChatColor.RESET + MessageFile.formatMessage("commands.descriptions.votar"));
 
 		sender.sendMessage(messages.toArray(new String[]{}));
 		return true;

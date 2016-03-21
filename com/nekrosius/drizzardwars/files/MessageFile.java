@@ -90,6 +90,7 @@ public class MessageFile {
 		config.addDefault("vote.cant-vote", "&cYou can't vote right now!");
 		config.addDefault("vote.reminder", "&7Use /vote <mapId> to vote for next map!");
 		config.addDefault("vote.map-unavailable","&cMap %s cannot be voted for at this moment.");
+		config.addDefault("vote.map-not-found","&c%s is not a valid map.");
 		config.addDefault("kits.menu-name", "&6Choose your kit!");
 		config.addDefault("kits.vip-only", "&cThis kit can only be used by VIP!");
 		config.addDefault("kits.everyone", "&cThis kit can be used by everyone!");
@@ -128,7 +129,7 @@ public class MessageFile {
 		lore.add("&3For use in the shops");
 		config.addDefault("currency.lore",lore);
 		config.addDefault("scoreboard.lobby.header", "&l&6Drizzard Wars");
-		config.addDefault("scoreboard.lobby.maps","&c{map_id}. &7{map_name} votes: &c{map_votes}");
+		config.addDefault("scoreboard.lobby.maps","&7{map_name} votes:");
 		List<String> contents1 = new ArrayList<>();
 		contents1.add("{maps}");
 		contents1.add("");

@@ -88,11 +88,20 @@ public class MapManager {
 		}
 		return null;
 	}
+
+	public static GameMap getMapOfName(String mapName){
+		for(GameMap map : maps){
+			if(map.getName().equalsIgnoreCase(mapName)){
+				return map;
+			}
+		}
+		return null;
+	}
 	
 	public static GameMap chooseMap() {
 		List<GameMap> mostVotes = new ArrayList<GameMap>();
 		int max = maxVotes();
-		for(GameMap map : getMaps()){
+		for(GameMap map : getVotableMaps()){
 			if(map.getVotes() == max){
 				mostVotes.add(map);
 			}
