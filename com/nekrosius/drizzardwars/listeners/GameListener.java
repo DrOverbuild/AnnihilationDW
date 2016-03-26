@@ -107,10 +107,14 @@ public class GameListener implements Listener{
 		if(!Game.isGameStarted()) return;
 		Player player = event.getPlayer();
 		event.getTabCompletions().clear();
+		String playerName = player.getName();
+		if(player.hasPermission("drwars.vip")&&!player.isOp()){
+			playerName = MessageFile.formatMessage("vip-prefix") + " " + playerName;
+		}
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			p.sendMessage(ChatColor.GRAY + "(" + MessageHandler.all 
 					+ ") [" + TeamManager.getTeam(player).getColor() + TeamManager.getTeam(player).getName() + ChatColor.GRAY + "] " 
-					+ ChatColor.WHITE + player.getName() + ": " + event.getChatMessage());	
+					+ ChatColor.WHITE + playerName + ": " + event.getChatMessage());
 		}
 		Inventory inv = Bukkit.createInventory(null, 9);
 		player.openInventory(inv);
@@ -123,7 +127,7 @@ public class GameListener implements Listener{
 		Player player = event.getPlayer();
 		String message = event.getMessage();
 		String playerName = player.getName();
-		if(player.hasPermission("drwars.vip")){
+		if(player.hasPermission("drwars.vip")&&!player.isOp()){
 			playerName = MessageFile.formatMessage("vip-prefix") + " " + playerName;
 		}
 		if(PlayerHandler.isSpectating(player)){
