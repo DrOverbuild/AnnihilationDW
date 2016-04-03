@@ -84,6 +84,26 @@ public class GameListener implements Listener{
 				event.setCancelled(true);
 			}
 
+			// PROTECTED AREAS
+			if(player.getItemInHand() != null && (player.getItemInHand().getType().equals(Material.WATER_BUCKET)
+			   || player.getItemInHand().getType().equals(Material.LAVA_BUCKET)
+			   || player.getItemInHand().getType().equals(Material.BUCKET))){
+				if(event.getClickedBlock() == null){
+					return;
+				}
+				Block block = event.getClickedBlock();
+				Block blockFace =  block.getRelative(event.getBlockFace());
+				for(int i = 0; true; i++) {
+					if(Protect.getFirstPoint(i) == null) break;
+					Vector min = Vector.getMinimum(Protect.getFirstPoint(i).toVector(), Protect.getSecondPoint(i).toVector());
+					Vector max = Vector.getMaximum(Protect.getFirstPoint(i).toVector(), Protect.getSecondPoint(i).toVector());
+					if(block.getLocation().toVector().isInAABB(min, max)||blockFace.getLocation().toVector().isInAABB(min, max)){
+						event.setCancelled(true);
+						return;
+					}
+				}
+			}
+
 //			if(ProtectedChestManager.blockIsProtectable(event.getClickedBlock())){
 //				OfflinePlayer protector = ProtectedChestManager.getProtector(event.getClickedBlock());
 //				if(protector != null){
