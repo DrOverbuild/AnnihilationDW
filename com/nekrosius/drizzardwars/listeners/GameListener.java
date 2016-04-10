@@ -15,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -332,7 +333,20 @@ public class GameListener implements Listener{
 			event.getPlayer().sendMessage(MessageHandler.formatString(MessageFile.getMessage("protection.now-protected"),placedBlock.getType().toString()));
 		}
 	}
-	
+
+	@EventHandler
+	public void onBlockFromTo(BlockFromToEvent event){
+		for(int i = 0; true; i++) {
+			if(Protect.getFirstPoint(i) == null) break;
+			Vector min = Vector.getMinimum(Protect.getFirstPoint(i).toVector(), Protect.getSecondPoint(i).toVector());
+			Vector max = Vector.getMaximum(Protect.getFirstPoint(i).toVector(), Protect.getSecondPoint(i).toVector());
+			if(event.getBlock().getLocation().toVector().isInAABB(min, max)||event.getToBlock().getLocation().toVector().isInAABB(min, max)){
+				event.setCancelled(true);
+				return;
+			}
+		}
+	}
+
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if(PlayerHandler.isSpectating((Player)event.getWhoClicked())){ event.setCancelled(true); return; }
