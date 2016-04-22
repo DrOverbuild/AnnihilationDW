@@ -161,7 +161,7 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		if(Game.getGameState().equals(GameState.LOBBY)){
 			String msg = MessageFile.getMessage("player.leave");
-			msg = MessageHandler.formatPlayer(msg, player).replace("%cp","" + Bukkit.getOnlinePlayers().size()).replace("%mp", ""
+			msg = MessageHandler.formatPlayer(msg, player).replace("%cp","" + (Bukkit.getOnlinePlayers().size() - 1)).replace("%mp", ""
 					+ ConfigFile.config.getInt("minimum-player-amount"));
 			for(Player p : Bukkit.getOnlinePlayers()){
 				MessageHandler.sendMessage(p, msg);
