@@ -11,7 +11,7 @@ public class BarManager {
 
 	public static void setMessage(Player p, String message){
 		removeBar(p);
-		if(ConfigFile.config.getBoolean("boss-bar")) {
+		if(ConfigFile.config.getBoolean("boss-bar") && p.getServer().getPluginManager().getPlugin("BossBarAPI") != null) {
 			BossBarAPI.setMessage(p, message);
 		}
 	}
