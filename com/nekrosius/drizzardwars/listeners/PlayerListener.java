@@ -334,6 +334,12 @@ public class PlayerListener implements Listener {
 		if(!Game.isGameStarted()){
 			event.setFoodLevel(20);
 		}
+
+		if(event.getEntity() instanceof Player){
+			if(PlayerHandler.isSpectating((Player)event.getEntity())){
+				event.setFoodLevel(20);
+			}
+		}
 	}
 	
 	@EventHandler
