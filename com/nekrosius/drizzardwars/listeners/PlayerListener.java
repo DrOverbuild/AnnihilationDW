@@ -314,7 +314,13 @@ public class PlayerListener implements Listener {
 			PlayerHandler.setPlayerGold(player, gold);
 		}
 
-		player.spigot().respawn();
+		new BukkitRunnable(){
+
+			@Override
+			public void run() {
+				player.spigot().respawn();
+			}
+		}.runTaskLater(pl,1L);
 //		new BukkitRunnable(){
 //			@Override
 //			public void run() {
