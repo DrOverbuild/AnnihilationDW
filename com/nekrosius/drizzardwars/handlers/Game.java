@@ -3,6 +3,8 @@ package com.nekrosius.drizzardwars.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nekrosius.drizzardwars.managers.*;
+import com.nekrosius.drizzardwars.objects.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -22,11 +24,6 @@ import com.nekrosius.drizzardwars.handlers.mapsetup.Blocks;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Phase;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Protect;
 import com.nekrosius.drizzardwars.handlers.mapsetup.Signs;
-import com.nekrosius.drizzardwars.managers.BarManager;
-import com.nekrosius.drizzardwars.managers.MapManager;
-import com.nekrosius.drizzardwars.managers.PartyManager;
-import com.nekrosius.drizzardwars.managers.ProtectedChestManager;
-import com.nekrosius.drizzardwars.managers.TeamManager;
 import com.nekrosius.drizzardwars.utils.Convert;
 import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 
@@ -180,8 +177,9 @@ public class Game {
 
 		for(Team t : TeamManager.getTeams()){
 			for(Player p:t.getAlivePlayers()){
-				plugin.getTitleManager().getPhaseTitle(getPhase()).send(p);
-				p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
+//				plugin.getTitleManager().getPhaseTitle(getPhase()).send(p);
+				TitleManager.sendTitle(p,getPhase());
+				SoundManager.playDragonGrowl(p);
 				Phase.sendPhaseMessage(p, getPhase());
 				BarManager.setMessage(p, MessageHandler.getPhaseMessage(getPhase()));
 				//BossBarAPI.setMessage(p, MessageHandler.getPhaseMessage(getPhase()));
@@ -250,7 +248,7 @@ public class Game {
 		}
 		for(Team t : TeamManager.getTeams()){
 			for(Player p:t.getAlivePlayers()){
-				p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
+				SoundManager.playDragonGrowl(p);
 				Phase.sendPhaseMessage(p, getPhase());
 				//BossBarAPI.setMessage(p, MessageHandler.getPhaseMessage(getPhase()), phaseTime / 20);
 				BarManager.setMessage(p,MessageHandler.getPhaseMessage(getPhase()));
@@ -309,7 +307,7 @@ public class Game {
 				for(Player p : Bukkit.getOnlinePlayers()){
 					ScoreboardHandler.update(p);
 					if(countdown <= 10){
-						p.playSound(p.getLocation(), Sound.CLICK, 1, 0);
+						SoundManager.playClick(p);
 						//p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 0);
 					}
 					if(countdown > 20 && countdown % 20 == 0){

@@ -31,7 +31,6 @@ import com.nekrosius.drizzardwars.managers.ListenerManager;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.PartyManager;
 import com.nekrosius.drizzardwars.managers.TeamManager;
-import com.nekrosius.drizzardwars.managers.TitleManager;
 import com.nekrosius.drizzardwars.utils.Convert;
 
 import de.slikey.effectlib.EffectLib;
@@ -48,7 +47,7 @@ public class Main extends JavaPlugin {
 	private MapManager mm;
 	private CommandManager cm;
 	private PartyManager pm;
-	private TitleManager tlm;
+//	private TitleManager tlm;
 	public static EffectManager em;
 
 	public static void println(String s){
@@ -86,7 +85,7 @@ public class Main extends JavaPlugin {
 		pm = new PartyManager(this);
 		EffectLib lib = EffectLib.instance();
 		em = new EffectManager(lib);
-		tlm = new TitleManager(this);
+//		tlm = new TitleManager(this);
 		MessageHandler.loadMessages();
 		registerMultiplierPermissions();
 	}
@@ -126,9 +125,9 @@ public class Main extends JavaPlugin {
 		return pm;
 	}
 	
-	public TitleManager getTitleManager() {
-		return tlm;
-	}
+//	public TitleManager getTitleManager() {
+//		return tlm;
+//	}
 
 	/**
 	 * Not sure if this is really required, but could be helpful to some people... maybe...
