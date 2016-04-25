@@ -288,7 +288,7 @@ public class MapSetupListener implements Listener{
 			if(player.getItemInHand().getItemMeta().getDisplayName().contains("Add Brewing Shop")) {
 				if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 					event.setCancelled(true);
-					Signs.addSign("brewing", event.getClickedBlock().getLocation(), player, event.getClickedBlock());
+					Signs.addSign("brewing", event.getClickedBlock().getLocation(), player, event.getClickedBlock(), event.getBlockFace());
 				}
 			}
 		}
@@ -298,7 +298,7 @@ public class MapSetupListener implements Listener{
 			if(player.getItemInHand().getItemMeta().getDisplayName().contains("Add Weapon Shop")) {
 				if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 					event.setCancelled(true);
-					Signs.addSign("weapon", event.getClickedBlock().getLocation(), player, event.getClickedBlock());
+					Signs.addSign("weapon", event.getClickedBlock().getLocation(), player, event.getClickedBlock(), event.getBlockFace());
 				}
 			}
 		}

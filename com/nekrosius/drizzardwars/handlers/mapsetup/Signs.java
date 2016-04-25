@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,19 +34,44 @@ public class Signs {
 	private static Map<Integer, List<ItemStack>> phaseBrew = new HashMap<Integer, List<ItemStack>>();
 	private static Map<Integer, List<Integer>> phaseBrewSlots = new HashMap<Integer, List<Integer>>();
 
-	public static void addSign(String type, Location loc, Player player, Block block) {
-		Material signType = getSignType(player, loc);
+	public static void addSign(String type, Location loc, Player player, Block block, BlockFace clickedBlockFace) {
+		Material signType = getSignType(clickedBlockFace);
+		if(signType == null) return;
 		if(signType.equals(Material.WALL_SIGN)){
-			loc.getWorld().getBlockAt(loc).getRelative(Main.getPlayerDirection(player).getOppositeFace()).setType(signType);
-			loc = loc.getWorld().getBlockAt(loc).getRelative(Main.getPlayerDirection(player).getOppositeFace()).getLocation();
-			setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block); 
+//			loc.getWorld().getBlockAt(loc).getRelative(Main.getPlayerDirection(player).getOppositeFace()).setType(signType);
+			loc.getWorld().getBlockAt(loc).getRelative(clickedBlockFace).setType(signType);
+//			loc = loc.getWorld().getBlockAt(loc).getRelative(Main.getPlayerDirection(player).getOppositeFace()).getLocation();
+			loc = loc.getWorld().getBlockAt(loc).getRelative(clickedBlockFace).getLocation();
+			setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block, clickedBlockFace);
 		}else if(signType.equals(Material.SIGN_POST)){
 			loc.getWorld().getBlockAt(loc).getRelative(BlockFace.UP).setType(signType);
 			loc = loc.getWorld().getBlockAt(loc).getRelative(BlockFace.UP).getLocation();
-			setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block); 
+			setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block, clickedBlockFace);
 		}
 	}
-	
+
+	private static void setSignFaceDirection(String type, Player player, Sign sign, Block block, BlockFace blockFace){
+		org.bukkit.material.Sign signData = null;
+		if(sign.getType().equals(Material.WALL_SIGN)){
+			updateWallSign(sign, block, blockFace);
+		}else if(sign.getType().equals(Material.SIGN)){
+			signData = new org.bukkit.material.Sign(Material.SIGN);
+			signData.setFacingDirection(blockFace.getOppositeFace());
+			sign.setData(signData);
+		}else if(sign.getType().equals(Material.SIGN_POST)){
+			signData = new org.bukkit.material.Sign(Material.SIGN_POST);
+			signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
+			sign.setData(signData);
+		}
+		sign.setLine(0, ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]");
+		if(type.equalsIgnoreCase("brewing")){
+			sign.setLine(1, "Brewing");
+		}else if(type.equalsIgnoreCase("weapon")){
+			sign.setLine(1, "Weapon");
+		}
+		sign.update();
+	}
+
 	public static void setSignFaceDirection(String type, Player player, Sign sign, Block block) {
 		org.bukkit.material.Sign signData = null;
 		if(sign.getType().equals(Material.WALL_SIGN)){
@@ -67,6 +93,18 @@ public class Signs {
 		}
 		sign.update();
 	}
+
+	private static Material getSignType(BlockFace face){
+		if(face.equals(BlockFace.UP)){
+			return Material.SIGN_POST;
+		}
+
+		if(face.equals(BlockFace.DOWN)){
+			return null;
+		}
+
+		return Material.WALL_SIGN;
+	}
 	
 	private static Material getSignType(Player player, Location loc){
 		Block block = loc.getWorld().getBlockAt(loc);
@@ -76,7 +114,12 @@ public class Signs {
 			return Material.SIGN_POST;
 		}
 	}
-	
+
+	private static void updateWallSign(Sign sign, Block block, BlockFace blockFace) {
+		((org.bukkit.material.Sign)sign.getData()).setFacingDirection(blockFace);
+		sign.update();
+	}
+
 	private static void updateWallSign(Sign sign, Block block) {
 		BlockFace[] blockFaces = {BlockFace.EAST, BlockFace.NORTH, BlockFace.WEST, BlockFace.SOUTH};
 		for (BlockFace bf : blockFaces) {
