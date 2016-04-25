@@ -352,17 +352,13 @@ public class GameListener implements Listener{
 		if(PlayerHandler.isSpectating((Player)event.getWhoClicked())){ event.setCancelled(true); return; }
 		// WEAPONS SHOP
 		if(event.getInventory().getName().equalsIgnoreCase(MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")))){
-			if(event.getCurrentItem() == null){ event.setCancelled(true); return;}
-			if(!event.getClickedInventory().getName().equalsIgnoreCase(MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")))){
-				event.setCancelled(true);
-				return;
-			}
-			if(event.getCurrentItem().getType() == Material.AIR) return;
-			if(!event.getSlotType().equals(SlotType.CONTAINER)){ 
-				event.setCancelled(true);
-				return;
-			}
 			event.setCancelled(true);
+
+			if(event.getCurrentItem() == null) return;
+			if(!event.getClickedInventory().getName().equalsIgnoreCase(MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")))) return;
+			if(event.getCurrentItem().getType() == Material.AIR) return;
+			if(!event.getSlotType().equals(SlotType.CONTAINER)) return;
+
 			String id = String.valueOf(event.getSlot());
 			int price = ShopFile.config.getInt("weapons.items." + id + ".price");
 			int remove = price;
@@ -381,17 +377,13 @@ public class GameListener implements Listener{
 		}
 		// BREWING SHOP
 		else if(event.getInventory().getName().equalsIgnoreCase(MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")))){
-			if(event.getCurrentItem() == null){ event.setCancelled(true); return;}
-			if(!event.getClickedInventory().getName().equalsIgnoreCase(MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")))){
-				event.setCancelled(true);
-				return;
-			}
-			if(event.getCurrentItem().getType() == Material.AIR) return;
-			if(!event.getSlotType().equals(SlotType.CONTAINER)){ 
-				event.setCancelled(true);
-				return;
-			}
 			event.setCancelled(true);
+
+			if(event.getCurrentItem() == null) return;
+			if(!event.getClickedInventory().getName().equalsIgnoreCase(MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")))) return;
+			if(event.getCurrentItem().getType() == Material.AIR) return;
+			if(!event.getSlotType().equals(SlotType.CONTAINER))	return;
+
 			String id = String.valueOf(event.getSlot());
 			int price = ShopFile.config.getInt("brewing.items." + id + ".price");
 			int remove = price;
