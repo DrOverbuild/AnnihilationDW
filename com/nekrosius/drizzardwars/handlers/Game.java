@@ -113,6 +113,7 @@ public class Game {
 	public static void finish(Team winner) {
 		setCountdownStarted(false);
 		setGameState(GameState.END_OF_GAME);
+		Signs.setupShops();
 		for(final Player p: Bukkit.getOnlinePlayers()){
 			if (winner != null) {
 				MessageHandler.sendMessage(p, MessageHandler.formatString(MessageFile.getMessage("game.winner"), winner.getColor() + winner.getName()));
@@ -162,8 +163,9 @@ public class Game {
 	}
 	
 	private static void startPhases(final GameMap map) {
-		Signs.setupWeaponsShop();
-		Signs.setupBrewingShop();
+		Signs.setupShops();
+//		Signs.setupWeaponsShop();
+//		Signs.setupBrewingShop();
 		if(!Game.isGameStarted()){
 			for(Player p : Bukkit.getOnlinePlayers()) {
 				BarManager.removeBar(p);
@@ -227,8 +229,9 @@ public class Game {
 	}
 	
 	private static void startLastPhase(GameMap map) {
-		Signs.setupWeaponsShop();
-		Signs.setupBrewingShop();
+		Signs.setupShops();
+//		Signs.setupWeaponsShop();
+//		Signs.setupBrewingShop();
 		if(!Game.isGameStarted()){
 			for(Player p : Bukkit.getOnlinePlayers()){
 				BarManager.removeBar(p);

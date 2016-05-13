@@ -4,11 +4,13 @@ import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.handlers.*;
 import com.nekrosius.drizzardwars.managers.MapManager;
 import com.nekrosius.drizzardwars.managers.ProtectedChestManager;
+import com.sun.jdi.connect.Connector;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -359,8 +361,7 @@ public class GameListener implements Listener{
 			if(event.getCurrentItem().getType() == Material.AIR) return;
 			if(!event.getSlotType().equals(SlotType.CONTAINER)) return;
 
-			String id = String.valueOf(event.getSlot());
-			int price = ShopFile.config.getInt("weapons.items." + id + ".price");
+			int price = Signs.getPriceOfWeapon(event.getSlot());
 			int remove = price;
 			Player player = (Player) event.getWhoClicked();
 			if(!player.getInventory().contains(Material.GOLD_INGOT, price)){
@@ -384,8 +385,7 @@ public class GameListener implements Listener{
 			if(event.getCurrentItem().getType() == Material.AIR) return;
 			if(!event.getSlotType().equals(SlotType.CONTAINER))	return;
 
-			String id = String.valueOf(event.getSlot());
-			int price = ShopFile.config.getInt("brewing.items." + id + ".price");
+			int price = Signs.getPriceOfBrewingItem(event.getSlot());
 			int remove = price;
 			Player player = (Player) event.getWhoClicked();
 			if(!player.getInventory().contains(Material.GOLD_INGOT, price)){

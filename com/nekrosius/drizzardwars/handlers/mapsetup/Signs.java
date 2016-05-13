@@ -27,12 +27,14 @@ import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 
 public class Signs {
 	
-	private static Inventory wepShop;
-	private static Inventory brewShop;
-	private static Map<Integer, List<ItemStack>> phaseWep = new HashMap<Integer, List<ItemStack>>();
-	private static Map<Integer, List<Integer>> phaseWepSlots = new HashMap<Integer, List<Integer>>();
-	private static Map<Integer, List<ItemStack>> phaseBrew = new HashMap<Integer, List<ItemStack>>();
-	private static Map<Integer, List<Integer>> phaseBrewSlots = new HashMap<Integer, List<Integer>>();
+	private static Inventory wepShop = null;
+	private static Inventory brewShop = null;
+//	private static Map<Integer, List<ItemStack>> phaseWep = new HashMap<Integer, List<ItemStack>>();
+//	private static Map<Integer, List<Integer>> phaseWepSlots = new HashMap<Integer, List<Integer>>();
+//	private static Map<Integer, List<ItemStack>> phaseBrew = new HashMap<Integer, List<ItemStack>>();
+//	private static Map<Integer, List<Integer>> phaseBrewSlots = new HashMap<Integer, List<Integer>>();
+	private static Map<Integer, Integer> wepPrice = new HashMap<>();
+	private static Map<Integer, Integer> brewPrice = new HashMap<>();
 
 	public static void addSign(String type, Location loc, Player player, Block block, BlockFace clickedBlockFace) {
 		Material signType = getSignType(clickedBlockFace);
@@ -133,79 +135,146 @@ public class Signs {
 	
 	@SuppressWarnings("deprecation")
 	public static void setupShops(){
-		
-		// WEAPONS
+		// Lazy Instantiation Rule: only set up the shops when a player needs to access it.
+		wepShop = null;
+		brewShop = null;
+
+		wepPrice.clear();
+		brewPrice.clear();
+
+//		// WEAPONS
+//		wepShop = Bukkit.createInventory(null, ShopFile.config.getInt("weapons.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")));
+//		String path;
+//		for(String id : ShopFile.config.getConfigurationSection("weapons.items").getKeys(false)){
+//			path = "weapons.items." + id;
+//			int amount = ShopFile.config.getInt(path + ".amount");
+//			if(amount == 0) ++amount;
+//			int phase = ShopFile.config.getInt(path + ".phase");
+//			if(phaseWep.get(phase) == null){
+//				phaseWep.put(phase, new ArrayList<ItemStack>());
+//				phaseWepSlots.put(phase, new ArrayList<Integer>());
+//			}
+//			List<ItemStack> items = phaseWep.get(phase);
+//			ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(ShopFile.config.getInt(path + ".id"))
+//					, amount, 0, MessageHandler.format(ShopFile.config.getString(path + ".name"))
+//					,Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), ShopFile.config.getInt(path + ".price"))));
+//			items.add(item);
+//			List<Integer> slots = phaseWepSlots.get(phase);
+//			slots.add(Integer.parseInt(id));
+//			phaseWepSlots.put(phase, slots);
+//			phaseWep.put(phase, items);
+//		}
+//
+//		// BREWING
+//
+//		brewShop = Bukkit.createInventory(null, ShopFile.config.getInt("brewing.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")));
+//		for(String id : ShopFile.config.getConfigurationSection("brewing.items").getKeys(false)){
+//			path = "brewing.items." + id;
+//			int amount = ShopFile.config.getInt(path + ".amount");
+//			if(amount == 0) ++amount;
+//			int phase = ShopFile.config.getInt(path + ".phase");
+//			if(phaseBrew.get(phase) == null){
+//				phaseBrew.put(phase, new ArrayList<ItemStack>());
+//				phaseBrewSlots.put(phase, new ArrayList<Integer>());
+//			}
+//			List<ItemStack> items = phaseBrew.get(phase);
+//			ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(ShopFile.config.getInt(path + ".id"))
+//					, amount, 0, MessageHandler.format(ShopFile.config.getString(path + ".name"))
+//					,Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), ShopFile.config.getInt(path + ".price"))));
+//			items.add(item);
+//			List<Integer> slots = phaseBrewSlots.get(phase);
+//			slots.add(Integer.parseInt(id));
+//			phaseBrewSlots.put(phase, slots);
+//			phaseBrew.put(phase, items);
+//		}
+	}
+	
+	private static void setupWeaponsShop(){
+//		int phase = Game.getPhase() + 1;
+//		if(phaseWep.get(phase) == null) return;
+//		int i = 0;
+//		for(ItemStack item : phaseWep.get(phase)){
+//			wepShop.setItem(phaseWepSlots.get(phase).get(i), item);
+//			i++;
+//		}
+
 		wepShop = Bukkit.createInventory(null, ShopFile.config.getInt("weapons.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")));
 		String path;
-		for(String id : ShopFile.config.getConfigurationSection("weapons.items").getKeys(false)){
+		int slotNumber = 0;
+		for(String id:ShopFile.config.getConfigurationSection("weapons.items").getKeys(false)){
 			path = "weapons.items." + id;
-			int amount = ShopFile.config.getInt(path + ".amount");
-			if(amount == 0) ++amount;
-			int phase = ShopFile.config.getInt(path + ".phase");
-			if(phaseWep.get(phase) == null){
-				phaseWep.put(phase, new ArrayList<ItemStack>());
-				phaseWepSlots.put(phase, new ArrayList<Integer>());
+			int phase = ShopFile.config.getInt(path + ".phase",1);
+			Bukkit.getLogger().info("PHASE OF ITEM: " + phase);
+			Bukkit.getLogger().info("PHASE OF GAME: " + Game.getPhase());
+			if(Game.getPhase() >= phase) {
+				int type = ShopFile.config.getInt(path + ".id");
+				int amount = ShopFile.config.getInt(path + ".amount",1);
+				int data = ShopFile.config.getInt(path + ".data",0);
+				int price = ShopFile.config.getInt(path + ".price");
+				String name = MessageHandler.format(ShopFile.config.getString(path + ".name"));
+				List<String> lore = Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), price));
+				ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(type),amount,data,name,lore);
+				wepShop.setItem(slotNumber,item);
+				wepPrice.put(slotNumber,price);
+				slotNumber++;
 			}
-			List<ItemStack> items = phaseWep.get(phase);
-			ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(ShopFile.config.getInt(path + ".id"))
-					, amount, 0, MessageHandler.format(ShopFile.config.getString(path + ".name"))
-					,Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), ShopFile.config.getInt(path + ".price"))));
-			items.add(item);
-			List<Integer> slots = phaseWepSlots.get(phase);
-			slots.add(Integer.parseInt(id));
-			phaseWepSlots.put(phase, slots);
-			phaseWep.put(phase, items);
 		}
-		
-		// BREWING
-		
+
+	}
+	
+	private static void setupBrewingShop(){
+//		int phase = Game.getPhase() + 1;
+//		if(phaseBrew.get(phase) == null) return;
+//		int i = 0;
+//		for(ItemStack item : phaseBrew.get(phase)){
+//			brewShop.setItem(phaseBrewSlots.get(phase).get(i), item);
+//			i++;
+//		}
+
 		brewShop = Bukkit.createInventory(null, ShopFile.config.getInt("brewing.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")));
-		for(String id : ShopFile.config.getConfigurationSection("brewing.items").getKeys(false)){
+		String path;
+		int slotNumber = 0;
+		for(String id:ShopFile.config.getConfigurationSection("brewing.items").getKeys(false)){
 			path = "brewing.items." + id;
-			int amount = ShopFile.config.getInt(path + ".amount");
-			if(amount == 0) ++amount;
-			int phase = ShopFile.config.getInt(path + ".phase");
-			if(phaseBrew.get(phase) == null){
-				phaseBrew.put(phase, new ArrayList<ItemStack>());
-				phaseBrewSlots.put(phase, new ArrayList<Integer>());
+			int phase = ShopFile.config.getInt(path + ".phase",1);
+			Bukkit.getLogger().info("PHASE OF ITEM: " + phase);
+			Bukkit.getLogger().info("PHASE OF GAME: " + Game.getPhase());
+			if(Game.getPhase() >= phase) {
+				int type = ShopFile.config.getInt(path + ".id");
+				int amount = ShopFile.config.getInt(path + ".amount",1);
+				int data = ShopFile.config.getInt(path + ".data",0);
+				int price = ShopFile.config.getInt(path + ".price");
+				String name = MessageHandler.format(ShopFile.config.getString(path + ".name"));
+				List<String> lore = Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), price));
+				ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(type),amount,data,name,lore);
+				brewShop.setItem(slotNumber,item);
+				brewPrice.put(slotNumber, price);
+				slotNumber++;
 			}
-			List<ItemStack> items = phaseBrew.get(phase);
-			ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(ShopFile.config.getInt(path + ".id"))
-					, amount, 0, MessageHandler.format(ShopFile.config.getString(path + ".name"))
-					,Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), ShopFile.config.getInt(path + ".price"))));
-			items.add(item);
-			List<Integer> slots = phaseBrewSlots.get(phase);
-			slots.add(Integer.parseInt(id));
-			phaseBrewSlots.put(phase, slots);
-			phaseBrew.put(phase, items);
-		}
-	}
-	
-	public static void setupWeaponsShop(){
-		int phase = Game.getPhase() + 1;
-		if(phaseWep.get(phase) == null) return;
-		int i = 0;
-		for(ItemStack item : phaseWep.get(phase)){
-			wepShop.setItem(phaseWepSlots.get(phase).get(i), item);
-			i++;
-		}
-	}
-	
-	public static void setupBrewingShop(){
-		int phase = Game.getPhase() + 1;
-		if(phaseBrew.get(phase) == null) return;
-		int i = 0;
-		for(ItemStack item : phaseBrew.get(phase)){
-			brewShop.setItem(phaseBrewSlots.get(phase).get(i), item);
-			i++;
 		}
 	}
 	
 	public static void openWeaponShop(Player player) {
+		// Lazy instantiation
+		if (wepShop == null){
+			setupWeaponsShop();
+		}
 		player.openInventory(wepShop);
 	}
 	
 	public static void openBrewingShop(Player player) {
+		// Lazy instantiation
+		if(brewShop == null){
+			setupBrewingShop();
+		}
 		player.openInventory(brewShop);
+	}
+
+	public static int getPriceOfWeapon(int slot){
+		return wepPrice.get(slot);
+	}
+
+	public static int getPriceOfBrewingItem(int slot){
+		return brewPrice.get(slot);
 	}
 }
