@@ -56,7 +56,6 @@ public class DWCommand implements CommandExecutor{
 				new TeamManager(pl, MapFile.config.getInt("team.amount"));
 				MapsSetupMenu.setupMapMenu(player, MapManager.getMap(player.getWorld().getName()));
 			}else{
-				//new TeamManager(pl, MapFile.config.getInt("team.amount"));
 				AdminMenu.setup(player);
 			}
 			return true;
@@ -80,8 +79,11 @@ public class DWCommand implements CommandExecutor{
 
 			if(args.length > 1){
 				if(args[0].equalsIgnoreCase("points")){
-					String[] newArgs = Arrays.copyOfRange(args, 1,args.length);
+					String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
 					pointsCommand((Player)sender, commandLabel, newArgs);
+				}else if(args[0].equalsIgnoreCase("party")){
+					String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
+					pl.getCommand("party").getExecutor().onCommand(sender, pl.getCommand("party"),commandLabel + " party", newArgs);
 				}
 			}
 

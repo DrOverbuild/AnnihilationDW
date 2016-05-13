@@ -71,7 +71,7 @@ public class MessageFile {
 		config.addDefault("commands.points", "&7You have &c%t &7points!");
 		config.addDefault("commands.other-player-points","&7%s has &c%t&7 points!");
 		config.addDefault("commands.help","&e--------- &6DrizzardWars Help &e---------");
-		config.addDefault("commands.party_help.header","&e------------------- &6/party &e-------------------");
+		config.addDefault("commands.party_help.header","&e------------------- &6/%s &e-------------------");
 		config.addDefault("commands.party_help.create","Create a party.");
 		config.addDefault("commands.party_help.invite","Invite a player to your party.");
 		config.addDefault("commands.party_help.accept","Accept an invitation to a party.");
@@ -114,7 +114,7 @@ public class MessageFile {
 		config.addDefault("party.leave", "&7You've left your party!");
 		config.addDefault("party.accept", "&7You've accepted to join %p party!");
 		config.addDefault("party.deny", "&7You've denied to join %p party!");
-		config.addDefault("party.args", "&cInvalid arguments. Type \"/party help\" to view help.");
+		config.addDefault("party.args", "&cInvalid arguments. Type \"/%s help\" to view help.");
 		config.addDefault("party.alone", "&aYou are not in a party. Type \"&6/party create&a\" to create one.");
 		config.addDefault("party.full","&cThe party is full.");
 		config.addDefault("party.scoreboard.alone","&aYou are not in a party. Type \"&6/party create&a\" to create one.");

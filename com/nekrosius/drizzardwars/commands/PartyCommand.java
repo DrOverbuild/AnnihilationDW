@@ -27,7 +27,7 @@ public class PartyCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!onCommandParty(sender,cmd,label,args)){
-			sender.sendMessage(MessageHandler.format(MessageFile.getMessage("party.args")));
+			sender.sendMessage(MessageHandler.formatString(MessageFile.getMessage("party.args"),label));
 		}
 		return true;
 	}
@@ -51,7 +51,7 @@ public class PartyCommand implements CommandExecutor {
 			} else if(args[0].equalsIgnoreCase("list")){
 				list(player);
 			} else if(args[0].equalsIgnoreCase("help")) {
-				help(player);
+				help(player, commandLabel);
 			}else{
 				return false;
 			}
@@ -164,16 +164,16 @@ public class PartyCommand implements CommandExecutor {
 		PartyManager.sendInvite(target, player);
 	}
 
-	public void help(Player player){
+	public void help(Player player, String label){
 		List<String> messages = new ArrayList<>();
 
-		messages.add(MessageFile.formatMessage("commands.party_help.header"));
-		messages.add(ChatColor.GOLD + "/party create: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.create"));
-		messages.add(ChatColor.GOLD + "/party invite <player>: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.invite"));
-		messages.add(ChatColor.GOLD + "/party accept: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.accept"));
-		messages.add(ChatColor.GOLD + "/party deny: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.deny"));
-		messages.add(ChatColor.GOLD + "/party leave: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.leave"));
-		messages.add(ChatColor.GOLD + "/party list: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.list"));
+		messages.add(MessageHandler.formatString(MessageFile.getMessage("commands.party_help.header"),label));
+		messages.add(ChatColor.GOLD + "/" + label + " create: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.create"));
+		messages.add(ChatColor.GOLD + "/" + label + " invite <player>: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.invite"));
+		messages.add(ChatColor.GOLD + "/" + label + " accept: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.accept"));
+		messages.add(ChatColor.GOLD + "/" + label + " deny: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.deny"));
+		messages.add(ChatColor.GOLD + "/" + label + " leave: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.leave"));
+		messages.add(ChatColor.GOLD + "/" + label + " list: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.list"));
 
 		player.sendMessage(messages.toArray(new String[]{}));
 	}
