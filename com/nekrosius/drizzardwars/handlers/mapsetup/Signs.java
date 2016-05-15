@@ -142,6 +142,19 @@ public class Signs {
 		wepPrice.clear();
 		brewPrice.clear();
 
+		// Reload the shops for players who have the shops open when the phase changes.
+		for(Player p:Bukkit.getOnlinePlayers()){
+			if(p.getOpenInventory() != null && p.getOpenInventory().getTitle().equals(MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")))){
+				p.closeInventory();
+				Signs.openWeaponShop(p);
+			}
+
+			if(p.getOpenInventory() != null && p.getOpenInventory().getTitle().equals(MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")))){
+				p.closeInventory();
+				Signs.openBrewingShop(p);
+			}
+		}
+
 //		// WEAPONS
 //		wepShop = Bukkit.createInventory(null, ShopFile.config.getInt("weapons.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")));
 //		String path;
@@ -267,10 +280,18 @@ public class Signs {
 	}
 
 	public static int getPriceOfWeapon(int slot){
+		if(wepPrice.get(slot)==null){
+			Bukkit.getLogger().info("DrizzardWars encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
+			return 0;
+		}
 		return wepPrice.get(slot);
 	}
 
 	public static int getPriceOfBrewingItem(int slot){
+		if(brewPrice.get(slot)==null){
+			Bukkit.getLogger().info("DrizzardWars encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
+			return 0;
+		}
 		return brewPrice.get(slot);
 	}
 }
