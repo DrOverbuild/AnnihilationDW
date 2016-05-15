@@ -204,8 +204,6 @@ public class Signs {
 		for(String id:ShopFile.config.getConfigurationSection("weapons.items").getKeys(false)){
 			path = "weapons.items." + id;
 			int phase = ShopFile.config.getInt(path + ".phase",1);
-			Bukkit.getLogger().info("PHASE OF ITEM: " + phase);
-			Bukkit.getLogger().info("PHASE OF GAME: " + Game.getPhase());
 			if(Game.getPhase() >= phase) {
 				int type = ShopFile.config.getInt(path + ".id");
 				int amount = ShopFile.config.getInt(path + ".amount",1);
@@ -237,8 +235,6 @@ public class Signs {
 		for(String id:ShopFile.config.getConfigurationSection("brewing.items").getKeys(false)){
 			path = "brewing.items." + id;
 			int phase = ShopFile.config.getInt(path + ".phase",1);
-			Bukkit.getLogger().info("PHASE OF ITEM: " + phase);
-			Bukkit.getLogger().info("PHASE OF GAME: " + Game.getPhase());
 			if(Game.getPhase() >= phase) {
 				int type = ShopFile.config.getInt(path + ".id");
 				int amount = ShopFile.config.getInt(path + ".amount",1);
