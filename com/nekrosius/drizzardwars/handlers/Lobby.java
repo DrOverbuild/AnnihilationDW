@@ -89,8 +89,11 @@ public class Lobby {
 		player.getInventory().setChestplate(null);
 		player.getInventory().setLeggings(null);
 		player.getInventory().setBoots(null);
-		player.getInventory().setItem(0, ItemStackGenerator.createItem(Material.STICK, 0, 0,
-				ChatColor.RED + "" + ChatColor.BOLD + "Kits",
-				Arrays.asList(ChatColor.GRAY + "Find all info about kits!")));
+
+		player.getInventory().setItem(0,ConfigFile.getKitSelectorItem());
+
+//		player.getInventory().setItem(0, ItemStackGenerator.createItem(Material.STICK, 0, 0,
+//				ChatColor.RED + "" + ChatColor.BOLD + "Kits",
+//				Arrays.asList(ChatColor.GRAY + "Find all info about kits!")));
 	}
 }

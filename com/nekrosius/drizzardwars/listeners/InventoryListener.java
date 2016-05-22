@@ -41,12 +41,14 @@ public class InventoryListener implements Listener{
 	public void onInteract(PlayerInteractEvent event) {
 		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			Player player = event.getPlayer();
-			if(player.getItemInHand().getType().equals(Material.STICK)) {
-				if(player.getItemInHand().getItemMeta().hasDisplayName()){
-					if(player.getItemInHand().getItemMeta().getDisplayName().contains("Kits")){
-						event.setCancelled(true);
-						Kits.setup(player);
-						return;
+			if(player.getItemInHand() != null) {
+				if (player.getItemInHand().isSimilar(ConfigFile.getKitSelectorItem())) {
+					if (player.getItemInHand().getItemMeta().hasDisplayName()) {
+						if (player.getItemInHand().getItemMeta().getDisplayName().contains("Kits")) {
+							event.setCancelled(true);
+							Kits.setup(player);
+							return;
+						}
 					}
 				}
 			}
