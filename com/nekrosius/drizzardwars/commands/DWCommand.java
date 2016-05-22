@@ -77,7 +77,7 @@ public class DWCommand implements CommandExecutor{
 				}
 			}
 
-			if(args.length > 1){
+			if(args.length >= 1){
 				if(args[0].equalsIgnoreCase("points")){
 					String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
 					pointsCommand((Player)sender, commandLabel, newArgs);
