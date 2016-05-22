@@ -88,6 +88,8 @@ public class Main extends JavaPlugin {
 //		tlm = new TitleManager(this);
 		MessageHandler.loadMessages();
 		registerMultiplierPermissions();
+
+		getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
 	}
 	
 	/**

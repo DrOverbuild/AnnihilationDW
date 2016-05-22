@@ -45,11 +45,14 @@ public class ConfigFile {
 		config.addDefault("respawn.time", 5);
 		config.addDefault("party.player-limit",9);
 		config.addDefault("max-points-multiplier",10);
-		config.addDefault("boss-bar",true);
+		config.addDefault("boss-bar",false);
 		config.addDefault("kit-selector.name","&4&lKits");
 		config.addDefault("kit-selector.type", Material.STICK.name());
 		config.addDefault("kit-selector.data",0);
 		config.addDefault("kit-selector.lore", Arrays.asList("&7Select a kit!"));
+		config.addDefault("bungeecord-mode.enabled",false);
+		config.addDefault("bungeecord-mode.fallback-server","lobby");
+		config.addDefault("bungeecord-mode.timeout",30);
 		config.options().copyDefaults(true);
 
 		saveConfig();
@@ -96,6 +99,18 @@ public class ConfigFile {
 		}
 
 		return ItemStackGenerator.createItem(type,1,data,name,lore);
+	}
+
+	public static String getFallbackServer(){
+		return config.getString("bungeecord-mode.fallback-server","lobby");
+	}
+
+	public static int getTimeout(){
+		return config.getInt("bungeecord-mode.timeout",30);
+	}
+
+	public static boolean getBungeeCordModeEnabled(){
+		return config.getBoolean("bungeecord-mode.enabled",false);
 	}
 
 	public Main getMainClass()

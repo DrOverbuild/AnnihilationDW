@@ -3,13 +3,13 @@ package com.nekrosius.drizzardwars.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.nekrosius.drizzardwars.managers.*;
-import com.nekrosius.drizzardwars.objects.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -123,14 +123,28 @@ public class Game {
 			BarManager.removeBar(p);
 		}
 
-		PlayerHandler.clearPlayerGold();
-		ProtectedChestManager.clearProtectedBlocks();
-
 		if (winner != null) {
 			for(Player p:winner.getAlivePlayers()){
 				Points.addPoints(p,Points.getWinPoints());
 			}
 		}
+
+		if(ConfigFile.getBungeeCordModeEnabled()){
+			new BukkitRunnable(){
+
+				@Override
+				public void run() {
+					stopServer();
+				}
+			}.runTaskLater(plugin,10*20);
+		}else{
+			prepareForNextGame();
+		}
+	}
+
+	public static void prepareForNextGame(){
+		PlayerHandler.clearPlayerGold();
+		ProtectedChestManager.clearProtectedBlocks();
 
 		for(GameMap m:MapManager.getMaps()){
 			m.setVotes(0);
@@ -160,6 +174,38 @@ public class Game {
 
 			}
 		}.runTaskLater(plugin,10*20);
+	}
+
+	public static void stopServer(){
+		plugin.getLogger().info("Attempting to kick players and stop server...");
+
+		final String fallbackServer = ConfigFile.getFallbackServer();
+		for(Player p:Bukkit.getOnlinePlayers()){
+			ByteArrayDataOutput out = ByteStreams.newDataOutput();
+			out.writeUTF("Connect");
+			out.writeUTF(fallbackServer);
+			p.sendPluginMessage(plugin,"BungeeCord",out.toByteArray());
+		}
+
+		new BukkitRunnable(){
+
+			int timeoutTimer = 0;
+			final int timeoutLimit = ConfigFile.getTimeout();
+
+			@Override
+			public void run() {
+				if(Bukkit.getOnlinePlayers().size() <= 0){
+					this.cancel();
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"stop");
+				}else if(timeoutLimit > 0){
+					timeoutTimer++;
+					if(timeoutTimer >= timeoutLimit){
+						this.cancel();
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"stop");
+					}
+				}
+			}
+		}.runTaskTimer(plugin,20,20);
 	}
 	
 	private static void startPhases(final GameMap map) {
