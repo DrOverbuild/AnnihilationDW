@@ -55,7 +55,7 @@ public class ConfigFile {
 		config.addDefault("bungeecord-mode.enabled",false);
 		config.addDefault("bungeecord-mode.fallback-server","lobby");
 		config.addDefault("bungeecord-mode.timeout",30);
-		Location location = Bukkit.getWorlds().get(0).getSpawnLocation();
+		Location location = Bukkit.getWorlds().get(0).getHighestBlockAt(0,0).getLocation();
 		String world = location.getWorld().getName();
 		double x = location.getX(),
 				y = location.getY(),
