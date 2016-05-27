@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.nekrosius.drizzardwars.handlers.MessageHandler;
 import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -53,6 +55,14 @@ public class ConfigFile {
 		config.addDefault("bungeecord-mode.enabled",false);
 		config.addDefault("bungeecord-mode.fallback-server","lobby");
 		config.addDefault("bungeecord-mode.timeout",30);
+		Location location = Bukkit.getWorlds().get(0).getSpawnLocation();
+		String world = location.getWorld().getName();
+		double x = location.getX(),
+				y = location.getY(),
+				z = location.getZ();
+		float yaw = location.getYaw(),
+				pitch = location.getPitch();
+		config.addDefault("spawn-location", world + "," + x + "," + y + "," + z + "," + yaw + "," + pitch);
 		config.options().copyDefaults(true);
 
 		saveConfig();

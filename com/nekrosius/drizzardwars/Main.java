@@ -241,7 +241,6 @@ public class Main extends JavaPlugin {
 		else if(symbol == '1') return true;
 		else if(symbol == '2') return true;
 		else if(symbol == '3') return true;
-		else if(symbol == '2') return true;
 		else if(symbol == '5') return true;
 		else if(symbol == '6') return true;
 		else if(symbol == '7') return true;
