@@ -17,7 +17,7 @@ public class MapsSetupMenu {
 	public static void setup(Player player) {
 		Inventory inv = Bukkit.createInventory(player, getInventorySize(), "MapSetup menu");
 		for(GameMap map : MapManager.getMaps()){
-			inv.setItem(map.getId()-1, ItemStackGenerator.createItem(Material.PAPER, 0, 0
+			inv.addItem(ItemStackGenerator.createItem(Material.PAPER, 0, 0
 					, ChatColor.RED + "" + ChatColor.BOLD + map.getName()
 					, Arrays.asList(ChatColor.GRAY + "Modify " + ChatColor.GOLD + map.getName())));
 		}
@@ -66,7 +66,7 @@ public class MapsSetupMenu {
 	}
 	
 	private static int getInventorySize() {
-		int maps = MapManager.amountOfMaps() + 2;
+		/*int maps = MapManager.amountOfMaps() + 2;
 		if (maps < 9) {
 			return 9;
 		}
@@ -75,6 +75,12 @@ public class MapsSetupMenu {
 			return a * 9;
 		} else {
 			return 54;
-		}
+		}*/
+
+		// Don't know what that is above but If maps is equal to 9, the method will return 54 because (maps > 9) does not
+		// include 9.
+
+		int rows = (int)Math.ceil(((double)MapManager.amountOfMaps() / 9.0));
+		return Math.min(rows * 9, 54);
 	}
 }

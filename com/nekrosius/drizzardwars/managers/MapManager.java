@@ -119,12 +119,14 @@ public class MapManager {
 	public static void createWorld(GameMap map) {
 		if(Bukkit.getWorld(mapName) != null)
 			deleteWorld(mapName);
+
 		Location loc;
 		if(ConfigFile.config.getString("spawn-location") == null) {
 			loc = Bukkit.getWorlds().get(0).getSpawnLocation();
 		}else {
 			loc = Convert.StringToLocation(ConfigFile.config.getString("spawn-location"), true, false);
 		}
+
 		if(Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()) != null) {
 			if(Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()).getPlayers().size() > 0) {
 				for(Player p : Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()).getPlayers()){
@@ -132,9 +134,11 @@ public class MapManager {
 				}
 			}
 		}
+
 		if(Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()) != null) {
 			Bukkit.getServer().unloadWorld("plugins/DrizzardWars/Maps/" + map.getName(), true);
 		}
+
 		CopyWorld.copyWorld(new File("plugins/DrizzardWars/Maps/" + map.getName()),
 				new File(mapName));
 		Bukkit.createWorld(new WorldCreator(mapName));
