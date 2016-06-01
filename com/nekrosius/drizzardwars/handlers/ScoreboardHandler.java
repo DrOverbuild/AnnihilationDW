@@ -65,7 +65,7 @@ public class ScoreboardHandler {
 			vipTeam.setPrefix(MessageFile.formatMessage("vip-prefix") + ChatColor.GREEN + " ");
 
 			for(Player p: Bukkit.getOnlinePlayers()){
-				if(player.hasPermission("drwars.vip")&&!player.isOp()){
+				if(p.hasPermission("drwars.vip")&&!p.isOp()){
 					vipTeam.addPlayer(p);
 				}else {
 					newTeam.addPlayer(p);
