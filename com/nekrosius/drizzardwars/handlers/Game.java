@@ -67,30 +67,43 @@ public class Game {
 		Signs.setupShops();
 		
 		// Adding players to the teams
-		
+
+		// Add all parties first.
+
+		for(Party party:PartyManager.getParties()){
+			Team toJoin = TeamManager.getTeamToJoin();
+			for(Player player: party.getPlayers()){
+				setupPlayer(player,toJoin);
+			}
+			setupPlayer(party.getLeader(),toJoin);
+			PartyManager.addAddedParty(party);
+		}
+
+		// Now add rest of players
+
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			
-			// Taking care of parties
-			
-			if(PartyManager.hasParty(p)) {
-				Party party = PartyManager.getParty(p);
-				if(!PartyManager.isPartyAdded(party)){
-					Team toJoin = TeamManager.getTeamToJoin();
-					
-					for(Player partyPlayer : party.getPlayers()){
-						setupPlayer(partyPlayer, toJoin);
-					}
-					
-					Player leader = party.getLeader();
-					setupPlayer(leader, toJoin);
-					
-					PartyManager.addAddedParty(party);
-				}
-			}
+//			// Taking care of parties
+//
+//			if(PartyManager.hasParty(p)) {
+//				Party party = PartyManager.getParty(p);
+//				if(!PartyManager.isPartyAdded(party)){
+//					Team toJoin = TeamManager.getTeamToJoin();
+//
+//					for(Player partyPlayer : party.getPlayers()){
+//						setupPlayer(partyPlayer, toJoin);
+//					}
+//
+//					Player leader = party.getLeader();
+//					setupPlayer(leader, toJoin);
+//
+//					PartyManager.addAddedParty(party);
+//				}
+//			}
 			
 			// Sole players
 			
-			else {
+			if(!PartyManager.hasParty(p)) {
 				setupPlayer(p, TeamManager.getTeamToJoin());
 			}
 		}
