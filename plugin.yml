@@ -1,6 +1,6 @@
 name: DrizzardWars
 author: BenRush
-version: 3.1.3
+version: 3.1.4
 main: com.nekrosius.drizzardwars.Main
 commands:
     drizzardwars:
