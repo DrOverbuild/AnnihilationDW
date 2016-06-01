@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.libs.org.ibex.nestedvm.util.ELF;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -51,10 +52,13 @@ public class Game {
 		setRespawnTimer(ConfigFile.config.getInt("respawn.time"));
 		PartyManager.setAddedParties(new ArrayList<Party>());
 		setPhase(0);
+
 		Main.println("Loading world " + map.getName() + " to start game.");
-		Main.println("Number of players online: " + Bukkit.getOnlinePlayers().size());
+		long milliseconds = System.currentTimeMillis();
 		MapManager.createWorld(map);
 		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
+		Main.println("World load completed in " + (System.currentTimeMillis() - milliseconds)/1000 + " seconds.");
+
 		new TeamManager(plugin, MapFile.config.getInt("team.amount"));
 		Blocks.setupBlocks(map);
 		Protect.setupAreas(map);
