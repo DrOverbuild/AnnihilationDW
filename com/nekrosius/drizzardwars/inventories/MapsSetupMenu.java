@@ -17,7 +17,7 @@ public class MapsSetupMenu {
 	public static void setup(Player player) {
 		Inventory inv = Bukkit.createInventory(player, getInventorySize(), "MapSetup menu");
 		for(GameMap map : MapManager.getMaps()){
-			inv.addItem(ItemStackGenerator.createItem(Material.PAPER, 0, 0
+			inv.setItem(map.getId(),ItemStackGenerator.createItem(Material.PAPER, 0, 0
 					, ChatColor.RED + "" + ChatColor.BOLD + map.getName()
 					, Arrays.asList(ChatColor.GRAY + "Modify " + ChatColor.GOLD + map.getName())));
 		}

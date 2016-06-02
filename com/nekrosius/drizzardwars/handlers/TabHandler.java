@@ -32,9 +32,9 @@ public class TabHandler {
 			}
 			ChatColor color = ChatColor.GRAY;
 			player.setPlayerListName(color+name);
-			Main.println("Setting player's tab color to Gray");
+			Main.println("Setting " + player.getName() + "'s tab color to Gray because he is spectating");
 		}else{
-			Main.println("Setting player's tab color to Normal");
+			Main.println("Setting " + player.getName() + "'s tab color to his team's color because he is not spectating.");
 			player.setPlayerListName(player.getName());
 		}
 

@@ -166,7 +166,11 @@ public class MapManager {
 				for(Player p : Bukkit.getWorld(map).getPlayers()){
 					p.teleport(loc);
 				}
-				Bukkit.unloadWorld(map, false);
+				if(Bukkit.unloadWorld(map, false)){
+					Main.println("World unload successful.");
+				}else{
+					Main.println("World unload failed.");
+				}
 				Main.deleteDirectory(file);
 			}
 		}
