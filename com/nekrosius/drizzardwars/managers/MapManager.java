@@ -54,7 +54,7 @@ public class MapManager {
 			files = file.list();
 		}
 
-		int id = 1;
+		int id = 0;
 		for(String str : files){
 			if((new File(mapsPath + str + File.separator).isDirectory())){
 				Main.unloadWorld(mapsPath + str, true);
@@ -145,6 +145,7 @@ public class MapManager {
 	}
 	
 	public static void deleteWorld(String map) {
+		Main.println("Deleting world " + map);
 		File file = new File(map);
 		if(file.exists()){
 			if(Bukkit.getWorld(map) == null){

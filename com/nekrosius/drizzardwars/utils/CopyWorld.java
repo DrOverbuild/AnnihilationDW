@@ -3,6 +3,7 @@ package com.nekrosius.drizzardwars.utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.bukkit.Bukkit;
 import org.bukkit.util.FileUtil;
 
 import java.io.*;
@@ -51,7 +52,7 @@ public class CopyWorld {
 //	            }
 //	        }
 	    } catch (IOException e) {
-	 
+		    e.printStackTrace();
 	    }
 	}
 

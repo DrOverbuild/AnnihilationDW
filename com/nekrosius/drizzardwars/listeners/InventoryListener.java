@@ -157,7 +157,7 @@ public class InventoryListener implements Listener{
 		if(event.getCurrentItem().getType() == null) return;
 		if(event.getCurrentItem().getType().equals(Material.PAPER)) {
 			event.setCancelled(true);
-			int id = event.getSlot() + 1;
+			int id = event.getSlot();
 			GameMap map = MapManager.getMap(id);
 			String folder = "plugins/DrizzardWars/Maps/" + map.getName();
 			Bukkit.createWorld(new WorldCreator(folder));
