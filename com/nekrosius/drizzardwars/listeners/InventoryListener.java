@@ -43,13 +43,9 @@ public class InventoryListener implements Listener{
 			Player player = event.getPlayer();
 			if(player.getItemInHand() != null) {
 				if (player.getItemInHand().isSimilar(ConfigFile.getKitSelectorItem())) {
-					if (player.getItemInHand().getItemMeta().hasDisplayName()) {
-						if (player.getItemInHand().getItemMeta().getDisplayName().contains("Kits")) {
-							event.setCancelled(true);
-							Kits.setup(player);
-							return;
-						}
-					}
+					event.setCancelled(true);
+					Kits.setup(player);
+					return;
 				}
 			}
 		}
@@ -298,7 +294,7 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//BREWING SHOP
-		else if(slot == 12){
+		else if(slot == 9){
 			ItemStack item = ItemStackGenerator.createItem(Material.BREWING_STAND_ITEM, 0, 0, ChatColor.DARK_AQUA + "Add Brewing Shop", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
@@ -320,7 +316,7 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//SET WEAPON SHOP
-		else if(slot == 14){
+		else if(slot == 12){
 			ItemStack item = ItemStackGenerator.createItem(Material.ARROW, 0, 0, ChatColor.DARK_AQUA + "Add Weapon Shop", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
@@ -328,6 +324,19 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GRAY + "Right-Click to add");
 			player.sendMessage(ChatColor.GRAY + " " +ChatColor.WHITE + "Weapon Shop");
 			player.sendMessage(ChatColor.GRAY + "Left-Click " + ChatColor.WHITE + "Weapon Shop");
+			player.sendMessage(ChatColor.GRAY + "to remove it!");
+			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
+		}
+
+		//SET WEAPON SHOP
+		else if(slot == 11){
+			ItemStack item = ItemStackGenerator.createItem(Material.BOW, 0, 0, ChatColor.DARK_AQUA + "Add Change Kit Sign", null);
+			player.getInventory().addItem(item);
+			player.closeInventory();
+			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
+			player.sendMessage(ChatColor.GRAY + "Right-Click to add");
+			player.sendMessage(ChatColor.GRAY + " " +ChatColor.WHITE + "Change Kit Sign");
+			player.sendMessage(ChatColor.GRAY + "Left-Click " + ChatColor.WHITE + "Change Kit Sign");
 			player.sendMessage(ChatColor.GRAY + "to remove it!");
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}

@@ -71,6 +71,11 @@ public class GameListener implements Listener{
 			if(event.getClickedBlock().getType().equals(Material.WALL_SIGN)
 					|| event.getClickedBlock().getType().equals(Material.SIGN_POST)){
 				Sign sign = (Sign) event.getClickedBlock().getState();
+				// CHANGE KIT
+				if(sign.getLine(1).equals(MessageFile.formatMessage("signs.change-kit"))){
+					Kits.setup(player);
+					return;
+				}
 				if(!sign.getLine(0).equalsIgnoreCase(ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]")) return;
 				// BREWING SHOP
 				if(sign.getLine(1).equalsIgnoreCase("brewing")){

@@ -128,6 +128,7 @@ public class MessageFile {
 		List<String> lore = new ArrayList<>();
 		lore.add("&3For use in the shops");
 		config.addDefault("currency.lore",lore);
+		config.addDefault("signs.change-kit","&4[&5Change Kit&4]");
 		config.addDefault("scoreboard.lobby.header", "&l&6Drizzard Wars");
 		config.addDefault("scoreboard.lobby.maps","&7{map_name} votes:");
 		List<String> contents1 = new ArrayList<>();

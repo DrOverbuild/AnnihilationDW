@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -299,6 +300,18 @@ public class MapSetupListener implements Listener{
 				if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 					event.setCancelled(true);
 					Signs.addSign("weapon", event.getClickedBlock().getLocation(), player, event.getClickedBlock(), event.getBlockFace());
+				}
+			}
+		}
+
+		// CHANGE KIT SIGN
+		else if(player.getItemInHand().getType().equals(Material.BOW)){
+			if(player.getItemInHand().getItemMeta().hasDisplayName()){
+				if(player.getItemInHand().getItemMeta().getDisplayName().contains("Add Change Kit Sign")){
+					if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+						event.setCancelled(true);
+						Signs.addSign("change kit",event.getClickedBlock().getLocation(),player,event.getClickedBlock(),event.getBlockFace());
+					}
 				}
 			}
 		}

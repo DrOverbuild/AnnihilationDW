@@ -2,6 +2,7 @@ package com.nekrosius.drizzardwars.inventories;
 
 import java.util.Arrays;
 
+import com.nekrosius.drizzardwars.files.ConfigFile;
 import com.nekrosius.drizzardwars.handlers.GameMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -53,14 +54,17 @@ public class MapsSetupMenu {
 		inv.setItem(8, ItemStackGenerator.createItem(Material.DIAMOND_SPADE, 0, 0
 				, ChatColor.ITALIC + "Unplaceable Block Wand"
 				, null));
-		inv.setItem(12, ItemStackGenerator.createItem(Material.BREWING_STAND_ITEM, 0, 0
+		inv.setItem(9, ItemStackGenerator.createItem(Material.BREWING_STAND_ITEM, 0, 0
 				, ChatColor.ITALIC + "Add Brewing Shop"
 				, null));
-		inv.setItem(13, ItemStackGenerator.createItem(Material.WATCH, 0, 0
-				, ChatColor.ITALIC + "Set Phase Time"
-				, null));
-		inv.setItem(14, ItemStackGenerator.createItem(Material.ARROW, 0, 0
+		inv.setItem(10, ItemStackGenerator.createItem(Material.ARROW, 0, 0
 				, ChatColor.ITALIC + "Add Weapon Shop"
+				, null));
+		inv.setItem(11, ItemStackGenerator.createItem(Material.BOW, 0, 0
+				, ChatColor.ITALIC + "Add Change Kit Sign"
+				, null));
+		inv.setItem(12, ItemStackGenerator.createItem(Material.WATCH, 0, 0
+				, ChatColor.ITALIC + "Set Phase Time"
 				, null));
 		player.openInventory(inv);
 	}

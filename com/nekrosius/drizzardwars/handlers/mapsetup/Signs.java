@@ -65,6 +65,12 @@ public class Signs {
 			signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
 			sign.setData(signData);
 		}
+		if(type.equalsIgnoreCase("change kit")){
+			sign.setLine(1,MessageFile.formatMessage("signs.change-kit"));
+			sign.update();
+			return;
+		}
+
 		sign.setLine(0, ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]");
 		if(type.equalsIgnoreCase("brewing")){
 			sign.setLine(1, "Brewing");
