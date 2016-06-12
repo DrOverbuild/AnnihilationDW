@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nekrosius.drizzardwars.Main;
+import com.nekrosius.drizzardwars.files.ConfigFile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -61,14 +62,26 @@ public class ScoreboardHandler {
 			org.bukkit.scoreboard.Team newTeam = sb.getScoreboard().registerNewTeam("lobby");
 			newTeam.setPrefix(ChatColor.GREEN + "");
 
-			org.bukkit.scoreboard.Team vipTeam = sb.getScoreboard().registerNewTeam("vip");
-			vipTeam.setPrefix(MessageFile.formatMessage("vip-prefix") + ChatColor.GREEN + " ");
+			for(Player p :Bukkit.getOnlinePlayers()){
+				newTeam.addEntry(p.getName());
+			}
 
-			for(Player p: Bukkit.getOnlinePlayers()){
-				if(p.hasPermission("drwars.vip")&&!p.isOp()){
-					vipTeam.addPlayer(p);
-				}else {
-					newTeam.addPlayer(p);
+			for(String prefixLocation : ConfigFile.config.getConfigurationSection("prefixes").getKeys(false)){
+				String prefix = MessageHandler.format(ConfigFile.config.getString("prefixes."+prefixLocation+".prefix"));
+				String permission = ConfigFile.config.getString("prefixes."+prefixLocation+".permission");
+				boolean applyToOperators = ConfigFile.config.getBoolean("prefixes."+prefixLocation+".include-admins");
+
+				org.bukkit.scoreboard.Team team = sb.getScoreboard().registerNewTeam(prefixLocation);
+				team.setPrefix(prefix + ChatColor.GREEN);
+
+				for(Player p : Bukkit.getOnlinePlayers()){
+					if(p.hasPermission(permission)){
+						if(p.isOp() && applyToOperators){
+							team.addEntry(p.getName());
+						}else if(p.hasPermission(permission)){
+							team.addEntry(p.getName());
+						}
+					}
 				}
 			}
 		} else {

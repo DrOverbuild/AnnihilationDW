@@ -150,8 +150,20 @@ public class GameListener implements Listener{
 		Player player = event.getPlayer();
 		String message = event.getMessage();
 		String playerName = player.getName();
-		if(player.hasPermission("drwars.vip")&&!player.isOp()){
-			playerName = MessageFile.formatMessage("vip-prefix") + " " + playerName;
+		String prefixToUse = "";
+
+		for(String prefixLocation : ConfigFile.config.getConfigurationSection("prefixes").getKeys(false)){
+			String prefix = MessageHandler.format(ConfigFile.config.getString("prefixes."+prefixLocation+".prefix"));
+			String permission = ConfigFile.config.getString("prefixes."+prefixLocation+".permission");
+			boolean applyToOperators = ConfigFile.config.getBoolean("prefixes."+prefixLocation+".include-admins");
+
+			if(player.hasPermission(permission)){
+				if(player.isOp() && applyToOperators){
+					playerName = prefix + " " + player.getName();
+				}else if(player.hasPermission(permission)){
+					playerName = prefix + " " + player.getName();
+				}
+			}
 		}
 		if(PlayerHandler.isSpectating(player)){
 			for(Player p : Bukkit.getOnlinePlayers()){

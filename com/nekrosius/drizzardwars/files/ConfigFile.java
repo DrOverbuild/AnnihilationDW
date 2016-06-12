@@ -63,6 +63,12 @@ public class ConfigFile {
 		float yaw = location.getYaw(),
 				pitch = location.getPitch();
 		config.addDefault("spawn-location", world + "," + x + "," + y + "," + z + "," + yaw + "," + pitch);
+		config.addDefault("prefixes.vip.prefix","&f[&e&lVIP&f]");
+		config.addDefault("prefixes.vip.permission","drwars.vip");
+		config.addDefault("prefixes.vip.include-admins",false);
+		config.addDefault("prefixes.op.prefix","&f[&e&lADMIN&f]");
+		config.addDefault("prefixes.op.permission","drwars.op");
+		config.addDefault("prefixes.op.include-admins",true);
 		config.options().copyDefaults(true);
 
 		saveConfig();
