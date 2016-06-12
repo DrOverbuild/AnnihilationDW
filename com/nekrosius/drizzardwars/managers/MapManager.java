@@ -145,19 +145,9 @@ public class MapManager {
 	}
 	
 	public static void deleteWorld(String map) {
-		Main.println("Deleting world " + map);
 		File file = new File(map);
 		if(file.exists()){
-			if(Bukkit.getWorld(map) == null){
-				Bukkit.unloadWorld(map, false);
-				Main.deleteDirectory(file);
-			} else if(Bukkit.getWorld(map).getPlayers() == null){
-				Bukkit.unloadWorld(map, false);
-				Main.deleteDirectory(file);
-			} else if(Bukkit.getWorld(map).getPlayers().size() == 0){
-				Bukkit.unloadWorld(map, false);
-				Main.deleteDirectory(file);
-			} else{
+			if(Bukkit.getWorld(map) != null && Bukkit.getWorld(map).getPlayers() != null && Bukkit.getWorld(map).getPlayers().size() > 0){
 				Location loc;
 				if(ConfigFile.config.getString("spawn-location") == null){
 					loc = Bukkit.getWorlds().get(0).getSpawnLocation();
@@ -167,12 +157,18 @@ public class MapManager {
 				for(Player p : Bukkit.getWorld(map).getPlayers()){
 					p.teleport(loc);
 				}
-				if(Bukkit.unloadWorld(map, false)){
-					Main.println("World unload successful.");
-				}else{
-					Main.println("World unload failed.");
-				}
-				Main.deleteDirectory(file);
+			}
+
+			if(Bukkit.unloadWorld(map, false)){
+				Main.println("World unload successful.");
+			}else{
+				Main.println("World unload failed.");
+			}
+
+			if(Main.deleteDirectory(file)){
+				Main.println("Directory deletion successful.");
+			}else{
+				Main.println("Directory deletion failed.");
 			}
 		}
 	}

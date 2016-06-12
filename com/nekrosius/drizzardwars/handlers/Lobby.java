@@ -31,6 +31,7 @@ public class Lobby {
 		player.setHealth(player.getMaxHealth());
 		player.setFoodLevel(20);
 		player.getInventory().clear();
+		player.getEnderChest().clear();
 		player.setGameMode(GameMode.SURVIVAL);
 		new BukkitRunnable(){
 			@Override

@@ -1,12 +1,14 @@
 package com.nekrosius.drizzardwars;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import com.nekrosius.drizzardwars.handlers.*;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -165,18 +167,26 @@ public class Main extends JavaPlugin {
 	}
 	
 	public static boolean deleteDirectory(File path) {
-		if( path.exists() ) {
-			File[] files = path.listFiles();
-			for(int i=0; i<files.length; i++) {
-			if(files[i].isDirectory()) {
-				deleteDirectory(files[i]);
-			}
-			else {
-				files[i].delete();
-				}
-			}
+		try {
+			FileUtils.deleteDirectory(path);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
-		return( path.delete() );
+
+//		if( path.exists() ) {
+//			File[] files = path.listFiles();
+//			for(int i=0; i<files.length; i++) {
+//			if(files[i].isDirectory()) {
+//				deleteDirectory(files[i]);
+//			}
+//			else {
+//				files[i].delete();
+//				}
+//			}
+//		}
+//		return( path.delete() );
 	}
 
 	public static boolean contains(List<String> list, String str){
