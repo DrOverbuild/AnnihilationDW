@@ -18,16 +18,6 @@ public class FileManager {
 	{
 		this.pl = plugin;
 
-		// This code will be removed after a few updates. We don't want to rename a data folder other plugins that we
-		// didn't write named DrizzardWars.
-		File oldDataFolder = new File(pl.getDataFolder().getParentFile().getAbsolutePath() + System.getProperty("file.separator") + "DrizzardWars");
-		if(oldDataFolder.exists()){
-			Main.println("DrizzardWars has been renamed to AnnihilationDW.");
-			Main.println("Renaming " + oldDataFolder.getAbsolutePath() + " to " + pl.getDataFolder().getAbsolutePath() + ".");
-			oldDataFolder.renameTo(pl.getDataFolder());
-		}
-		// End temporary code.
-
 		new MessageFile(pl);
 		new MapFile(pl);
 		new ConfigFile(pl);

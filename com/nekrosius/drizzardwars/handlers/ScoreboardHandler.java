@@ -72,15 +72,19 @@ public class ScoreboardHandler {
 
 				for(Player p : Bukkit.getOnlinePlayers()){
 					if(p.hasPermission(permission)){
-
 						String prefix = MessageHandler.format(ConfigFile.config.getString("prefixes."+prefixLocation+".prefix"));
 
-						if(prefix.length() >= 13){
-							prefix = prefix.substring(0,13);
+						if(prefix.length() >= 17){
+							prefix = prefix.substring(0,16);
 						}
 
-						org.bukkit.scoreboard.Team team = sb.getScoreboard().registerNewTeam(prefixLocation);
-						team.setPrefix(prefix + " " + ChatColor.GREEN);
+						org.bukkit.scoreboard.Team team = sb.getScoreboard().getTeam(prefixLocation);
+
+						if(team==null){
+							team = sb.getScoreboard().registerNewTeam(prefixLocation);
+						}
+
+						team.setPrefix(prefix);
 
 						if(p.isOp() && !applyToOperators){
 						}else{
