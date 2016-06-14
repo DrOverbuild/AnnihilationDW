@@ -67,18 +67,23 @@ public class ScoreboardHandler {
 			}
 
 			for(String prefixLocation : ConfigFile.config.getConfigurationSection("prefixes").getKeys(false)){
-				String prefix = MessageHandler.format(ConfigFile.config.getString("prefixes."+prefixLocation+".prefix"));
 				String permission = ConfigFile.config.getString("prefixes."+prefixLocation+".permission");
 				boolean applyToOperators = ConfigFile.config.getBoolean("prefixes."+prefixLocation+".include-admins");
 
-				org.bukkit.scoreboard.Team team = sb.getScoreboard().registerNewTeam(prefixLocation);
-				team.setPrefix(prefix + ChatColor.GREEN);
-
 				for(Player p : Bukkit.getOnlinePlayers()){
 					if(p.hasPermission(permission)){
-						if(p.isOp() && applyToOperators){
-							team.addEntry(p.getName());
-						}else if(p.hasPermission(permission)){
+
+						String prefix = MessageHandler.format(ConfigFile.config.getString("prefixes."+prefixLocation+".prefix"));
+
+						if(prefix.length() >= 13){
+							prefix = prefix.substring(0,13);
+						}
+
+						org.bukkit.scoreboard.Team team = sb.getScoreboard().registerNewTeam(prefixLocation);
+						team.setPrefix(prefix + " " + ChatColor.GREEN);
+
+						if(p.isOp() && !applyToOperators){
+						}else{
 							team.addEntry(p.getName());
 						}
 					}

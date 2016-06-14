@@ -23,9 +23,9 @@ public class ShopFile {
 	
 	public static void createConfig()
 	{
-		(new File("plugins" + File.separator + "DrizzardWars" + File.separator
+		(new File("plugins" + File.separator + "AnnihilationDW" + File.separator
 				+ "")).mkdirs();
-		file = new File("plugins" + File.separator + "DrizzardWars",
+		file = new File("plugins" + File.separator + "AnnihilationDW",
 				"shops.yml");
 		config = ConfigLoader.loadConfiguration(file);
 		config.addDefault("weapons.inventory.rows", 2);

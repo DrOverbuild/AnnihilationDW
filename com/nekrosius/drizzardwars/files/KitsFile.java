@@ -25,9 +25,9 @@ public class KitsFile {
 	
 	public static void createConfig()
 	{
-		(new File("plugins" + File.separator + "DrizzardWars" + File.separator
+		(new File("plugins" + File.separator + "AnnihilationDW" + File.separator
 				+ "")).mkdirs();
-		file = new File("plugins" + File.separator + "DrizzardWars",
+		file = new File("plugins" + File.separator + "AnnihilationDW",
 				"kits.yml");
 
 		if(!file.exists()){

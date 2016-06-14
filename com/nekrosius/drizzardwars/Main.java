@@ -53,7 +53,7 @@ public class Main extends JavaPlugin {
 	public static EffectManager em;
 
 	public static void println(String s){
-		Bukkit.getPluginManager().getPlugin("DrizzardWars").getLogger().info(s);
+		Bukkit.getPluginManager().getPlugin("AnnihilationDW").getLogger().info(s);
 	}
 
 	public void onEnable() {

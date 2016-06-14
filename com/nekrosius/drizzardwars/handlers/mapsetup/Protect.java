@@ -23,7 +23,7 @@ public class Protect {
 	//-------------------------------------------------------------//
 	
 	public static void setupAreas(GameMap map) {
-		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
+		MapFile.createConfig("plugins/AnnihilationDW/Maps/" + map.getName());
 		int i = 0;
 		if(MapFile.config.getConfigurationSection("areas") == null) return;
 		for(String str : MapFile.config.getConfigurationSection("areas").getKeys(false)){

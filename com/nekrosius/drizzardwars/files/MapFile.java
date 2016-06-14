@@ -22,7 +22,7 @@ public class MapFile {
 	
 	private void createFolder()
 	{
-		(new File("plugins" + File.separator + "DrizzardWars" + File.separator + "Maps" + File.separator + "")).mkdirs();
+		(new File("plugins" + File.separator + "AnnihilationDW" + File.separator + "Maps" + File.separator + "")).mkdirs();
 	}
 	
 	public static void createConfig(String path)

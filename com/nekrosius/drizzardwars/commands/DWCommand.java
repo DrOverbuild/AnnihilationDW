@@ -52,7 +52,7 @@ public class DWCommand implements CommandExecutor{
 				MessageHandler.sendMessage(player, MessageFile.getMessage("commands.not-op"));
 				return true;
 			}
-			if(player.getWorld().getName().startsWith("plugins/DrizzardWars/Maps")){
+			if(player.getWorld().getName().startsWith("plugins/AnnihilationDW/Maps")){
 				new TeamManager(pl, MapFile.config.getInt("team.amount"));
 				MapsSetupMenu.setupMapMenu(player, MapManager.getMap(player.getWorld().getName()));
 			}else{

@@ -24,9 +24,9 @@ public class TeamsFile {
 	
 	public static void createConfig()
 	{
-		(new File("plugins" + File.separator + "DrizzardWars" + File.separator
+		(new File("plugins" + File.separator + "AnnihilationDW" + File.separator
 				+ "")).mkdirs();
-		file = new File("plugins" + File.separator + "DrizzardWars",
+		file = new File("plugins" + File.separator + "AnnihilationDW",
 				"teams.yml");
 		config = ConfigLoader.loadConfiguration(file);
 		config.options().header("You can find color codes here:\nColor code list: http://jd.bukkit.org/rb/apidocs/org/bukkit/ChatColor.html\ndo not use: bold, magic, italic, strikethrough, underline, dark_aqua");

@@ -20,8 +20,8 @@ public class PlayerFile {
 	
 	public static void createConfig(Player player)
 	{
-		(new File("plugins" + File.separator + "DrizzardWars" + File.separator + "players" + File.separator + "")).mkdirs();
-		file = new File("plugins" + File.separator + "DrizzardWars" + File.separator + "players" + File.separator + player.getUniqueId().toString() + ".yml");
+		(new File("plugins" + File.separator + "AnnihilationDW" + File.separator + "players" + File.separator + "")).mkdirs();
+		file = new File("plugins" + File.separator + "AnnihilationDW" + File.separator + "players" + File.separator + player.getUniqueId().toString() + ".yml");
 		config = ConfigLoader.loadConfiguration(file);
 		config.addDefault("points", 0);
 		config.options().copyDefaults(true);

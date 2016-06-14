@@ -25,7 +25,7 @@ public class ConfigLoader {
 			config.load(file);
 		}catch (FileNotFoundException e){
 		}catch (IOException e){
-			Bukkit.getPluginManager().getPlugin("DrizzardWars").getLogger().log(Level.SEVERE, "Cannot load " + file, e);
+			Bukkit.getPluginManager().getPlugin("AnnihilationDW").getLogger().log(Level.SEVERE, "Cannot load " + file, e);
 		}catch (InvalidConfigurationException e){
 			Main.println(file + " cannot be loaded because it is incorrectly configured.");
 			Main.println("Renaming " + file + " to " + file + ".broken and creating a new config.");

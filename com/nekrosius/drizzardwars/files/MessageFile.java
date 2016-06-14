@@ -23,9 +23,9 @@ public class MessageFile {
 	}
 	
 	public static void createConfig() {
-		(new File("plugins" + File.separator + "DrizzardWars" + File.separator
+		(new File("plugins" + File.separator + "AnnihilationDW" + File.separator
 				+ "")).mkdirs();
-		file = new File("plugins" + File.separator + "DrizzardWars",
+		file = new File("plugins" + File.separator + "AnnihilationDW",
 				"translations.yml");
 
 //		config = YamlConfiguration.loadConfiguration(file);
@@ -70,7 +70,7 @@ public class MessageFile {
 		config.addDefault("commands.not-vip", "&cThis command is only for VIPs!");
 		config.addDefault("commands.points", "&7You have &c%t &7points!");
 		config.addDefault("commands.other-player-points","&7%s has &c%t&7 points!");
-		config.addDefault("commands.help","&e--------- &6DrizzardWars Help &e---------");
+		config.addDefault("commands.help","&e--------- &6AnnihilationDW Help &e---------");
 		config.addDefault("commands.party_help.header","&e------------------- &6/%s &e-------------------");
 		config.addDefault("commands.party_help.create","Create a party.");
 		config.addDefault("commands.party_help.invite","Invite a player to your party.");
@@ -78,7 +78,7 @@ public class MessageFile {
 		config.addDefault("commands.party_help.deny","Deny an invitation to a party.");
 		config.addDefault("commands.party_help.leave","Leave your party.");
 		config.addDefault("commands.party_help.list","List players in your party.");
-		config.addDefault("commands.descriptions.dw", "Manage DrizzardWars.");
+		config.addDefault("commands.descriptions.dw", "Manage AnnihilationDW.");
 		config.addDefault("commands.descriptions.help", "Show commands.");
 		config.addDefault("commands.descriptions.party", "Manage parties.");
 		config.addDefault("commands.descriptions.votar", "Vote for a map.");

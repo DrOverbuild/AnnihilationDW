@@ -137,7 +137,7 @@ public class PlayerHandler {
 	public static void setSpectating(Player player, boolean bool){
 		if (bool){
 			player.getInventory().clear();
-			MapFile.createConfig("plugins/DrizzardWars/Maps/" + MapManager.getActiveMap().getName());
+			MapFile.createConfig("plugins/AnnihilationDW/Maps/" + MapManager.getActiveMap().getName());
 			Location loc;
 			Team t = TeamManager.getTeam(player);
 			if(t != null){

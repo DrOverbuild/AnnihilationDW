@@ -33,7 +33,7 @@ import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 
 public class Game {
 
-	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("DrizzardWars");
+	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AnnihilationDW");
 	
 	private static int countdown = getDefaultCountdown();
 
@@ -56,7 +56,7 @@ public class Game {
 		Main.println("Loading world " + map.getName() + " to start game.");
 		long milliseconds = System.currentTimeMillis();
 		MapManager.createWorld(map);
-		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
+		MapFile.createConfig("plugins/AnnihilationDW/Maps/" + map.getName());
 		Main.println("World load completed in " + (System.currentTimeMillis() - milliseconds)/1000 + " seconds.");
 
 		new TeamManager(plugin, MapFile.config.getInt("team.amount"));
@@ -236,7 +236,7 @@ public class Game {
 			return;
 		}
 		setPhase(getPhase() + 1);
-		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
+		MapFile.createConfig("plugins/AnnihilationDW/Maps/" + map.getName());
 		phaseTime = MapFile.config.getInt("phase-time") / 20;
 		ScoreboardHandler.updateAll();
 
@@ -303,7 +303,7 @@ public class Game {
 		}
 		setPhase(getPhase() + 1);
 		phaseTime = ConfigFile.config.getInt("gametime") * 1200;
-		MapFile.createConfig("plugins/DrizzardWars/Maps/" + map.getName());
+		MapFile.createConfig("plugins/AnnihilationDW/Maps/" + map.getName());
 		phaseTime -= (MapFile.config.getInt("phase-time") * 4);
 		phaseTime /= 20;
 		if(phaseTime <= 0){

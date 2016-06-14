@@ -31,9 +31,9 @@ public class ConfigFile {
 	
 	public static void createConfig()
 	{
-		(new File("plugins" + File.separator + "DrizzardWars" + File.separator
+		(new File("plugins" + File.separator + "AnnihilationDW" + File.separator
 				+ "")).mkdirs();
-		file = new File("plugins" + File.separator + "DrizzardWars",
+		file = new File("plugins" + File.separator + "AnnihilationDW",
 				"config.yml");
 		config = ConfigLoader.loadConfiguration(file);
 		config.addDefault("team-size", 30);
@@ -63,12 +63,14 @@ public class ConfigFile {
 		float yaw = location.getYaw(),
 				pitch = location.getPitch();
 		config.addDefault("spawn-location", world + "," + x + "," + y + "," + z + "," + yaw + "," + pitch);
-		config.addDefault("prefixes.vip.prefix","&f[&e&lVIP&f]");
-		config.addDefault("prefixes.vip.permission","drwars.vip");
-		config.addDefault("prefixes.vip.include-admins",false);
-		config.addDefault("prefixes.op.prefix","&f[&e&lADMIN&f]");
-		config.addDefault("prefixes.op.permission","drwars.op");
-		config.addDefault("prefixes.op.include-admins",true);
+		if(!config.contains("prefixes")) {
+			config.addDefault("prefixes.vip.prefix", "&f[&e&lVIP&f]");
+			config.addDefault("prefixes.vip.permission", "drwars.vip");
+			config.addDefault("prefixes.vip.include-admins", false);
+			config.addDefault("prefixes.op.prefix", "&f[&eADMIN&f]");
+			config.addDefault("prefixes.op.permission", "drwars.op");
+			config.addDefault("prefixes.op.include-admins", true);
+		}
 		config.options().copyDefaults(true);
 
 		saveConfig();

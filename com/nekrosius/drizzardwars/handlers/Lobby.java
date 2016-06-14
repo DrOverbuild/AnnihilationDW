@@ -19,7 +19,7 @@ import com.nekrosius.drizzardwars.utils.ItemStackGenerator;
 
 public class Lobby {
 	
-	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("DrizzardWars");
+	private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AnnihilationDW");
 
 	public static void setupLobby(final Player player, boolean teleportPlayer){
 		if(Game.getGameState().equals(GameState.LOBBY) && !Game.isCountdownStarted()){
@@ -38,7 +38,7 @@ public class Lobby {
 			public void run() {
 				if(PlayerHandler.isSpectating(player) && Game.isGameStarted()){
 					player.getInventory().clear();
-					MapFile.createConfig("plugins/DrizzardWars/Maps/" + MapManager.getActiveMap().getName());
+					MapFile.createConfig("plugins/AnnihilationDW/Maps/" + MapManager.getActiveMap().getName());
 					if(teleportPlayer) {
 						if (TeamManager.hasTeam(player)) {
 							player.teleport(TeamManager.getTeam(player).getSpectatorSpawnpoint());

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class TabHandler {
 	
 	
-	//private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("DrizzardWars");
+	//private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AnnihilationDW");
 	
 	//public static String pts;
 	

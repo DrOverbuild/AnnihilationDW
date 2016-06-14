@@ -287,7 +287,7 @@ public class Signs {
 
 	public static int getPriceOfWeapon(int slot){
 		if(wepPrice.get(slot)==null){
-			Bukkit.getLogger().info("DrizzardWars encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
+			Bukkit.getLogger().info("AnnihilationDW encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
 			return 0;
 		}
 		return wepPrice.get(slot);
@@ -295,7 +295,7 @@ public class Signs {
 
 	public static int getPriceOfBrewingItem(int slot){
 		if(brewPrice.get(slot)==null){
-			Bukkit.getLogger().info("DrizzardWars encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
+			Bukkit.getLogger().info("AnnihilationDW encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
 			return 0;
 		}
 		return brewPrice.get(slot);

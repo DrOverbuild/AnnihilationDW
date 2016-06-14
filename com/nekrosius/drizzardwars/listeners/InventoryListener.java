@@ -155,7 +155,7 @@ public class InventoryListener implements Listener{
 			event.setCancelled(true);
 			int id = event.getSlot();
 			GameMap map = MapManager.getMap(id);
-			String folder = "plugins/DrizzardWars/Maps/" + map.getName();
+			String folder = "plugins/AnnihilationDW/Maps/" + map.getName();
 			Bukkit.createWorld(new WorldCreator(folder));
 			MapFile.createConfig(folder);
 			player.getInventory().clear();

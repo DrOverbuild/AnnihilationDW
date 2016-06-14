@@ -127,19 +127,19 @@ public class MapManager {
 			loc = Convert.StringToLocation(ConfigFile.config.getString("spawn-location"), true, false);
 		}
 
-		if(Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()) != null) {
-			if(Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()).getPlayers().size() > 0) {
-				for(Player p : Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()).getPlayers()){
+		if(Bukkit.getWorld("plugins/AnnihilationDW/Maps/" + map.getName()) != null) {
+			if(Bukkit.getWorld("plugins/AnnihilationDW/Maps/" + map.getName()).getPlayers().size() > 0) {
+				for(Player p : Bukkit.getWorld("plugins/AnnihilationDW/Maps/" + map.getName()).getPlayers()){
 					p.teleport(loc);
 				}
 			}
 		}
 
-		if(Bukkit.getWorld("plugins/DrizzardWars/Maps/" + map.getName()) != null) {
-			Bukkit.getServer().unloadWorld("plugins/DrizzardWars/Maps/" + map.getName(), true);
+		if(Bukkit.getWorld("plugins/AnnihilationDW/Maps/" + map.getName()) != null) {
+			Bukkit.getServer().unloadWorld("plugins/AnnihilationDW/Maps/" + map.getName(), true);
 		}
 
-		CopyWorld.copyWorld(new File("plugins/DrizzardWars/Maps/" + map.getName()),
+		CopyWorld.copyWorld(new File("plugins/AnnihilationDW/Maps/" + map.getName()),
 				new File(mapName));
 		Bukkit.createWorld(new WorldCreator(mapName));
 	}
@@ -185,7 +185,7 @@ public class MapManager {
 	
 	public static int amountOfMaps() {
 		int amount = 0;
-		File file = new File("plugins" + File.separator + "DrizzardWars" + File.separator
+		File file = new File("plugins" + File.separator + "AnnihilationDW" + File.separator
 				+ "Maps" + File.separator);
 		String[] files = file.list();
 		for(String str : files){

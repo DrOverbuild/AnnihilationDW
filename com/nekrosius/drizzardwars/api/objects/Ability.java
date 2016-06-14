@@ -15,7 +15,7 @@ public class Ability implements Listener {
 	
 	public static List<Ability> abilities = new ArrayList<Ability>();
 	
-	public static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("DrizzardWars");
+	public static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AnnihilationDW");
 	
 	private String name;
 	private Material icon;

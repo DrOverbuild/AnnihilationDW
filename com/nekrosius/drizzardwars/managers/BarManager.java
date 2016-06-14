@@ -17,7 +17,7 @@ public class BarManager {
 	}
 
 	public static void setHealth(Player p, float health){
-		if(ConfigFile.config.getBoolean("boss-bar")) {
+		if(ConfigFile.config.getBoolean("boss-bar") && p.getServer().getPluginManager().getPlugin("BossBarAPI") != null) {
 			if (!BossBarAPI.hasBar(p) || BossBarAPI.getMessage(p) != null) {
 				return;
 			}
@@ -37,7 +37,9 @@ public class BarManager {
 	}
 
 	public static void removeBar(Player p){
-		BossBarAPI.removeBar(p);
+		if(ConfigFile.config.getBoolean("boss-bar") && p.getServer().getPluginManager().getPlugin("BossBarAPI") != null) {
+			BossBarAPI.removeBar(p);
+		}
 	}
 
 }
