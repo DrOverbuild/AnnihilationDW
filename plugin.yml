@@ -26,25 +26,25 @@ commands:
 #        aliases: [ab, abilities]
 #        usage: /<command>
 permissions:
-    drwars.*:
+    dw.*:
         default: op
         description: Grants all permissions
         children:
-            drwars.vip: true
-            drwars.spectator: true
-            drwars.chance: true
-            drwars.party: true
-    drwars.vip:
+            dw.vip: true
+            dw.spectator: true
+            dw.chance: true
+            dw.party: true
+    dw.vip:
         default: op
         description: Grants VIP permissions
-    drwars.spectator:
+    dw.spectator:
         default: op
         description: Can spectate full games
-    drwars.chance:
+    dw.chance:
         default: op
         description: Gives a chance to join full game when someone leaves
         children:
-            drwars.spectator: true
-    drwars.party:
+            dw.spectator: true
+    dw.party:
         default: op
         description: Gives access to create a party
