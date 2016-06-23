@@ -48,3 +48,6 @@ permissions:
     dw.party:
         default: op
         description: Gives access to create a party
+    dw.changekit:
+        default: op
+        description: Gives access to change kit in middle of game

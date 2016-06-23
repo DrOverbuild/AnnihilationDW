@@ -71,7 +71,11 @@ public class GameListener implements Listener{
 				Sign sign = (Sign) event.getClickedBlock().getState();
 				// CHANGE KIT
 				if(sign.getLine(1).equals(MessageFile.formatMessage("signs.change-kit"))){
-					Kits.setup(player);
+					if(player.hasPermission("dw.changekit")) {
+						Kits.setup(player);
+					}else{
+						player.sendMessage(MessageFile.formatMessage("kits.cant-change"));
+					}
 					return;
 				}
 				if(!sign.getLine(0).equalsIgnoreCase(ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]")) return;

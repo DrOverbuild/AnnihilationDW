@@ -99,6 +99,7 @@ public class MessageFile {
 		config.addDefault("kits.bought", "&7You have bought %s kit!");
 		config.addDefault("kits.own","&aYou already own this kit.");
 		config.addDefault("kits.price", "&cRequires %t points");
+		config.addDefault("kits.cant-change", "&cYou cannot change your kit right now!");
 		config.addDefault("compass.default", "&7Right click to change target nexus!");
 		config.addDefault("compass.target", "&7Current target is %s &7Nexus!");
 		config.addDefault("kick.full", "&cServer is full! Try again later!");
