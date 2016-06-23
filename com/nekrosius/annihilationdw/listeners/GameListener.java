@@ -6,6 +6,7 @@ import com.nekrosius.annihilationdw.managers.ProtectedChestManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -207,16 +208,20 @@ public class GameListener implements Listener{
 		if(!event.getPlayer().isOp()){
 			if(event.getPlayer().getWorld().getName().equalsIgnoreCase("lobby")){ event.setCancelled(true); return; }
 		}
-		if(event.getBlock().getType().equals(Material.SIGN_POST) || event.getBlock().getType().equals(Material.WALL_SIGN)){
-			Sign sign = (Sign) event.getBlock().getState();
-			if(sign.getLine(0).equals(ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]")){
-				event.setCancelled(true);
-				return;
+
+		BlockFace[] faces = new BlockFace[]{BlockFace.SELF,BlockFace.DOWN,BlockFace.UP,BlockFace.EAST,BlockFace.WEST,BlockFace.NORTH,BlockFace.SOUTH};
+		for(BlockFace face:faces){
+			Block block = event.getBlock().getRelative(face);
+			if(block.getType().equals(Material.SIGN_POST) || block.getType().equals(Material.WALL_SIGN)){
+				if(Signs.signIsSpecialSign((Sign)block.getState())){
+					event.setCancelled(true);
+					return;
+				}
 			}
 		}
 
 		// NEXUS DAMAGE
-		else if(event.getBlock().getType().equals(Material.ENDER_STONE)) {
+		if(event.getBlock().getType().equals(Material.ENDER_STONE)) {
 			event.setCancelled(true);
 			if(Game.getPhase() == 1){
 				return;

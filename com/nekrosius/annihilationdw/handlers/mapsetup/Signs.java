@@ -298,4 +298,10 @@ public class Signs {
 		}
 		return brewPrice.get(slot);
 	}
+
+	public static boolean signIsSpecialSign(Sign sign) {
+		return sign.getLine(0).equals(ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]")
+				|| sign.getLine(1).equals(MessageFile.formatMessage("signs.change-kit"));
+
+	}
 }
