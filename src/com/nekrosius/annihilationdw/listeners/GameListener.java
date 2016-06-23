@@ -242,7 +242,7 @@ public class GameListener implements Listener{
 						ExplodeEffect eff = new ExplodeEffect(Main.em);
 						eff.setDynamicOrigin(new DynamicLocation(team.getNexusLocation()));
 						eff.start();
-						team.getNexusLocation().getWorld().playSound(team.getNexusLocation(), Sound.ITEM_BREAK, 1F, 1F);
+						//team.getNexusLocation().getWorld().playSound(team.getNexusLocation(), Sound.ITEM_BREAK, 1F, 1F);
 						for(String p : team.getAllPlayers()){
 							if(Bukkit.getPlayer(p) != null)
 							MessageHandler.sendMessage(Bukkit.getPlayer(p), MessageHandler.nexusDmg);
