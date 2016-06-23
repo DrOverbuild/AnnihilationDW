@@ -3,6 +3,7 @@ package com.nekrosius.annihilationdw.listeners;
 import com.nekrosius.annihilationdw.files.ConfigFile;
 import com.nekrosius.annihilationdw.handlers.*;
 import com.nekrosius.annihilationdw.managers.ProtectedChestManager;
+import com.nekrosius.annihilationdw.managers.SoundManager;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -242,6 +243,7 @@ public class GameListener implements Listener{
 						ExplodeEffect eff = new ExplodeEffect(Main.em);
 						eff.setDynamicOrigin(new DynamicLocation(team.getNexusLocation()));
 						eff.start();
+						SoundManager.playItemBreak(team.getNexusLocation().getWorld(),team.getNexusLocation());
 						//team.getNexusLocation().getWorld().playSound(team.getNexusLocation(), Sound.ITEM_BREAK, 1F, 1F);
 						for(String p : team.getAllPlayers()){
 							if(Bukkit.getPlayer(p) != null)
