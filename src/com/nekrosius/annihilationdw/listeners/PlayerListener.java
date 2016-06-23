@@ -1,31 +1,5 @@
 package com.nekrosius.annihilationdw.listeners;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerLoginEvent.Result;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.nekrosius.annihilationdw.Main;
 import com.nekrosius.annihilationdw.api.objects.Ability;
 import com.nekrosius.annihilationdw.files.ConfigFile;
@@ -44,31 +18,65 @@ import com.nekrosius.annihilationdw.handlers.mapsetup.Phase;
 import com.nekrosius.annihilationdw.managers.BarManager;
 import com.nekrosius.annihilationdw.managers.TeamManager;
 import com.nekrosius.annihilationdw.utils.Convert;
-
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 public class PlayerListener implements Listener {
-	
+
 	private Map<String, Integer> respawnTimer = new HashMap<String, Integer>();
-	
+
 	private Main pl;
+
 	public PlayerListener(Main pl) {
 		this.pl = pl;
 	}
-	
+
+	@EventHandler (priority = EventPriority.MONITOR)
+	public void onAsyncPreLogin(AsyncPlayerPreLoginEvent evt) {
+		if (evt.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+			Points.setPoints(evt.getName(), Main.getDatabaseImpl().getPoints(evt.getUniqueId()));
+		}
+	}
+
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
 		PlayerHandler.setAbilities(event.getPlayer(), new ArrayList<Ability>());
-		if(Bukkit.getOnlinePlayers().size() >= ConfigFile.config.getInt("team-size") * 4){
-			if(!event.getPlayer().hasPermission("dw.spectator")){
+		if (Bukkit.getOnlinePlayers().size() >= ConfigFile.config.getInt("team-size") * 4) {
+			if (!event.getPlayer().hasPermission("dw.spectator")) {
 				event.disallow(Result.KICK_FULL, MessageHandler.format(MessageFile.getMessage("kick.full")));
 				return;
 			}
 		}
 
-		if(Game.isGameStarted()){
+		if (Game.isGameStarted()) {
 			Team team = TeamManager.getTeam(event.getPlayer());
-			if(team!=null) {
+			if (team != null) {
 				if (team.getNexusHealth() <= 0 && !event.getPlayer().hasPermission("dw.spectator")) {
 					event.disallow(Result.KICK_OTHER, MessageHandler.format(MessageFile.getMessage("kick.lost")));
 					return;
@@ -80,75 +88,74 @@ public class PlayerListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		event.setJoinMessage(null);
 		final Player player = event.getPlayer();
 		BarManager.removeBar(player);
 		PlayerFile.createConfig(player);
-		if(Game.getGameState().equals(GameState.LOBBY)){
+		if (Game.getGameState().equals(GameState.LOBBY)) {
 			String msg = MessageFile.getMessage("player.join");
-			msg = MessageHandler.formatPlayer(msg, player).replace("%cp","" + Bukkit.getOnlinePlayers().size()).replace("%mp", ""
+			msg = MessageHandler.formatPlayer(msg, player).replace("%cp", "" + Bukkit.getOnlinePlayers().size()).replace("%mp", ""
 					+ ConfigFile.config.getInt("minimum-player-amount"));
-			for(Player p : Bukkit.getOnlinePlayers()){
+			for (Player p : Bukkit.getOnlinePlayers()) {
 				MessageHandler.sendMessage(p, msg);
 			}
 			Lobby.setupLobby(player);
 			MessageHandler.sendMessage(player, MessageFile.getMessageList("player.join-information"));
-		}else if(Game.getGameState().equals(GameState.IN_GAME)){
-			if(!PlayerHandler.isPlayerPlaying(player)) {
+		} else if (Game.getGameState().equals(GameState.IN_GAME)) {
+			if (!PlayerHandler.isPlayerPlaying(player)) {
 				Team toJoin = TeamManager.getTeamToJoin();
 				Game.setupPlayer(player, toJoin);
-				
+
 				Phase.sendPhaseMessage(player, Game.getPhase());
-				
+
 				TabHandler.setColor(player);
 				BarManager.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
 				//BossBarAPI.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
-			}else{
+			} else {
 				BarManager.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
 				//BossBarAPI.setMessage(player, MessageHandler.getPhaseMessage(Game.getPhase()));
-				if(TeamManager.getTeam(player).getNexusHealth() <= 0){
+				if (TeamManager.getTeam(player).getNexusHealth() <= 0) {
 					player.setHealth(0d);
 					return;
 				}
 				TabHandler.setColor(player);
 			}
 
-			if(respawnTimer.containsKey(player.getName())){
-				PlayerHandler.setSpectating(player,false);
+			if (respawnTimer.containsKey(player.getName())) {
+				PlayerHandler.setSpectating(player, false);
 				respawnTimer.remove(player.getName());
 				Lobby.setupLobby(player);
 			}
 
-			if(Game.getPhase() > 3){
+			if (Game.getPhase() > 3) {
 				PlayerHandler.setSpectating(player, true);
 			}
 
-		}else{
-			PlayerHandler.setSpectating(player,true);
+		} else {
+			PlayerHandler.setSpectating(player, true);
 			Lobby.setupLobby(player);
 		}
 
 		ScoreboardHandler.updateAll();
 
 
-
-		for(Player p : Bukkit.getOnlinePlayers()){
+		for (Player p : Bukkit.getOnlinePlayers()) {
 			player.showPlayer(p);
 			p.showPlayer(player);
 		}
 
 		PlayerHandler.hideHiddenPlayers(player);
 
-		if(PlayerHandler.isSpectating(player)){
+		if (PlayerHandler.isSpectating(player)) {
 			PlayerHandler.hidePlayer(player);
 		}
 
-		if(PlayerHandler.getHiddenPlayers().size()>0){
+		if (PlayerHandler.getHiddenPlayers().size() > 0) {
 			StringBuilder sb = new StringBuilder("Hidden players: ");
-			for(String s:PlayerHandler.getHiddenPlayers()){
+			for (String s : PlayerHandler.getHiddenPlayers()) {
 				sb.append(s).append(" ");
 			}
 			Main.println(sb.toString());
@@ -159,11 +166,11 @@ public class PlayerListener implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		event.setQuitMessage(null);
 		Player player = event.getPlayer();
-		if(Game.getGameState().equals(GameState.LOBBY)){
+		if (Game.getGameState().equals(GameState.LOBBY)) {
 			String msg = MessageFile.getMessage("player.leave");
-			msg = MessageHandler.formatPlayer(msg, player).replace("%cp","" + (Bukkit.getOnlinePlayers().size() - 1)).replace("%mp", ""
+			msg = MessageHandler.formatPlayer(msg, player).replace("%cp", "" + (Bukkit.getOnlinePlayers().size() - 1)).replace("%mp", ""
 					+ ConfigFile.config.getInt("minimum-player-amount"));
-			for(Player p : Bukkit.getOnlinePlayers()){
+			for (Player p : Bukkit.getOnlinePlayers()) {
 				MessageHandler.sendMessage(p, msg);
 			}
 		}
@@ -172,18 +179,18 @@ public class PlayerListener implements Listener {
 		PlayerHandler.quit(player);
 
 		// Kill off a team if the player who left was the only player in that team and Game.getPhase() > 3
-		if(Game.isGameStarted() && Game.getPhase()>3){
-			for(Team t:TeamManager.getTeams()){
-				if(t.getAlivePlayers().size() == 1){
+		if (Game.isGameStarted() && Game.getPhase() > 3) {
+			for (Team t : TeamManager.getTeams()) {
+				if (t.getAlivePlayers().size() == 1) {
 					Team t2 = TeamManager.getTeam(player);
-					if(t2!=null&&t2.getName().equals(t.getName())) {
+					if (t2 != null && t2.getName().equals(t.getName())) {
 						TeamManager.destroyTeam(t);
 					}
 				}
 			}
 		}
 
-		if(Main.getAlivePlayers().size() == 1 && Game.isGameStarted()){
+		if (Main.getAlivePlayers().size() == 1 && Game.isGameStarted()) {
 			Main.println("Finishing game because there are no players online who are not spectating.");
 			Game.finish(null);
 			return;
@@ -201,16 +208,16 @@ public class PlayerListener implements Listener {
 //		}
 
 	}
-	
+
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
 		final Player player = event.getPlayer();
 		Team team = TeamManager.getTeam(player);
-		if(team != null){
-			if(Game.getRespawnTimer() > 0) {
+		if (team != null) {
+			if (Game.getRespawnTimer() > 0) {
 				event.setRespawnLocation(team.getSpectatorSpawnpoint());
 				PlayerHandler.setSpectating(player, true);
-			}else{
+			} else {
 				event.setRespawnLocation(team.getSpawnpoint());
 			}
 
@@ -218,10 +225,11 @@ public class PlayerListener implements Listener {
 				PlayerHandler.teamNexusIsDestroyed(player);
 			}
 
-			if(Game.isGameStarted()){
-				if(Game.getRespawnTimer() > 0) {
+			if (Game.isGameStarted()) {
+				if (Game.getRespawnTimer() > 0) {
 					respawnTimer.put(player.getName(), Game.getRespawnTimer());
 					new BukkitRunnable() {
+
 						public void run() {
 							if (!player.isOnline()) {
 								Main.println("Stopped respawn timer for " + player.getName() + " because he logged off.");
@@ -252,49 +260,53 @@ public class PlayerListener implements Listener {
 		}
 		Lobby.setupLobby(player);
 	}
-	
+
 	@EventHandler
-	public void onBreak(BlockBreakEvent event){
-		if(!Game.isGameStarted()){
-			if(!event.getPlayer().isOp())	
+	public void onBreak(BlockBreakEvent event) {
+		if (!Game.isGameStarted()) {
+			if (!event.getPlayer().isOp()) {
 				event.setCancelled(true);
+			}
 		}
 	}
-	
+
 	@EventHandler
-	public void onPlace(BlockPlaceEvent event){
-		if(!Game.isGameStarted()){
-			if(!event.getPlayer().isOp())	
+	public void onPlace(BlockPlaceEvent event) {
+		if (!Game.isGameStarted()) {
+			if (!event.getPlayer().isOp()) {
 				event.setCancelled(true);
+			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		final Player player = event.getEntity();
 		event.setDeathMessage(null);
-		if(!Game.isGameStarted()){
+		if (!Game.isGameStarted()) {
 			event.getDrops().clear();
 			event.setDroppedExp(0);
-		}else{
+		} else {
 			List<ItemStack> drops = event.getDrops();
 			ListIterator<ItemStack> litr = drops.listIterator();
-			while(litr.hasNext()){
-	        	ItemStack item = litr.next();
-				if(item.getType().equals(Material.LEATHER_HELMET) || item.getType().equals(Material.LEATHER_CHESTPLATE) || item.getType().equals(Material.LEATHER_LEGGINGS) || item.getType().equals(Material.LEATHER_BOOTS)){
+			while (litr.hasNext()) {
+				ItemStack item = litr.next();
+				if (item.getType().equals(Material.LEATHER_HELMET) || item.getType().equals(Material.LEATHER_CHESTPLATE) || item.getType()
+						.equals(Material.LEATHER_LEGGINGS) || item.getType().equals(Material.LEATHER_BOOTS)) {
 					litr.remove();
-				}else if(item.getType().equals(Material.COMPASS) || item.getType().equals(Material.WORKBENCH)){
+				} else if (item.getType().equals(Material.COMPASS) || item.getType().equals(Material.WORKBENCH)) {
 					litr.remove();
-				}else if(item.getType().equals(Material.WOOD_SWORD) || item.getType().equals(Material.WOOD_AXE) || item.getType().equals(Material.WOOD_PICKAXE)){
+				} else if (item.getType().equals(Material.WOOD_SWORD) || item.getType().equals(Material.WOOD_AXE) || item.getType()
+						.equals(Material.WOOD_PICKAXE)) {
 					litr.remove();
-				}else if(item.getType().equals(Material.GOLD_INGOT)){
+				} else if (item.getType().equals(Material.GOLD_INGOT)) {
 					litr.remove();
 				}
-	        }
+			}
 		}
 		Points.addPoints(player, Points.getDeathPoints());
 		Team t = TeamManager.getTeam(player);
-		if(t != null) {
+		if (t != null) {
 			if (t.getNexusHealth() <= 0) {
 				if (!player.hasPermission("dw.spectator")) {
 					PlayerHandler.quit(player);
@@ -307,20 +319,20 @@ public class PlayerListener implements Listener {
 		// Record amount of gold player has so we can give it back when he respawns.
 		HashMap<Integer, ? extends ItemStack> goldIngots = player.getInventory().all(Material.GOLD_INGOT);
 		int gold = 0;
-		for(Integer i:goldIngots.keySet()){
+		for (Integer i : goldIngots.keySet()) {
 			gold += goldIngots.get(i).getAmount();
 		}
-		if(gold > 0){
+		if (gold > 0) {
 			PlayerHandler.setPlayerGold(player, gold);
 		}
 
-		new BukkitRunnable(){
+		new BukkitRunnable() {
 
 			@Override
 			public void run() {
 				player.spigot().respawn();
 			}
-		}.runTaskLater(pl,1L);
+		}.runTaskLater(pl, 1L);
 //		new BukkitRunnable(){
 //			@Override
 //			public void run() {
@@ -328,44 +340,44 @@ public class PlayerListener implements Listener {
 //			}
 //		}.runTaskLater(pl, 1L);
 	}
-	
+
 	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
-		if(!Game.isGameStarted()){
+		if (!Game.isGameStarted()) {
 			event.setFoodLevel(20);
 		}
 
-		if(event.getEntity() instanceof Player){
-			if(PlayerHandler.isSpectating((Player)event.getEntity())){
+		if (event.getEntity() instanceof Player) {
+			if (PlayerHandler.isSpectating((Player) event.getEntity())) {
 				event.setFoodLevel(20);
 			}
 		}
 	}
-	
+
 	@EventHandler
-	public void onDamage(EntityDamageEvent event){
-		if(event.getEntity() instanceof Player){
-			if(!Game.isGameStarted()){
+	public void onDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			if (!Game.isGameStarted()) {
 				event.setCancelled(true);
-				if(event.getCause() == DamageCause.VOID){
-					if(ConfigFile.config.getString("spawn-location") == null){
+				if (event.getCause() == DamageCause.VOID) {
+					if (ConfigFile.config.getString("spawn-location") == null) {
 						event.getEntity().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-					}else{
+					} else {
 						event.getEntity().teleport(Convert.StringToLocation(ConfigFile.config.getString("spawn-location"), true, false));
 					}
 				}
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onCmd(PlayerCommandPreprocessEvent event) {
-		if(event.getMessage().toLowerCase().startsWith("/me")){
+		if (event.getMessage().toLowerCase().startsWith("/me")) {
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.RED + "This command is unavailable!");
 		}
 	}
-	
+
 	public Main getMainClass() {
 		return pl;
 	}
