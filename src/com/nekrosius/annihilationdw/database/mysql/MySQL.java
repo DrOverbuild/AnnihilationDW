@@ -91,7 +91,7 @@ public class MySQL implements Database {
     @Override
     public int getPoints(UUID playerId) {
         try {
-            QueryResult result = query("SELECT points FROM " + playerPointsTable + " WHERE uuuid=?", playerId.toString());
+            QueryResult result = query("SELECT points FROM " + playerPointsTable + " WHERE uuid=?", playerId.toString());
             if (result.size() > 0) {
                 return result.first().asInt("points");
             }
