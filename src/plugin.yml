@@ -21,10 +21,10 @@ commands:
     help:
         description: Get Help
         usage: /<command>
-#    ability:
-#        description: Select ability
-#        aliases: [ab, abilities]
-#        usage: /<command>
+    ability:
+        description: Select ability
+        aliases: [ab, abilities]
+        usage: /<command>
 permissions:
     dw.*:
         default: op

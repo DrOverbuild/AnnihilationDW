@@ -3,6 +3,8 @@ package com.nekrosius.annihilationdw.abilities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.nekrosius.annihilationdw.handlers.PlayerHandler;
+import com.nekrosius.annihilationdw.listeners.PlayerListener;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,6 +50,7 @@ public class Archer extends Ability {
 					return;
 				}
 				if(event.getPlayer().isDead()) return;
+				if(PlayerListener.respawnTimer.containsKey(event.getPlayer().getName())) return;
 				event.getPlayer().getInventory().addItem(new ItemStack(Material.ARROW, ARROWS));
 				
 			}

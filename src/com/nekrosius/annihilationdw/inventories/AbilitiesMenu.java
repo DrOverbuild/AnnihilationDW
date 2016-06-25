@@ -19,10 +19,8 @@ public class AbilitiesMenu {
 	}
 	
 	private static int getSize(int items) {
-		for(int i = 9; i <= 54; i += 9) {
-			if(i >= items) return i;
-		}
-		return 54;
+		int rows = (int)Math.ceil(((double)items / 9.0));
+		return Math.min(rows * 9, 54);
 	}
 
 }

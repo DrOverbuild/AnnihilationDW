@@ -3,6 +3,7 @@ package com.nekrosius.annihilationdw.files;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.nekrosius.annihilationdw.utils.ConfigLoader;
@@ -47,6 +48,7 @@ public class KitsFile {
 			config.addDefault("ranger.items.2.enchantment", enchantments);
 			config.addDefault("ranger.items.3.id", 262);
 			config.addDefault("ranger.items.3.amount", 32);
+			config.addDefault("ranger.abilities", Collections.singletonList("Archer"));
 			config.options().copyDefaults(true);
 		}else{
 			config = ConfigLoader.loadConfiguration(file);

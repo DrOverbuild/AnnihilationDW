@@ -49,7 +49,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class PlayerListener implements Listener {
 	
-	private Map<String, Integer> respawnTimer = new HashMap<String, Integer>();
+	public static Map<String, Integer> respawnTimer = new HashMap<String, Integer>();
 	
 	private Main pl;
 	public PlayerListener(Main pl) {
