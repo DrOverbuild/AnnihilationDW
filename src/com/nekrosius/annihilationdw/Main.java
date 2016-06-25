@@ -22,6 +22,7 @@ import com.nekrosius.annihilationdw.managers.ListenerManager;
 import com.nekrosius.annihilationdw.managers.MapManager;
 import com.nekrosius.annihilationdw.managers.PartyManager;
 import com.nekrosius.annihilationdw.managers.TeamManager;
+import com.nekrosius.annihilationdw.utils.AsyncUtil;
 import com.nekrosius.annihilationdw.utils.Convert;
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
@@ -71,7 +72,7 @@ public class Main extends JavaPlugin {
 					Lobby.setupLobby(p);
 					TabHandler.update(p);
 					BarManager.removeBar(p);
-					Points.setPoints(p.getName(), database.getPoints(p));
+					Points.setPoints(p.getUniqueId(), database.getPoints(p));
 				}
 			}
 		}.runTaskLater(this, 10L);
@@ -99,6 +100,7 @@ public class Main extends JavaPlugin {
 		}
 		database.disconnect();
 		database = null;
+		AsyncUtil.stop();
 	}
 
 	private void load() {

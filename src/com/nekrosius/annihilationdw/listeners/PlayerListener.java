@@ -7,6 +7,7 @@ import com.nekrosius.annihilationdw.files.MessageFile;
 import com.nekrosius.annihilationdw.files.PlayerFile;
 import com.nekrosius.annihilationdw.handlers.Game;
 import com.nekrosius.annihilationdw.handlers.GameState;
+import com.nekrosius.annihilationdw.handlers.Kits;
 import com.nekrosius.annihilationdw.handlers.Lobby;
 import com.nekrosius.annihilationdw.handlers.MessageHandler;
 import com.nekrosius.annihilationdw.handlers.PlayerHandler;
@@ -60,7 +61,8 @@ public class PlayerListener implements Listener {
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void onAsyncPreLogin(AsyncPlayerPreLoginEvent evt) {
 		if (evt.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-			Points.setPoints(evt.getName(), Main.getDatabaseImpl().getPoints(evt.getUniqueId()));
+			Points.setPoints(evt.getUniqueId(), Main.getDatabaseImpl().getPoints(evt.getUniqueId()));
+			Kits.loadKitData(evt.getUniqueId());
 		}
 	}
 
@@ -70,6 +72,8 @@ public class PlayerListener implements Listener {
 		if (Bukkit.getOnlinePlayers().size() >= ConfigFile.config.getInt("team-size") * 4) {
 			if (!event.getPlayer().hasPermission("dw.spectator")) {
 				event.disallow(Result.KICK_FULL, MessageHandler.format(MessageFile.getMessage("kick.full")));
+				Points.removePlayerFromMap(event.getPlayer());
+				Kits.unloadKitData(event.getPlayer());
 				return;
 			}
 		}
@@ -79,12 +83,16 @@ public class PlayerListener implements Listener {
 			if (team != null) {
 				if (team.getNexusHealth() <= 0 && !event.getPlayer().hasPermission("dw.spectator")) {
 					event.disallow(Result.KICK_OTHER, MessageHandler.format(MessageFile.getMessage("kick.lost")));
+					Points.removePlayerFromMap(event.getPlayer());
+					Kits.unloadKitData(event.getPlayer());
 					return;
 				}
 			}
 
 			if (Game.getPhase() > 3 && !event.getPlayer().hasPermission("dw.spectator")) {
 				event.disallow(Result.KICK_OTHER, MessageHandler.format(MessageFile.getMessage("kick.after-phase-3")));
+				Points.removePlayerFromMap(event.getPlayer());
+				Kits.unloadKitData(event.getPlayer());
 			}
 		}
 	}
@@ -95,6 +103,11 @@ public class PlayerListener implements Listener {
 		final Player player = event.getPlayer();
 		BarManager.removeBar(player);
 		PlayerFile.createConfig(player);
+
+		if (!player.hasPermission("dw.vip")) {
+			Kits.clearKits(player);
+		}
+
 		if (Game.getGameState().equals(GameState.LOBBY)) {
 			String msg = MessageFile.getMessage("player.join");
 			msg = MessageHandler.formatPlayer(msg, player).replace("%cp", "" + Bukkit.getOnlinePlayers().size()).replace("%mp", ""
@@ -176,6 +189,7 @@ public class PlayerListener implements Listener {
 		}
 		Points.savePoints(event.getPlayer());
 		Points.removePlayerFromMap(event.getPlayer());
+		Kits.unloadKitData(event.getPlayer());
 		PlayerHandler.quit(player);
 
 		// Kill off a team if the player who left was the only player in that team and Game.getPhase() > 3

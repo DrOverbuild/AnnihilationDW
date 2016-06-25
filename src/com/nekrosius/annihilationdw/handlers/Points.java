@@ -2,17 +2,16 @@ package com.nekrosius.annihilationdw.handlers;
 
 import com.nekrosius.annihilationdw.Main;
 import com.nekrosius.annihilationdw.files.ConfigFile;
+import com.nekrosius.annihilationdw.utils.AsyncUtil;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.UUID;
 
 public class Points {
 
-	static Map<String, Integer> playerPoints = new HashMap<String, Integer>();
-	static ExecutorService async = Executors.newSingleThreadExecutor();
+	static Map<UUID, Integer> playerPoints = new HashMap<UUID, Integer>();
 
 	private static int kill;
 	private static int win;
@@ -25,12 +24,13 @@ public class Points {
 	}
 
 	public static void setPoints(Player player, int points) {
-		setPoints(player.getName(), points);
+		setPoints(player.getUniqueId(), points);
 		savePoints(player);
+		ScoreboardHandler.update(player);
 	}
 
-	public static void setPoints(String name, int points) {
-		playerPoints.put(name, points);
+	public static void setPoints(UUID playerId, int points) {
+		playerPoints.put(playerId, points);
 	}
 
 	public static void addPoints(Player player, int points) {
@@ -38,13 +38,13 @@ public class Points {
 	}
 
 	public static int getPoints(Player player) {
-		return playerPoints.getOrDefault(player.getName(), 0);
+		return playerPoints.getOrDefault(player.getUniqueId(), 0);
 	}
 
 	public static void savePoints(Player p) {
-		if (playerPoints.containsKey(p.getName())) {
-			int points = playerPoints.get(p.getName());
-			async.submit(new Runnable() {
+		if (playerPoints.containsKey(p.getUniqueId())) {
+			int points = playerPoints.get(p.getUniqueId());
+			AsyncUtil.run(new Runnable() {
 
 				@Override
 				public void run() {
@@ -56,7 +56,7 @@ public class Points {
 	}
 
 	public static void removePlayerFromMap(Player p) {
-		playerPoints.remove(p.getName());
+		playerPoints.remove(p.getUniqueId());
 	}
 
 	public static int getKillPoints() {
