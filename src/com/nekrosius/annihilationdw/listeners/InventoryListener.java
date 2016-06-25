@@ -63,6 +63,8 @@ public class InventoryListener implements Listener{
 			processChooseMapSetupMenuInventoryClick(event,player);
 		}else if(event.getInventory().getName().startsWith(ChatColor.ITALIC + "")){
 			processMapSetupMenuInventoryClick(event,player);
+		}else if(event.getInventory().getName().contains("Abilities Menu")){
+			event.setCancelled(true);
 		}
 	}
 

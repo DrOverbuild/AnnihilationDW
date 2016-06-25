@@ -63,9 +63,9 @@ public class Main extends JavaPlugin {
 
 	public void onEnable() {
 		load();
-		//loadDefaultAbilities();
-		new BukkitRunnable() {
 
+		loadDefaultAbilities();
+		new BukkitRunnable(){
 			@Override
 			public void run() {
 				for (Player p : Bukkit.getOnlinePlayers()) {
