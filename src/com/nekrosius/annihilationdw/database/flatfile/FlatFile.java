@@ -2,6 +2,7 @@ package com.nekrosius.annihilationdw.database.flatfile;
 
 import com.nekrosius.annihilationdw.database.Database;
 import com.nekrosius.annihilationdw.files.PlayerFile;
+import com.nekrosius.annihilationdw.handlers.Stats;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -24,16 +25,6 @@ public class FlatFile implements Database {
 
 	@Override
 	public void prepare() {
-	}
-
-	@Override
-	public int getPoints(Player player) {
-		return getPoints(player.getUniqueId());
-	}
-
-	@Override
-	public int getPoints(UUID playerId) {
-		return PlayerFile.getPoints(playerId);
 	}
 
 	@Override
@@ -83,5 +74,45 @@ public class FlatFile implements Database {
 	public List<String> getKits(UUID playerId) {
 		PlayerFile.createConfig(playerId);
 		return PlayerFile.config.getStringList("kits");
+	}
+
+	@Override
+	public void setKills(Player player, int kills) {
+		setKills(player.getUniqueId(), kills);
+	}
+
+	@Override
+	public void setKills(UUID playerId, int kills) {
+		PlayerFile.setKills(playerId, kills);
+	}
+
+	@Override
+	public void setGames(Player player, int games) {
+		setGames(player.getUniqueId(), games);
+	}
+
+	@Override
+	public void setGames(UUID playerId, int games) {
+		PlayerFile.setGames(playerId, games);
+	}
+
+	@Override
+	public void setWins(Player player, int wins) {
+		setWins(player.getUniqueId(), wins);
+	}
+
+	@Override
+	public void setWins(UUID playerId, int wins) {
+		PlayerFile.setWins(playerId, wins);
+	}
+
+	@Override
+	public Stats loadStats(Player player) {
+		return loadStats(player.getUniqueId());
+	}
+
+	@Override
+	public Stats loadStats(UUID playerId) {
+		return PlayerFile.getStats(playerId);
 	}
 }

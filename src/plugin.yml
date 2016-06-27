@@ -51,3 +51,6 @@ permissions:
     dw.changekit:
         default: op
         description: Gives access to change kit in middle of game
+    dw.statsigns:
+        default: op
+        description: Gives access to create/destroy statistic signs

@@ -1,16 +1,5 @@
 package com.nekrosius.annihilationdw.listeners;
 
-import com.nekrosius.annihilationdw.handlers.*;
-import org.bukkit.*;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
 import com.nekrosius.annihilationdw.Main;
 import com.nekrosius.annihilationdw.files.ConfigFile;
 import com.nekrosius.annihilationdw.files.KitsFile;
@@ -18,7 +7,15 @@ import com.nekrosius.annihilationdw.files.MapFile;
 import com.nekrosius.annihilationdw.files.MessageFile;
 import com.nekrosius.annihilationdw.files.ShopFile;
 import com.nekrosius.annihilationdw.files.TeamsFile;
+import com.nekrosius.annihilationdw.handlers.Game;
 import com.nekrosius.annihilationdw.handlers.GameMap;
+import com.nekrosius.annihilationdw.handlers.Kits;
+import com.nekrosius.annihilationdw.handlers.Lobby;
+import com.nekrosius.annihilationdw.handlers.MessageHandler;
+import com.nekrosius.annihilationdw.handlers.PlayerHandler;
+import com.nekrosius.annihilationdw.handlers.Stats;
+import com.nekrosius.annihilationdw.handlers.TabHandler;
+import com.nekrosius.annihilationdw.handlers.Team;
 import com.nekrosius.annihilationdw.handlers.mapsetup.Blocks;
 import com.nekrosius.annihilationdw.handlers.mapsetup.Phase;
 import com.nekrosius.annihilationdw.inventories.AdminMenu;
@@ -28,20 +25,35 @@ import com.nekrosius.annihilationdw.managers.MapManager;
 import com.nekrosius.annihilationdw.managers.TeamManager;
 import com.nekrosius.annihilationdw.utils.Convert;
 import com.nekrosius.annihilationdw.utils.ItemStackGenerator;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
-public class InventoryListener implements Listener{
-	
+public class InventoryListener implements Listener {
+
 	private Main pl;
-	public InventoryListener(Main pl)
-	{
+
+	public InventoryListener(Main pl) {
 		this.pl = pl;
 	}
-	
+
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
-		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+		if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			Player player = event.getPlayer();
-			if(player.getItemInHand() != null) {
+			if (player.getItemInHand() != null) {
 				if (player.getItemInHand().isSimilar(ConfigFile.getKitSelectorItem())) {
 					event.setCancelled(true);
 					Kits.setup(player);
@@ -50,49 +62,55 @@ public class InventoryListener implements Listener{
 			}
 		}
 	}
-	
-	@SuppressWarnings("deprecation")
+
+	@SuppressWarnings ("deprecation")
 	@EventHandler
 	public void onInventoryInteract(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		if(event.getInventory().getTitle().equals(MessageHandler.format(MessageFile.getMessage("kits.menu-name")))) {
-			processKitsInventoryClick(event,player);
-		}else if(event.getInventory().getTitle().equals("Admin menu")) {
-			processAdminMenuInventoryClick(event,player);
-		}else if(event.getInventory().getName().equals("MapSetup menu")) {
-			processChooseMapSetupMenuInventoryClick(event,player);
-		}else if(event.getInventory().getName().startsWith(ChatColor.ITALIC + "")){
-			processMapSetupMenuInventoryClick(event,player);
-		}else if(event.getInventory().getName().contains("Abilities Menu")){
+		if (event.getInventory().getTitle().equals(MessageHandler.format(MessageFile.getMessage("kits.menu-name")))) {
+			processKitsInventoryClick(event, player);
+		} else if (event.getInventory().getTitle().equals("Admin menu")) {
+			processAdminMenuInventoryClick(event, player);
+		} else if (event.getInventory().getName().equals("MapSetup menu")) {
+			processChooseMapSetupMenuInventoryClick(event, player);
+		} else if (event.getInventory().getName().startsWith(ChatColor.ITALIC + "")) {
+			processMapSetupMenuInventoryClick(event, player);
+		} else if (event.getInventory().getName().contains("Abilities Menu")) {
 			event.setCancelled(true);
 		}
 	}
 
-	private void processKitsInventoryClick(InventoryClickEvent event, Player player){
+	private void processKitsInventoryClick(InventoryClickEvent event, Player player) {
 		event.setCancelled(true);
-		if(event.getSlotType() == SlotType.OUTSIDE) return;
-		if(event.getCurrentItem() == null) return;
-		if(event.getCurrentItem().getType() == Material.AIR) return;
+		if (event.getSlotType() == SlotType.OUTSIDE) {
+			return;
+		}
+		if (event.getCurrentItem() == null) {
+			return;
+		}
+		if (event.getCurrentItem().getType() == Material.AIR) {
+			return;
+		}
 		int icon = event.getCurrentItem().getType().getId();
 		String kitName = Kits.getKitName(icon);
-		if(kitName != null){
-			if(Kits.onlyVips(icon) && !player.hasPermission("dw.vip")){
+		if (kitName != null) {
+			if (Kits.onlyVips(icon) && !player.hasPermission("dw.vip")) {
 				MessageHandler.sendMessage(player, MessageFile.getMessage("kits.vip-only"));
 				return;
 			}
-			String msg ;
-			if(Kits.playerHas(player, icon)){
+			String msg;
+			if (Kits.playerHas(player, icon)) {
 				PlayerHandler.setPlayerKit(player, kitName);
 				msg = MessageFile.getMessage("kits.choose");
 				msg = MessageHandler.formatString(msg, Kits.getKitName(kitName));
-			}else{
+			} else {
 				int price = Kits.getPrice(icon);
-				if(Points.getPoints(player) >= price){
+				if (Stats.getStats(player).getPoints() >= price) {
 					Kits.buyKit(player, icon);
 					String kit = Kits.getKitName(Kits.getKitName(icon));
 					msg = MessageHandler.formatString(MessageFile.getMessage("kits.bought"), kit);
 					PlayerHandler.setPlayerKit(player, kitName);
-				}else{
+				} else {
 					msg = MessageFile.getMessage("kits.cant-afford");
 				}
 			}
@@ -102,11 +120,15 @@ public class InventoryListener implements Listener{
 		}
 	}
 
-	private void processAdminMenuInventoryClick(InventoryClickEvent event, Player player){
+	private void processAdminMenuInventoryClick(InventoryClickEvent event, Player player) {
 		event.setCancelled(true);
-		if(event.getCurrentItem() == null) return;
-		if(event.getCurrentItem().getType() == Material.AIR) return;
-		if(event.getSlot() == 0) {
+		if (event.getCurrentItem() == null) {
+			return;
+		}
+		if (event.getCurrentItem().getType() == Material.AIR) {
+			return;
+		}
+		if (event.getSlot() == 0) {
 			event.setCancelled(true);
 			String world = player.getLocation().getWorld().getName();
 			double x = player.getLocation().getX(),
@@ -118,17 +140,17 @@ public class InventoryListener implements Listener{
 			ConfigFile.saveConfig();
 			player.closeInventory();
 			player.sendMessage(ChatColor.GRAY + "You set new lobby spawn location!");
-		} else if(event.getSlot() == 1){
+		} else if (event.getSlot() == 1) {
 			MapsSetupMenu.setup(player);
-		} else if(event.getSlot() == 2){
-			if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Start game")){
+		} else if (event.getSlot() == 2) {
+			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Start game")) {
 				GameMap map = MapManager.chooseMap();
 				Game.start(map);
-			}else if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Stop game")){
+			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Stop game")) {
 				Main.println("Finishing game because Operator ended game manually.");
 				Game.finish(TeamManager.getMostKills());
 			}
-		} else if(event.getSlot() == 3){
+		} else if (event.getSlot() == 3) {
 			ConfigFile.saveConfig();
 			KitsFile.saveConfig();
 			MessageFile.saveConfig();
@@ -137,7 +159,7 @@ public class InventoryListener implements Listener{
 			player.closeInventory();
 			MessageHandler.sendMessage(player, MessageFile.getMessage("menu.save-successful"));
 			return;
-		} else if(event.getSlot() == 4){
+		} else if (event.getSlot() == 4) {
 			ConfigFile.createConfig();
 			KitsFile.createConfig();
 			MessageFile.createConfig();
@@ -150,10 +172,14 @@ public class InventoryListener implements Listener{
 		}
 	}
 
-	private void processChooseMapSetupMenuInventoryClick(InventoryClickEvent event, Player player){
-		if(event.getCurrentItem() == null) return;
-		if(event.getCurrentItem().getType() == null) return;
-		if(event.getCurrentItem().getType().equals(Material.PAPER)) {
+	private void processChooseMapSetupMenuInventoryClick(InventoryClickEvent event, Player player) {
+		if (event.getCurrentItem() == null) {
+			return;
+		}
+		if (event.getCurrentItem().getType() == null) {
+			return;
+		}
+		if (event.getCurrentItem().getType().equals(Material.PAPER)) {
 			event.setCancelled(true);
 			int id = event.getSlot();
 			GameMap map = MapManager.getMap(id);
@@ -161,20 +187,20 @@ public class InventoryListener implements Listener{
 			Bukkit.createWorld(new WorldCreator(folder));
 			MapFile.createConfig(folder);
 			player.getInventory().clear();
-			if(!player.getWorld().getName().equalsIgnoreCase(folder)){
-				if(Bukkit.getWorld(folder) == null) {
+			if (!player.getWorld().getName().equalsIgnoreCase(folder)) {
+				if (Bukkit.getWorld(folder) == null) {
 					Bukkit.createWorld(new WorldCreator(folder));
 				}
 				World world = Bukkit.getWorld(folder);
-				if(world != null) {
+				if (world != null) {
 					Location spawn = world.getSpawnLocation();
-					if(spawn != null) {
+					if (spawn != null) {
 						player.teleport(spawn);
-					}else{
+					} else {
 						player.sendMessage(ChatColor.RED + "Error loading map " + map.getName() + ": spawn point is null.");
 						return;
 					}
-				}else {
+				} else {
 					player.sendMessage(ChatColor.RED + "Error loading map " + map.getName());
 					return;
 				}
@@ -184,13 +210,17 @@ public class InventoryListener implements Listener{
 		}
 	}
 
-	private void processMapSetupMenuInventoryClick(InventoryClickEvent event, Player player){
-		if(event.getCurrentItem() == null) return;
-		if(event.getCurrentItem().getType() == null) return;
+	private void processMapSetupMenuInventoryClick(InventoryClickEvent event, Player player) {
+		if (event.getCurrentItem() == null) {
+			return;
+		}
+		if (event.getCurrentItem().getType() == null) {
+			return;
+		}
 		int slot = event.getSlot();
 		event.setCancelled(true);
 		//TEAM AMOUNT
-		if(slot == 0){
+		if (slot == 0) {
 			player.closeInventory();
 			Blocks.setTeamAmountStatus(player, 1);
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
@@ -198,7 +228,7 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//DIAMOND SPAWNS
-		else if(slot == 1){
+		else if (slot == 1) {
 			ItemStack item = ItemStackGenerator.createItem(Material.DIAMOND, 0, 0, ChatColor.DARK_AQUA + "Set Diamond Spawns", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
@@ -210,7 +240,7 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//REGENERATING BLOCKS
-		else if(slot == 2){
+		else if (slot == 2) {
 			ItemStack item = ItemStackGenerator.createItem(Material.STICK, 0, 0, ChatColor.DARK_AQUA + "Regenerating Block Helper", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
@@ -222,7 +252,7 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//PROTECTED AREA
-		else if(slot == 3){
+		else if (slot == 3) {
 			ItemStack item = ItemStackGenerator.createItem(Material.BLAZE_ROD, 0, 0, ChatColor.DARK_AQUA + "Protected Area Helper", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
@@ -231,11 +261,11 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//SAVE AND EXIT
-		else if(slot == 4){
+		else if (slot == 4) {
 			World world = player.getWorld();
-			if(ConfigFile.config.getString("spawn-location") == null){
+			if (ConfigFile.config.getString("spawn-location") == null) {
 				player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-			}else{
+			} else {
 				player.teleport(Convert.StringToLocation(ConfigFile.config.getString("spawn-location"), true, false));
 			}
 			Bukkit.unloadWorld(world, true);
@@ -244,11 +274,13 @@ public class InventoryListener implements Listener{
 			AdminMenu.setup(player);
 		}
 		//NEXUS HELPER
-		else if(slot == 5){
+		else if (slot == 5) {
 			ListenerManager.removeTeamWool(player);
-			for(Team team : TeamManager.getTeams()) {
+			for (Team team : TeamManager.getTeams()) {
 				ChatColor color = team.getColor();
-				ItemStack item = ItemStackGenerator.createItem(Material.WOOL, 0, Convert.ChatColorToInt(color), color + "Set " + team.getName() + ChatColor.BOLD + " NEXUS", null);
+				ItemStack item = ItemStackGenerator
+						.createItem(Material.WOOL, 0, Convert.ChatColorToInt(color), color + "Set " + team.getName() + ChatColor.BOLD + " NEXUS",
+								null);
 				player.getInventory().addItem(item);
 			}
 			player.closeInventory();
@@ -258,11 +290,12 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//TEAM SPAWNS
-		else if(slot == 6){
+		else if (slot == 6) {
 			ListenerManager.removeTeamWool(player);
-			for(Team team : TeamManager.getTeams()) {
+			for (Team team : TeamManager.getTeams()) {
 				ChatColor color = team.getColor();
-				ItemStack item = ItemStackGenerator.createItem(Material.WOOL, 0, Convert.ChatColorToInt(color), color + "Add " + team.getName() + " player spawnpoint", null);
+				ItemStack item = ItemStackGenerator
+						.createItem(Material.WOOL, 0, Convert.ChatColorToInt(color), color + "Add " + team.getName() + " player spawnpoint", null);
 				player.getInventory().addItem(item);
 			}
 			player.closeInventory();
@@ -272,11 +305,13 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//SPECTATORS SPAWNS
-		else if(slot == 7){
+		else if (slot == 7) {
 			ListenerManager.removeTeamWool(player);
-			for(Team team : TeamManager.getTeams()) {
+			for (Team team : TeamManager.getTeams()) {
 				ChatColor color = team.getColor();
-				ItemStack item = ItemStackGenerator.createItem(Material.WOOL, 0, Convert.ChatColorToInt(color), color + "Set " + team.getName() + " spectator spawnpoint", null);
+				ItemStack item = ItemStackGenerator
+						.createItem(Material.WOOL, 0, Convert.ChatColorToInt(color), color + "Set " + team.getName() + " spectator spawnpoint",
+								null);
 				player.getInventory().addItem(item);
 			}
 			player.closeInventory();
@@ -286,7 +321,7 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//UNPLACEABLE BLOCKS
-		if(slot == 8){
+		if (slot == 8) {
 			ItemStack item = ItemStackGenerator.createItem(Material.DIAMOND_SPADE, 0, 0, ChatColor.DARK_AQUA + "Unplaceable Block Wand", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
@@ -296,19 +331,19 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//BREWING SHOP
-		else if(slot == 9){
+		else if (slot == 9) {
 			ItemStack item = ItemStackGenerator.createItem(Material.BREWING_STAND_ITEM, 0, 0, ChatColor.DARK_AQUA + "Add Brewing Shop", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 			player.sendMessage(ChatColor.GRAY + "Right-Click to add");
-			player.sendMessage(ChatColor.WHITE+ "Brewing Shop");
+			player.sendMessage(ChatColor.WHITE + "Brewing Shop");
 			player.sendMessage(ChatColor.GRAY + "Left-Click " + ChatColor.WHITE + "Brewing Shop");
 			player.sendMessage(ChatColor.GRAY + "to remove it!");
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//PHASE TIME
-		else if(slot == 12){
+		else if (slot == 12) {
 			Phase.setPhaseTimeStatus(player, 1);
 			player.closeInventory();
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
@@ -318,26 +353,26 @@ public class InventoryListener implements Listener{
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 		//SET WEAPON SHOP
-		else if(slot == 10){
+		else if (slot == 10) {
 			ItemStack item = ItemStackGenerator.createItem(Material.ARROW, 0, 0, ChatColor.DARK_AQUA + "Add Weapon Shop", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 			player.sendMessage(ChatColor.GRAY + "Right-Click to add");
-			player.sendMessage(ChatColor.GRAY + " " +ChatColor.WHITE + "Weapon Shop");
+			player.sendMessage(ChatColor.GRAY + " " + ChatColor.WHITE + "Weapon Shop");
 			player.sendMessage(ChatColor.GRAY + "Left-Click " + ChatColor.WHITE + "Weapon Shop");
 			player.sendMessage(ChatColor.GRAY + "to remove it!");
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 		}
 
 		//CHANGE KIT SIGN
-		else if(slot == 11){
+		else if (slot == 11) {
 			ItemStack item = ItemStackGenerator.createItem(Material.BOW, 0, 0, ChatColor.DARK_AQUA + "Add Change Kit Sign", null);
 			player.getInventory().addItem(item);
 			player.closeInventory();
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");
 			player.sendMessage(ChatColor.GRAY + "Right-Click to add");
-			player.sendMessage(ChatColor.GRAY + " " +ChatColor.WHITE + "Change Kit Sign");
+			player.sendMessage(ChatColor.GRAY + " " + ChatColor.WHITE + "Change Kit Sign");
 			player.sendMessage(ChatColor.GRAY + "Left-Click " + ChatColor.WHITE + "Change Kit Sign");
 			player.sendMessage(ChatColor.GRAY + "to remove it!");
 			player.sendMessage(ChatColor.GOLD + "-*-*-*-*-*-*-*-*-*-*-*");

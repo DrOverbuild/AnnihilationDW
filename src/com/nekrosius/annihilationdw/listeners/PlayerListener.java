@@ -11,8 +11,8 @@ import com.nekrosius.annihilationdw.handlers.Kits;
 import com.nekrosius.annihilationdw.handlers.Lobby;
 import com.nekrosius.annihilationdw.handlers.MessageHandler;
 import com.nekrosius.annihilationdw.handlers.PlayerHandler;
-import com.nekrosius.annihilationdw.handlers.Points;
 import com.nekrosius.annihilationdw.handlers.ScoreboardHandler;
+import com.nekrosius.annihilationdw.handlers.Stats;
 import com.nekrosius.annihilationdw.handlers.TabHandler;
 import com.nekrosius.annihilationdw.handlers.Team;
 import com.nekrosius.annihilationdw.handlers.mapsetup.Phase;
@@ -51,7 +51,7 @@ import java.util.Map;
 public class PlayerListener implements Listener {
 
 	public static Map<String, Integer> respawnTimer = new HashMap<String, Integer>();
-	
+
 	private Main pl;
 
 	public PlayerListener(Main pl) {
@@ -61,7 +61,7 @@ public class PlayerListener implements Listener {
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void onAsyncPreLogin(AsyncPlayerPreLoginEvent evt) {
 		if (evt.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-			Points.setPoints(evt.getUniqueId(), Main.getDatabaseImpl().getPoints(evt.getUniqueId()));
+			Main.getDatabaseImpl().loadStats(evt.getUniqueId());
 			Kits.loadKitData(evt.getUniqueId());
 		}
 	}
@@ -72,7 +72,7 @@ public class PlayerListener implements Listener {
 		if (Bukkit.getOnlinePlayers().size() >= ConfigFile.config.getInt("team-size") * 4) {
 			if (!event.getPlayer().hasPermission("dw.spectator")) {
 				event.disallow(Result.KICK_FULL, MessageHandler.format(MessageFile.getMessage("kick.full")));
-				Points.removePlayerFromMap(event.getPlayer());
+				Stats.unloadStats(event.getPlayer());
 				Kits.unloadKitData(event.getPlayer());
 				return;
 			}
@@ -83,7 +83,7 @@ public class PlayerListener implements Listener {
 			if (team != null) {
 				if (team.getNexusHealth() <= 0 && !event.getPlayer().hasPermission("dw.spectator")) {
 					event.disallow(Result.KICK_OTHER, MessageHandler.format(MessageFile.getMessage("kick.lost")));
-					Points.removePlayerFromMap(event.getPlayer());
+					Stats.unloadStats(event.getPlayer());
 					Kits.unloadKitData(event.getPlayer());
 					return;
 				}
@@ -91,7 +91,7 @@ public class PlayerListener implements Listener {
 
 			if (Game.getPhase() > 3 && !event.getPlayer().hasPermission("dw.spectator")) {
 				event.disallow(Result.KICK_OTHER, MessageHandler.format(MessageFile.getMessage("kick.after-phase-3")));
-				Points.removePlayerFromMap(event.getPlayer());
+				Stats.unloadStats(event.getPlayer());
 				Kits.unloadKitData(event.getPlayer());
 			}
 		}
@@ -187,8 +187,7 @@ public class PlayerListener implements Listener {
 				MessageHandler.sendMessage(p, msg);
 			}
 		}
-		Points.savePoints(event.getPlayer());
-		Points.removePlayerFromMap(event.getPlayer());
+		Stats.unloadStats(event.getPlayer());
 		Kits.unloadKitData(event.getPlayer());
 		PlayerHandler.quit(player);
 
@@ -318,7 +317,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 		}
-		Points.addPoints(player, Points.getDeathPoints());
+		Stats.getStats(player).addPoints(Stats.deathPoints);
 		Team t = TeamManager.getTeam(player);
 		if (t != null) {
 			if (t.getNexusHealth() <= 0) {

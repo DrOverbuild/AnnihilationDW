@@ -136,7 +136,8 @@ public class Kits {
 	public static void buyKit(Player player, int icon) {
 		String kit = getKitName(icon);
 		if (kit != null) {
-			Points.setPoints(player, Points.getPoints(player) - getPrice(icon));
+			Stats stats = Stats.getStats(player);
+			stats.setPoints(stats.getPoints() - getPrice(icon));
 			if (player.hasPermission("dw.vip")) {
 				getKitData(player.getUniqueId()).addKit(kit);
 			}

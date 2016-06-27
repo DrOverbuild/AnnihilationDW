@@ -1,5 +1,6 @@
 package com.nekrosius.annihilationdw;
 
+
 import com.nekrosius.annihilationdw.abilities.Archer;
 import com.nekrosius.annihilationdw.abilities.Assassin;
 import com.nekrosius.annihilationdw.abilities.Berserker;
@@ -13,7 +14,6 @@ import com.nekrosius.annihilationdw.handlers.Game;
 import com.nekrosius.annihilationdw.handlers.Lobby;
 import com.nekrosius.annihilationdw.handlers.MessageHandler;
 import com.nekrosius.annihilationdw.handlers.PlayerHandler;
-import com.nekrosius.annihilationdw.handlers.Points;
 import com.nekrosius.annihilationdw.handlers.TabHandler;
 import com.nekrosius.annihilationdw.managers.BarManager;
 import com.nekrosius.annihilationdw.managers.CommandManager;
@@ -22,6 +22,7 @@ import com.nekrosius.annihilationdw.managers.ListenerManager;
 import com.nekrosius.annihilationdw.managers.MapManager;
 import com.nekrosius.annihilationdw.managers.PartyManager;
 import com.nekrosius.annihilationdw.managers.TeamManager;
+import com.nekrosius.annihilationdw.statsigns.StatSignManager;
 import com.nekrosius.annihilationdw.utils.AsyncUtil;
 import com.nekrosius.annihilationdw.utils.Convert;
 import de.slikey.effectlib.EffectLib;
@@ -65,14 +66,15 @@ public class Main extends JavaPlugin {
 		load();
 
 		loadDefaultAbilities();
-		new BukkitRunnable(){
+		new BukkitRunnable() {
+
 			@Override
 			public void run() {
 				for (Player p : Bukkit.getOnlinePlayers()) {
+					database.loadStats(p);
 					Lobby.setupLobby(p);
 					TabHandler.update(p);
 					BarManager.removeBar(p);
-					Points.setPoints(p.getUniqueId(), database.getPoints(p));
 				}
 			}
 		}.runTaskLater(this, 10L);
@@ -111,6 +113,7 @@ public class Main extends JavaPlugin {
 		pm = new PartyManager(this);
 		EffectLib lib = EffectLib.instance();
 		em = new EffectManager(lib);
+		new StatSignManager(this);
 //		tlm = new TitleManager(this);
 		MessageHandler.loadMessages();
 		registerMultiplierPermissions();

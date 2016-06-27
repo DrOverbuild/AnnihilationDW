@@ -1,6 +1,7 @@
 package com.nekrosius.annihilationdw.database.mysql;
 
 import com.nekrosius.annihilationdw.database.Database;
+import com.nekrosius.annihilationdw.handlers.Stats;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 public class MySQL implements Database {
 
 	public static Logger logger = Logger.getLogger("Annihilation-MySQL");
-	private static final String playerPointsTable = "player_points";
+	private static final String playerStatsTable = "player_stats";
 	private static final String playerKitsTable = "player_kits";
 
 	private Connection conn;
@@ -79,30 +80,13 @@ public class MySQL implements Database {
 	public void prepare() {
 		if (isConnected()) {
 			try {
-				update("CREATE TABLE IF NOT EXISTS " + playerPointsTable + "(uuid CHAR(36), points BIGINT, PRIMARY KEY(uuid));");
+				update("CREATE TABLE IF NOT EXISTS " + playerStatsTable + "(uuid CHAR(36), points BIGINT DEFAULT 0, kills INT DEfAULT 0, games "
+						+ "INT DEFAULT 0, wins INT DEFAULT 0, PRIMARY KEY" + "(uuid));");
 				update("CREATE TABLE IF NOT EXISTS " + playerKitsTable + "(uuid CHAR(36), kit VARCHAR(255), PRIMARY KEY(uuid, kit));");
 			} catch (SQLException ex) {
 				logger.log(Level.SEVERE, "SQL Exception", ex);
 			}
 		}
-	}
-
-	@Override
-	public int getPoints(Player player) {
-		return getPoints(player.getUniqueId());
-	}
-
-	@Override
-	public int getPoints(UUID playerId) {
-		try {
-			QueryResult result = query("SELECT points FROM " + playerPointsTable + " WHERE uuid=?", playerId.toString());
-			if (result.size() > 0) {
-				return result.first().asInt("points");
-			}
-		} catch (SQLException ex) {
-			logger.log(Level.SEVERE, "SQL Exception", ex);
-		}
-		return 0;
 	}
 
 	@Override
@@ -113,7 +97,7 @@ public class MySQL implements Database {
 	@Override
 	public void setPoints(UUID playerId, int points) {
 		try {
-			update("INSERT INTO " + playerPointsTable + " (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = ?;", playerId.toString(),
+			update("INSERT INTO " + playerStatsTable + " (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = ?;", playerId.toString(),
 					points, points);
 		} catch (SQLException ex) {
 			logger.log(Level.SEVERE, "SQL Exception", ex);
@@ -166,6 +150,71 @@ public class MySQL implements Database {
 		}
 		return kits;
 	}
+
+	@Override
+	public void setKills(Player player, int kills) {
+		setKills(player.getUniqueId(), kills);
+	}
+
+	@Override
+	public void setKills(UUID playerId, int kills) {
+		try {
+			update("INSERT INTO " + playerStatsTable + " (uuid, kills) VALUES (?, ?) ON DUPLICATE KEY UPDATE kills = ?;", playerId.toString(),
+					kills, kills);
+		} catch (SQLException ex) {
+			logger.log(Level.SEVERE, "SQL Exception", ex);
+		}
+	}
+
+	@Override
+	public void setGames(Player player, int games) {
+		setGames(player.getUniqueId(), games);
+	}
+
+	@Override
+	public void setGames(UUID playerId, int games) {
+		try {
+			update("INSERT INTO " + playerStatsTable + " (uuid, games) VALUES (?, ?) ON DUPLICATE KEY UPDATE games = ?;", playerId.toString(),
+					games, games);
+		} catch (SQLException ex) {
+			logger.log(Level.SEVERE, "SQL Exception", ex);
+		}
+	}
+
+	@Override
+	public void setWins(Player player, int wins) {
+		setWins(player.getUniqueId(), wins);
+	}
+
+	@Override
+	public void setWins(UUID playerId, int wins) {
+		try {
+			update("INSERT INTO " + playerStatsTable + " (uuid, wins) VALUES (?, ?) ON DUPLICATE KEY UPDATE wins = ?;", playerId.toString(),
+					wins, wins);
+		} catch (SQLException ex) {
+			logger.log(Level.SEVERE, "SQL Exception", ex);
+		}
+	}
+
+	@Override
+	public Stats loadStats(Player player) {
+		return loadStats(player.getUniqueId());
+	}
+
+	@Override
+	public Stats loadStats(UUID playerId) {
+		try {
+			QueryResult result = query("SELECT * FROM " + playerStatsTable + " WHERE uuid=?", playerId.toString());
+			if (result.size() > 0) {
+				QueryResult.ResultData data = result.first();
+				return new Stats(playerId, data.asInt("points"), data.asInt("kills"), data.asInt("games"), data.asInt("wins"));
+			}
+		} catch (SQLException ex) {
+			logger.log(Level.SEVERE, "SQL Exception", ex);
+		}
+		return new Stats(playerId, 0, 0, 0, 0);
+	}
+
 
 	private int update(String query, Object... args) throws SQLException {
 		if (isConnected()) {

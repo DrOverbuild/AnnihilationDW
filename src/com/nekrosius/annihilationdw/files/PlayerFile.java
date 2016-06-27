@@ -1,6 +1,7 @@
 package com.nekrosius.annihilationdw.files;
 
 import com.nekrosius.annihilationdw.Main;
+import com.nekrosius.annihilationdw.handlers.Stats;
 import com.nekrosius.annihilationdw.utils.ConfigLoader;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -44,13 +45,39 @@ public class PlayerFile {
 		saveConfig();
 	}
 
-	public static int getPoints(UUID playerId) {
-		createConfig(playerId);
-		return config.getInt("points", 0);
+	public static void setKills(Player player, int kills) {
+		setKills(player.getUniqueId(), kills);
 	}
 
-	public static int getPoints(Player player) {
-		return getPoints(player.getUniqueId());
+	public static void setKills(UUID playerId, int kills) {
+		createConfig(playerId);
+		config.set("kills", kills);
+		saveConfig();
+	}
+
+	public static void setGames(Player player, int games) {
+		setGames(player.getUniqueId(), games);
+	}
+
+	public static void setGames(UUID playerId, int games) {
+		createConfig(playerId);
+		config.set("games", games);
+		saveConfig();
+	}
+
+	public static void setWins(Player player, int wins) {
+		setWins(player.getUniqueId(), wins);
+	}
+
+	public static void setWins(UUID playerId, int wins) {
+		createConfig(playerId);
+		config.set("wins", wins);
+		saveConfig();
+	}
+
+	public static Stats getStats(UUID playerId) {
+		createConfig(playerId);
+		return new Stats(playerId, config.getInt("points", 0), config.getInt("kills", 0), config.getInt("games", 0), config.getInt("wins", 0));
 	}
 
 	public static void saveConfig() {

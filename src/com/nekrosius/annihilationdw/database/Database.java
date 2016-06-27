@@ -1,5 +1,6 @@
 package com.nekrosius.annihilationdw.database;
 
+import com.nekrosius.annihilationdw.handlers.Stats;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,10 +15,6 @@ public interface Database {
 	void disconnect();
 
 	void prepare();
-
-	int getPoints(Player player);
-
-	int getPoints(UUID playerId);
 
 	void setPoints(Player player, int points);
 
@@ -34,5 +31,21 @@ public interface Database {
 	List<String> getKits(Player player);
 
 	List<String> getKits(UUID playerId);
+
+	void setKills(Player player, int kills);
+
+	void setKills(UUID playerId, int kills);
+
+	void setGames(Player player, int games);
+
+	void setGames(UUID playerId, int games);
+
+	void setWins(Player player, int wins);
+
+	void setWins(UUID playerId, int wins);
+
+	Stats loadStats(Player player);
+
+	Stats loadStats(UUID playerId);
 
 }

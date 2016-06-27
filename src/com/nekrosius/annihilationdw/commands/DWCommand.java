@@ -1,7 +1,15 @@
 package com.nekrosius.annihilationdw.commands;
 
-import com.nekrosius.annihilationdw.handlers.Points;
+import com.nekrosius.annihilationdw.Main;
+import com.nekrosius.annihilationdw.files.MapFile;
+import com.nekrosius.annihilationdw.files.MessageFile;
+import com.nekrosius.annihilationdw.handlers.MessageHandler;
 import com.nekrosius.annihilationdw.handlers.ScoreboardHandler;
+import com.nekrosius.annihilationdw.handlers.Stats;
+import com.nekrosius.annihilationdw.inventories.AdminMenu;
+import com.nekrosius.annihilationdw.inventories.MapsSetupMenu;
+import com.nekrosius.annihilationdw.managers.MapManager;
+import com.nekrosius.annihilationdw.managers.TeamManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,28 +17,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.nekrosius.annihilationdw.Main;
-import com.nekrosius.annihilationdw.files.MapFile;
-import com.nekrosius.annihilationdw.files.MessageFile;
-import com.nekrosius.annihilationdw.handlers.MessageHandler;
-import com.nekrosius.annihilationdw.inventories.AdminMenu;
-import com.nekrosius.annihilationdw.inventories.MapsSetupMenu;
-import com.nekrosius.annihilationdw.managers.MapManager;
-import com.nekrosius.annihilationdw.managers.TeamManager;
-
 import java.util.Arrays;
 
-public class DWCommand implements CommandExecutor{
-	
+public class DWCommand implements CommandExecutor {
+
 	private Main pl;
 
 	static ChatColor c1 = ChatColor.RED;
 	static ChatColor c2 = ChatColor.GRAY;
 
-	public DWCommand(Main plugin){
+	public DWCommand(Main plugin) {
 		pl = plugin;
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {	
 		/*
@@ -41,49 +40,49 @@ public class DWCommand implements CommandExecutor{
 			return true;
 		}
 		*/
-		
-		if(args.length == 0){
-			if(!(sender instanceof Player)){
+
+		if (args.length == 0) {
+			if (!(sender instanceof Player)) {
 				sender.sendMessage(MessageFile.getMessage("commands.not-player"));
 				return true;
 			}
 			Player player = (Player) sender;
-			if(!player.isOp()){
+			if (!player.isOp()) {
 				MessageHandler.sendMessage(player, MessageFile.getMessage("commands.not-op"));
 				return true;
 			}
-			if(player.getWorld().getName().startsWith("plugins/AnnihilationDW/Maps")){
+			if (player.getWorld().getName().startsWith("plugins/AnnihilationDW/Maps")) {
 				new TeamManager(pl, MapFile.config.getInt("team.amount"));
 				MapsSetupMenu.setupMapMenu(player, MapManager.getMap(player.getWorld().getName()));
-			}else{
+			} else {
 				AdminMenu.setup(player);
 			}
 			return true;
-		}else{
-			if(!(sender instanceof Player)){
+		} else {
+			if (!(sender instanceof Player)) {
 				sender.sendMessage(MessageFile.getMessage("commands.not-player"));
 				return true;
 			}
-			if(args.length == 1){
-				if(args[0].equalsIgnoreCase("visible")){
-					for(Player p : Bukkit.getOnlinePlayers()){
-						for(Player t : Bukkit.getOnlinePlayers()){
+			if (args.length == 1) {
+				if (args[0].equalsIgnoreCase("visible")) {
+					for (Player p : Bukkit.getOnlinePlayers()) {
+						for (Player t : Bukkit.getOnlinePlayers()) {
 							p.showPlayer(t);
 						}
 					}
-				}else if(args[0].equalsIgnoreCase("points")){
-					pointsCommand((Player)sender, commandLabel, new String[] {});
+				} else if (args[0].equalsIgnoreCase("points")) {
+					pointsCommand((Player) sender, commandLabel, new String[]{});
 					return true;
 				}
 			}
 
-			if(args.length >= 1){
-				if(args[0].equalsIgnoreCase("points")){
+			if (args.length >= 1) {
+				if (args[0].equalsIgnoreCase("points")) {
 					String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
-					pointsCommand((Player)sender, commandLabel, newArgs);
-				}else if(args[0].equalsIgnoreCase("party")){
+					pointsCommand((Player) sender, commandLabel, newArgs);
+				} else if (args[0].equalsIgnoreCase("party")) {
 					String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
-					pl.getCommand("party").getExecutor().onCommand(sender, pl.getCommand("party"),commandLabel + " party", newArgs);
+					pl.getCommand("party").getExecutor().onCommand(sender, pl.getCommand("party"), commandLabel + " party", newArgs);
 				}
 			}
 
@@ -92,9 +91,10 @@ public class DWCommand implements CommandExecutor{
 		return true;
 	}
 
-	public void pointsCommand(Player sender, String cmdLabel, String[] args){
-		if(args.length == 0){
-			MessageHandler.sendMessage(sender, MessageHandler.formatInteger(MessageFile.getMessage("commands.points"), Points.getPoints(sender)));
+	public void pointsCommand(Player sender, String cmdLabel, String[] args) {
+		if (args.length == 0) {
+			MessageHandler.sendMessage(sender, MessageHandler.formatInteger(MessageFile.getMessage("commands.points"), Stats.getStats(sender)
+					.getPoints()));
 
 			if (sender.isOp()) {
 				sendCommandUsage(sender, cmdLabel + " points");
@@ -102,72 +102,70 @@ public class DWCommand implements CommandExecutor{
 			return;
 		}
 
-		if(!sender.isOp()){
+		if (!sender.isOp()) {
 			sender.sendMessage(MessageFile.formatMessage("commands.not-op"));
 			return;
 		}
 
-		if(args.length == 1){
+		if (args.length == 1) {
 			Player target = Bukkit.getPlayer(args[0]);
-			if(target == null){
+			if (target == null) {
 				sender.sendMessage(MessageHandler.format(MessageFile.getMessage("party.offline")));
 				return;
 			}
 			sender.sendMessage(MessageHandler.formatInteger(MessageHandler.formatString(
-					MessageFile.getMessage("commands.other-player-points"), target.getName()), Points.getPoints(target)));
-		}else if(args.length == 3){
-			if(Bukkit.getPlayer(args[1]) == null){
+					MessageFile.getMessage("commands.other-player-points"), target.getName()), Stats.getStats(target).getPoints()));
+		} else if (args.length == 3) {
+			if (Bukkit.getPlayer(args[1]) == null) {
 				sender.sendMessage(MessageHandler.format(MessageFile.getMessage("party.offline")));
 				return;
 			}
 			Player target = Bukkit.getPlayer(args[1]);
-			if(args[0].equalsIgnoreCase("add")){
+			if (args[0].equalsIgnoreCase("add")) {
 				int amount;
-				try{
+				try {
 					amount = Integer.parseInt(args[2]);
-				}catch(NumberFormatException e){
+				} catch (NumberFormatException e) {
 					sender.sendMessage(ChatColor.RED + "Please type number!");
 					return;
 				}
-				Points.addPoints(target, amount);
+				Stats.getStats(target).addPoints(amount);
 				sender.sendMessage(c2 + "You've added " + c1 + "" + amount + c2 + " points for " + c1 + target.getName());
-			}
-			else if(args[0].equalsIgnoreCase("set")) {
+			} else if (args[0].equalsIgnoreCase("set")) {
 				int amount;
-				try{
+				try {
 					amount = Integer.parseInt(args[2]);
-				}catch(NumberFormatException e){
+				} catch (NumberFormatException e) {
 					sender.sendMessage(ChatColor.RED + "Please type number!");
 					return;
 				}
-				Points.setPoints(target, amount);
+				Stats.getStats(target).setPoints(amount);
 				sender.sendMessage(c2 + "You've set " + c1 + "" + amount + c2 + " points for " + c1 + target.getName());
-			}
-			else if(args[0].equalsIgnoreCase("withdraw")) {
+			} else if (args[0].equalsIgnoreCase("withdraw")) {
 				int amount;
-				try{
+				try {
 					amount = Integer.parseInt(args[2]);
-				}catch(NumberFormatException e){
+				} catch (NumberFormatException e) {
 					sender.sendMessage(ChatColor.RED + "Please type number!");
 					return;
 				}
-				if(amount >= Points.getPoints(target)){
-					Points.setPoints(target, 0);
-				}else{
-					Points.setPoints(target, Points.getPoints(target) - amount);
+				Stats stats = Stats.getStats(target);
+				if (amount >= stats.getPoints()) {
+					stats.setPoints(0);
+				} else {
+					stats.setPoints(stats.getPoints() - amount);
 				}
 				sender.sendMessage(c2 + "You've removed " + c1 + "" + amount + c2 + " points for " + c1 + target.getName());
 			}
-			Points.savePoints(target);
 			ScoreboardHandler.update(target);
-		}else{
-			sendCommandUsage(sender,cmdLabel + " points");
+		} else {
+			sendCommandUsage(sender, cmdLabel + " points");
 		}
 
 
 	}
 
-	public static void sendCommandUsage(CommandSender sender, String cmdLabel){
+	public static void sendCommandUsage(CommandSender sender, String cmdLabel) {
 		sender.sendMessage(c1 + "--- Commands ---");
 		sender.sendMessage(c1 + "/" + cmdLabel + " <playerName>:" + c2 + " gets number of points of <playerName>");
 		sender.sendMessage(c1 + "/" + cmdLabel + " add <playerName> <amount>" + c2 +
@@ -177,9 +175,8 @@ public class DWCommand implements CommandExecutor{
 		sender.sendMessage(c1 + "/" + cmdLabel + " set <playerName> <amount>" + c2 +
 				" sets speciified amount of points as player's balance!");
 	}
-	
-	public Main getMainClass()
-	{
+
+	public Main getMainClass() {
 		return pl;
 	}
 }
