@@ -3,13 +3,12 @@ package com.nekrosius.annihilationdw.abilities;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.nekrosius.annihilationdw.api.events.JoinGameEvent;
-import com.nekrosius.annihilationdw.api.objects.Ability;
 import com.nekrosius.annihilationdw.handlers.Team;
 import com.nekrosius.annihilationdw.managers.TeamManager;
 
@@ -33,26 +32,23 @@ public class Defender extends Ability {
 		addDescription("Increased Damage " + KILL_EFFECT_LEVEL + " for");
 		addDescription(KILL_EFFECT_DURATION_IN_SECONDS + " seconds for every kill near Nexus!");
 	}
-	
-	public void onJoin(JoinGameEvent event) {
-		if (event.getTeam() == null) return;
-		if (!hasAbility(this, event.getPlayer())) return;
 
-		// Checking if player is nearby nexus and granting effects
-
+	@Override
+	public void initialize(Player player) {
 		new BukkitRunnable() {
 
 			@Override
 			public void run() {
-				if (isNearNexus(event.getPlayer().getLocation(), event.getTeam())) {
-					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,
+				if (isNearNexus(player.getLocation(), TeamManager.getTeam(player))) {
+					player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,
 							DURATION_IN_SECONDS * 20, EFFECT_LEVEL - 1));
 				}
 			}
 
 		}.runTaskTimer(plugin, 40L, 40L);
 	}
-	
+
+	@EventHandler
 	public void onKill(PlayerDeathEvent event) {
 		if(event.getEntity().getKiller() == null) return;
 		Player killer = event.getEntity().getKiller();
@@ -66,6 +62,9 @@ public class Defender extends Ability {
 	}
 	
 	private boolean isNearNexus(Location loc, Team team) {
+		if(team == null){
+			return false;
+		}
 		return loc.toVector().distance(team.getNexusLocation().toVector()) < 4D;
 	}
 

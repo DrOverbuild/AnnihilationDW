@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.nekrosius.annihilationdw.files.MessageFile;
+import com.nekrosius.annihilationdw.handlers.MessageHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,8 +18,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.nekrosius.annihilationdw.api.events.JoinGameEvent;
-import com.nekrosius.annihilationdw.api.objects.Ability;
 import com.nekrosius.annihilationdw.handlers.Game;
 import com.nekrosius.annihilationdw.handlers.GameState;
 import com.nekrosius.annihilationdw.utils.Cooldowns;
@@ -31,7 +31,7 @@ public class Assassin extends Ability {
 	public int DURATION_IN_SECONDS = 10;
 	public int COOLDOWN_IN_SECONDS = 90;
 	
-	private Map<String, Boolean> active;
+//	private Map<String, Boolean> active;
 	private Map<String, ItemStack[]> armor;
 	
 	public Assassin() {
@@ -44,17 +44,21 @@ public class Assassin extends Ability {
 		addDescription("Duration: " + DURATION_IN_SECONDS + " seconds");
 		addDescription("Cooldown: " + COOLDOWN_IN_SECONDS + " seconds");
 		
-		active = new HashMap<String, Boolean>();
+//		active = new HashMap<String, Boolean>();
 		armor = new HashMap<String, ItemStack[]>();
 	}
-	
-	@EventHandler
-	public void onJoin(JoinGameEvent event) {
-		if(!hasAbility(this, event.getPlayer())) return;
-		event.getPlayer().getInventory().addItem(ItemStackGenerator.createItem(Material.SUGAR, 1, 0, ChatColor.RED + SKILL, 
+
+	@Override
+	public void initialize(Player player) {
+		player.getInventory().addItem(ItemStackGenerator.createItem(Material.SUGAR, 1, 0, ChatColor.RED + SKILL,
 				Arrays.asList("Right-Click to activate!")));
 	}
-	
+
+	@Override
+	public void cleanup(Player player) {
+		armor.remove(player);
+	}
+
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		
@@ -69,14 +73,13 @@ public class Assassin extends Ability {
 		if(! event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.RED + SKILL)) return;
 		
 		if(isActive(event.getPlayer())) {
-			event.getPlayer().sendMessage("Ability is already activated!");
+			event.getPlayer().sendMessage(MessageFile.formatMessage("ability.active"));
 			return;
 		}
 		
 		// Checking if player can use ability or not yet (Cooldowns are in miliseconds)
 		if(!Cooldowns.tryCooldown(event.getPlayer(), SKILL, COOLDOWN_IN_SECONDS * 1000)) {
-			event.getPlayer().sendMessage("You can use this ability in " 
-					+ Cooldowns.getCooldown(event.getPlayer(), SKILL) / 1000 + " seconds!");
+			event.getPlayer().sendMessage(MessageHandler.formatLong("ability.cooling-down", Cooldowns.getCooldown(event.getPlayer(), SKILL) / 1000));
 			return;
 		}
 		
@@ -84,7 +87,7 @@ public class Assassin extends Ability {
 		
 		setArmor(event.getPlayer(), event.getPlayer().getInventory().getArmorContents());
 		event.getPlayer().getInventory().setArmorContents(null);
-		event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DURATION_IN_SECONDS * 20, 0));
+		event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DURATION_IN_SECONDS * 20, 0, false, false));
 		
 		// Re-applying the armor after the time is over
 		new BukkitRunnable() {
@@ -92,6 +95,7 @@ public class Assassin extends Ability {
 			public void run() {
 				if(isActive(event.getPlayer()))
 					event.getPlayer().getInventory().setArmorContents(getArmor(event.getPlayer()));
+				armor.remove(event.getPlayer().getName());
 			}
 		}.runTaskLater(Ability.plugin, DURATION_IN_SECONDS * 20);
 		
@@ -112,19 +116,14 @@ public class Assassin extends Ability {
 		
 		damager.removePotionEffect(PotionEffectType.INVISIBILITY);
 		damager.getInventory().setArmorContents(getArmor(damager));
-		
-		active.remove(damager.getName());
+
 		armor.remove(damager.getName());
 		
 	}
 	
 	boolean isActive(Player player) {
-		if(active.get(player.getName()) == null) return false;
-		return active.get(player.getName());
-	}
-	
-	void setActive(Player player, boolean bool) {
-		active.put(player.getName(), bool);
+		if(armor.get(player.getName()) == null) return false;
+		return armor.containsKey(player.getName());
 	}
 	
 	ItemStack[] getArmor(Player player) {

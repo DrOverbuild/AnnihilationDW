@@ -1,7 +1,7 @@
 package com.nekrosius.annihilationdw.listeners;
 
 import com.nekrosius.annihilationdw.Main;
-import com.nekrosius.annihilationdw.api.objects.Ability;
+import com.nekrosius.annihilationdw.abilities.Ability;
 import com.nekrosius.annihilationdw.files.ConfigFile;
 import com.nekrosius.annihilationdw.files.MessageFile;
 import com.nekrosius.annihilationdw.files.PlayerFile;

@@ -23,6 +23,7 @@ public class Lobby {
 			}
 		}
 		ScoreboardHandler.update(player);
+		player.setMaxHealth(20D);
 		player.setHealth(player.getMaxHealth());
 		player.setFoodLevel(20);
 		player.getInventory().clear();

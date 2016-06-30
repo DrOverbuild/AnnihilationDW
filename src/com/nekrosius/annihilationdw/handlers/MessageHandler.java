@@ -60,6 +60,12 @@ public class MessageHandler {
 		if(player != null) str = str.replaceAll("%p", player.getName());
 		return ChatColor.translateAlternateColorCodes('&', str);
 	}
+
+	public static String formatLong(String str, long number){
+		if(str == null) return "";
+		str = str.replaceAll("%t", number + "");
+		return  ChatColor.translateAlternateColorCodes('&', str);
+	}
 	
 	public static String formatInteger(String str, int number) {
 		if(str == null) return "";

@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.nekrosius.annihilationdw.api.objects.Ability;
+import com.nekrosius.annihilationdw.abilities.Ability;
 import com.nekrosius.annihilationdw.files.MapFile;
 import com.nekrosius.annihilationdw.managers.BarManager;
 import com.nekrosius.annihilationdw.managers.MapManager;
@@ -32,6 +32,7 @@ public class PlayerHandler {
 	public static void quit(Player player) {
 		vote.remove(player.getName());
 		compassStatus.remove(player.getName());
+		clearAbilities(player);
 		boolean isHidden = isPlayerHidden(player);
 		for(Player p : Bukkit.getOnlinePlayers()){
 			if(isPlayerHidden(p)){
@@ -246,18 +247,30 @@ public class PlayerHandler {
 	public static void addAbility(Player player, Ability ab) {
 		List<Ability> abs = getAbilities(player);
 		abs.add(ab);
-		setAbilities(player, abs);
+		abilities.put(player.getName(), abs);
+		ab.initialize(player);
 	}
 	
 	public static void setAbilities(Player player, List<Ability> ab) {
 		abilities.put(player.getName(), ab);
+		for(Ability ability : ab){
+			ability.initialize(player);
+		}
 	}
 	
-	public static boolean hasAbility(Player player) {
+	public static boolean hasAbilities(Player player) {
 		return abilities.get(player.getName()).isEmpty();
 	}
 	
 	public static List<Ability> getAbilities(Player player) {
 		return abilities.get(player.getName());
+	}
+
+	public static void clearAbilities(Player player) {
+		for(Ability ability : getAbilities(player)){
+			ability.cleanup(player);
+		}
+		List<Ability> emptyAbilities= new ArrayList<>();
+		setAbilities(player, emptyAbilities);
 	}
 }

@@ -100,6 +100,9 @@ public class MessageFile {
 		config.addDefault("kits.own","&aYou already own this kit.");
 		config.addDefault("kits.price", "&cRequires %t points");
 		config.addDefault("kits.cant-change", "&cYou cannot change your kit right now!");
+		config.addDefault("ability.lacking", "&cYou must have the %s ability to use.");
+		config.addDefault("ability.cooling-down", "&cYou can use this ability in %t seconds.");
+		config.addDefault("ability.active", "&cThis ability is currently active.");
 		config.addDefault("compass.default", "&7Right click to change target nexus!");
 		config.addDefault("compass.target", "&7Current target is %s &7Nexus!");
 		config.addDefault("kick.full", "&cServer is full! Try again later!");

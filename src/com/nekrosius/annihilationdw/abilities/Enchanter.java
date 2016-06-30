@@ -4,10 +4,9 @@ import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.nekrosius.annihilationdw.api.objects.Ability;
 
 public class Enchanter extends Ability {
 	
@@ -40,7 +39,8 @@ public class Enchanter extends Ability {
 		addDescription(BOTTLE_CHANCE + "% chance to get EXP Bottle when mining.");
 		generator = new Random();
 	}
-	
+
+	@EventHandler
 	public void onMine(BlockBreakEvent event) {
 		if(!hasAbility(this, event.getPlayer())) return;
 		

@@ -1,9 +1,11 @@
 package com.nekrosius.annihilationdw.utils;
 
+import com.nekrosius.annihilationdw.abilities.Ability;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Cooldowns {
 	
@@ -24,6 +26,21 @@ public class Cooldowns {
 			return true;
 		}
 		return false;
+	}
+
+	public static boolean tryCooldown(Player player, String key, long delay, String finishMessage){
+		if(tryCooldown(player, key, delay)){
+			new BukkitRunnable(){
+
+				@Override
+				public void run() {
+					player.sendMessage(finishMessage);
+				}
+			}.runTaskLater(Ability.plugin, (int)(delay / 50));
+			return true;
+		}else{
+			return false;
+		}
 	}
 	 
 	private static long calculateRemainder(Long expireTime) {

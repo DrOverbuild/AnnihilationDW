@@ -1,11 +1,6 @@
 package com.nekrosius.annihilationdw;
 
-
-import com.nekrosius.annihilationdw.abilities.Archer;
-import com.nekrosius.annihilationdw.abilities.Assassin;
-import com.nekrosius.annihilationdw.abilities.Berserker;
-import com.nekrosius.annihilationdw.abilities.Defender;
-import com.nekrosius.annihilationdw.abilities.Enchanter;
+import com.nekrosius.annihilationdw.abilities.*;
 import com.nekrosius.annihilationdw.database.Database;
 import com.nekrosius.annihilationdw.database.flatfile.FlatFile;
 import com.nekrosius.annihilationdw.database.mysql.MySQL;
@@ -130,6 +125,7 @@ public class Main extends JavaPlugin {
 		new Berserker();
 		new Defender();
 		new Enchanter();
+		new Bloodmage();
 	}
 
 	public FileManager getFileManager() {

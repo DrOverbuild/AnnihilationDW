@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.nekrosius.annihilationdw.handlers.PlayerHandler;
-import com.nekrosius.annihilationdw.listeners.PlayerListener;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,9 +11,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import com.nekrosius.annihilationdw.api.events.JoinGameEvent;
-import com.nekrosius.annihilationdw.api.objects.Ability;
 
 public class Archer extends Ability {
 	
@@ -30,33 +26,45 @@ public class Archer extends Ability {
 		registerAbility(this);
 		setName(NAME);
 		setIcon(ICON);
+
+		//TODO LOCALIZE THIS
 		addDescription("+" + DAMAGE_BOOST + " damage with a bow");
 		addDescription("and every " + INTERVAL_IN_SECONDS + " seconds");
 		addDescription("get " + ARROWS + " arrows!");
 		
 		active = new HashMap<String, Boolean>();
 	}
-	
-	@EventHandler
-	public void onJoin(JoinGameEvent event) {
-		if(isActive(event.getPlayer())) return;
-		setActive(event.getPlayer(), true);
+
+	@Override
+	public void initialize(Player player) {
+		if(isActive(player)) return;
+		setActive(player, true);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!event.getPlayer().isOnline()) {
-					setActive(event.getPlayer(), false);
+				if(!isActive(player)){
 					this.cancel();
 					return;
 				}
-				if(event.getPlayer().isDead()) return;
-				if(PlayerListener.respawnTimer.containsKey(event.getPlayer().getName())) return;
-				event.getPlayer().getInventory().addItem(new ItemStack(Material.ARROW, ARROWS));
-				
+
+				if(!player.isOnline()) {
+					setActive(player, false);
+					this.cancel();
+					return;
+				}
+				if(player.isDead()) return;
+				if(PlayerHandler.isSpectating(player)) return;
+				player.getInventory().addItem(new ItemStack(Material.ARROW, ARROWS));
+
 			}
 		}.runTaskTimer(plugin, INTERVAL_IN_SECONDS * 20, INTERVAL_IN_SECONDS * 20);
 	}
-	
+
+	@Override
+	public void cleanup(Player player) {
+		setActive(player, false);
+	}
+
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
 		// Checking if both entities are players

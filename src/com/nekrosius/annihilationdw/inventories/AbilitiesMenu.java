@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import com.nekrosius.annihilationdw.api.objects.Ability;
+import com.nekrosius.annihilationdw.abilities.Ability;
 import com.nekrosius.annihilationdw.utils.ItemStackGenerator;
 
 public class AbilitiesMenu {

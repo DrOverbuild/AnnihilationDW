@@ -1,4 +1,4 @@
-package com.nekrosius.annihilationdw.api.objects;
+package com.nekrosius.annihilationdw.abilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,25 @@ public class Ability implements Listener {
 		Bukkit.getPluginManager().registerEvents(ability, plugin);
 		abilities.add(ability);
 	}
-	
+
+	/**
+	 * Called whenever the ability is added to a player. This happens when the player's kit is being set up. Override
+	 * this to start up any needed timers.
+	 * @param player The player to whom the ability is being added
+	 */
+	public void initialize(Player player){
+
+	}
+
+	/**
+	 * Called whenever the ability is removed from a player. This happens when the player changes kits, leaves the
+	 * server, or when the game ends. Override this to clear any lists or cancel any running timers.
+	 * @param player
+	 */
+	public void cleanup(Player player){
+
+	}
+
 	/**
 	 * @return the name of ability
 	 */
@@ -96,7 +114,7 @@ public class Ability implements Listener {
 	
 	public boolean hasAbility(Ability ab, Player player) {
 		for(Ability abs : PlayerHandler.getAbilities(player)) {
-			if(abs.getName() == ab.getName()) return true;
+			if(abs.getName().equals(ab.getName())) return true;
 		}
 		return false;
 	}

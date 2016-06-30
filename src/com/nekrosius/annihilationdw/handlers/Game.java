@@ -150,6 +150,7 @@ public class Game {
 			}
 			PlayerHandler.setSpectating(p, true);
 			BarManager.removeBar(p);
+			PlayerHandler.clearAbilities(p);
 		}
 
 		if (winner != null) {

@@ -1,6 +1,7 @@
 package com.nekrosius.annihilationdw.handlers;
 
 import com.nekrosius.annihilationdw.Main;
+import com.nekrosius.annihilationdw.abilities.Ability;
 import com.nekrosius.annihilationdw.files.KitsFile;
 import com.nekrosius.annihilationdw.files.MessageFile;
 import com.nekrosius.annihilationdw.utils.AsyncUtil;
@@ -177,6 +178,11 @@ public class Kits {
 		return items;
 	}
 
+	public static List<String> getKitAbilities(String kit){
+		List<String> abilities = KitsFile.config.getStringList(kit + ".abilities");
+		return abilities;
+	}
+
 	public static void setupKit(Player player) {
 		if (PlayerHandler.getPlayerKit(player) == null) {
 			return;
@@ -193,6 +199,15 @@ public class Kits {
 				player.getInventory().setBoots(item);
 			} else {
 				player.getInventory().addItem(item);
+			}
+		}
+
+		PlayerHandler.clearAbilities(player);
+
+		for(String abilityStr : getKitAbilities(kit)){
+			Ability ability = Ability.getAbility(abilityStr);
+			if(ability != null) {
+				PlayerHandler.addAbility(player, ability);
 			}
 		}
 	}
