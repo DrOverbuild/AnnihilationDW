@@ -35,12 +35,14 @@ public class SoundManager {
 		}
 	}
 
-	public static void playItemBreak(World world, Location loc){
+	public static void playExplosion(World world, Location loc){
 		try{
+			world.playSound(loc,Sound.valueOf("EXPLODE"), 1, 0);
 			world.playSound(loc,Sound.valueOf("ITEM_BREAK"), 1, 0);
 		}catch (IllegalArgumentException e){
 			try{
-				world.playSound(loc, Sound.valueOf("ENTITY_ITEM_BREAK"), 1, 0);
+				world.playSound(loc, Sound.valueOf("ENTITY_GENERIC_EXPLODE"), 1, 0);
+				world.playSound(loc,Sound.valueOf("ENTITY_ITEM_BREAK"), 1, 0);
 			}catch (IllegalArgumentException e2){
 
 			}

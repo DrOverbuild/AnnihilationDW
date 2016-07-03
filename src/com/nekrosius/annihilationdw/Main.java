@@ -51,7 +51,6 @@ public class Main extends JavaPlugin {
 	private PartyManager pm;
 	//	private TitleManager tlm;
 	private static Database database;
-	public static EffectManager em;
 
 	public static void println(String s) {
 		Bukkit.getPluginManager().getPlugin("AnnihilationDW").getLogger().info(s);
@@ -106,8 +105,6 @@ public class Main extends JavaPlugin {
 		mm = new MapManager(this);
 		cm = new CommandManager(this);
 		pm = new PartyManager(this);
-		EffectLib lib = EffectLib.instance();
-		em = new EffectManager(lib);
 		new StatSignManager(this);
 //		tlm = new TitleManager(this);
 		MessageHandler.loadMessages();
