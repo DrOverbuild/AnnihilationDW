@@ -1,7 +1,7 @@
 name: AnnihilationDW
 author: BenRush
 version: 3.1.7
-main: com.nekrosius.annihilationdw.Main
+main: com.drizzard.annihilationdw.Main
 commands:
     drizzardwars:
         description: main command
