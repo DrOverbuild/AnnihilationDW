@@ -187,8 +187,6 @@ public class PlayerListener implements Listener {
 				MessageHandler.sendMessage(p, msg);
 			}
 		}
-		Stats.unloadStats(event.getPlayer());
-		Kits.unloadKitData(event.getPlayer());
 		PlayerHandler.quit(player);
 
 		// Kill off a team if the player who left was the only player in that team and Game.getPhase() > 3
@@ -206,8 +204,9 @@ public class PlayerListener implements Listener {
 		if (Main.getAlivePlayers().size() == 1 && Game.isGameStarted()) {
 			Main.println("Finishing game because there are no players online who are not spectating.");
 			Game.finish(null);
-			return;
 		}
+		Stats.unloadStats(event.getPlayer());
+		Kits.unloadKitData(event.getPlayer());
 
 		// The following ends the game if there's only one team left after player has left.
 		// This is redundant because line 175 will end the game if conditions are right.
