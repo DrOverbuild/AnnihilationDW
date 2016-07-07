@@ -164,10 +164,14 @@ public class MapManager {
 				Main.println("World unload failed.");
 			}
 
-			if(Main.deleteDirectory(file)){
-				Main.println("Directory deletion successful.");
-			}else{
-				Main.println("Directory deletion failed.");
+			for(int i = 0; i < 10; i++){
+				Main.println("Attempting to delete directory (" + (i + 1) + "/10).");
+				if(Main.deleteDirectory(file)){
+					Main.println("Directory deletion successful.");
+					break;
+				}else{
+					Main.println("Directory deletion failed. Trying again...");
+				}
 			}
 		}
 	}
