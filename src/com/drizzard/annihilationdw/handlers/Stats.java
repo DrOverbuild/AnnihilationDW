@@ -4,6 +4,7 @@ import com.drizzard.annihilationdw.Main;
 import com.drizzard.annihilationdw.files.ConfigFile;
 import com.drizzard.annihilationdw.files.StatSignFile;
 import com.drizzard.annihilationdw.utils.AsyncUtil;
+
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -12,17 +13,32 @@ import java.util.UUID;
 
 public class Stats {
 
+    public static int deathPoints = 1;
     public static int killPoints = 1;
     public static int winPoints = 1;
-    public static int deathPoints = 1;
+    private static Map<UUID, Stats> playerStats = new HashMap<>();
+    private final UUID playerId;
+    private int points, kills, games, wins;
+
+    public Stats(UUID playerId, int points, int kills, int games, int wins) {
+        this.playerId = playerId;
+        this.points = points;
+        this.kills = kills;
+        this.games = games;
+        this.wins = wins;
+
+        StatSignFile.update(StatSignFile.StatType.POINTS, playerId, points);
+        StatSignFile.update(StatSignFile.StatType.KILLS, playerId, kills);
+        StatSignFile.update(StatSignFile.StatType.GAMES, playerId, games);
+        StatSignFile.update(StatSignFile.StatType.WINS, playerId, wins);
+        playerStats.put(playerId, this);
+    }
 
     public static void setupPoints() {
         killPoints = ConfigFile.config.getInt("points.kill");
         winPoints = ConfigFile.config.getInt("points.win");
         deathPoints = ConfigFile.config.getInt("points.death");
     }
-
-    private static Map<UUID, Stats> playerStats = new HashMap<>();
 
     public static Stats getStats(Player player) {
         return getStats(player.getUniqueId());
@@ -40,23 +56,6 @@ public class Stats {
 
     public static void unloadStats(Player player) {
         playerStats.remove(player.getUniqueId());
-    }
-
-    private final UUID playerId;
-    private int points, kills, games, wins;
-
-    public Stats(UUID playerId, int points, int kills, int games, int wins) {
-        this.playerId = playerId;
-        this.points = points;
-        this.kills = kills;
-        this.games = games;
-        this.wins = wins;
-
-        StatSignFile.update(StatSignFile.StatType.POINTS, playerId, points);
-        StatSignFile.update(StatSignFile.StatType.KILLS, playerId, kills);
-        StatSignFile.update(StatSignFile.StatType.GAMES, playerId, games);
-        StatSignFile.update(StatSignFile.StatType.WINS, playerId, wins);
-        playerStats.put(playerId, this);
     }
 
     private void refresh() {
@@ -82,6 +81,20 @@ public class Stats {
         return points;
     }
 
+    public Stats setPoints(int points) {
+        this.points = points;
+        StatSignFile.update(StatSignFile.StatType.POINTS, playerId, this.points);
+        AsyncUtil.run(new Runnable() {
+
+            @Override
+            public void run() {
+                Main.getDatabaseImpl().setPoints(playerId, points);
+            }
+
+        });
+        return this;
+    }
+
     public int getKills() {
         return kills;
     }
@@ -96,20 +109,6 @@ public class Stats {
 
     public Stats addPoints(int points) {
         return setPoints(this.points + points);
-    }
-
-    public Stats setPoints(int points) {
-        this.points = points;
-        StatSignFile.update(StatSignFile.StatType.POINTS, playerId, this.points);
-        AsyncUtil.run(new Runnable() {
-
-            @Override
-            public void run() {
-                Main.getDatabaseImpl().setPoints(playerId, points);
-            }
-
-        });
-        return this;
     }
 
     public Stats addKill() {

@@ -2,10 +2,11 @@ package com.drizzard.annihilationdw.managers;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.drizzard.annihilationdw.handlers.MessageHandler;
+
 import org.bukkit.entity.Player;
 
 public class TitleManager {
-	
+
 //	Title phase;
 //
 //	Main pl;
@@ -23,10 +24,10 @@ public class TitleManager {
 //		return this.phase;
 //	}
 
-	public static void sendTitle(Player p, int phase){
-		if(p.getServer().getPluginManager().getPlugin("TitleAPI") != null){
-			TitleAPI.sendTitle(p,10,60,10,MessageHandler.getPhaseMessage(phase),null);
-		}
-	}
+    public static void sendTitle(Player p, int phase) {
+        if (p.getServer().getPluginManager().getPlugin("TitleAPI") != null) {
+            TitleAPI.sendTitle(p, 10, 60, 10, MessageHandler.getPhaseMessage(phase), null);
+        }
+    }
 
 }

@@ -1,9 +1,11 @@
 package com.drizzard.annihilationdw.handlers.mapsetup;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.drizzard.annihilationdw.Main;
+import com.drizzard.annihilationdw.files.MessageFile;
+import com.drizzard.annihilationdw.files.ShopFile;
+import com.drizzard.annihilationdw.handlers.Game;
+import com.drizzard.annihilationdw.handlers.MessageHandler;
+import com.drizzard.annihilationdw.utils.ItemStackGenerator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,148 +18,146 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.drizzard.annihilationdw.Main;
-import com.drizzard.annihilationdw.files.MessageFile;
-import com.drizzard.annihilationdw.files.ShopFile;
-import com.drizzard.annihilationdw.handlers.Game;
-import com.drizzard.annihilationdw.handlers.MessageHandler;
-import com.drizzard.annihilationdw.utils.ItemStackGenerator;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Signs {
-	
-	private static Inventory wepShop = null;
-	private static Inventory brewShop = null;
-//	private static Map<Integer, List<ItemStack>> phaseWep = new HashMap<Integer, List<ItemStack>>();
+
+    private static Map<Integer, Integer> brewPrice = new HashMap<>();
+    private static Inventory brewShop = null;
+    //	private static Map<Integer, List<ItemStack>> phaseWep = new HashMap<Integer, List<ItemStack>>();
 //	private static Map<Integer, List<Integer>> phaseWepSlots = new HashMap<Integer, List<Integer>>();
 //	private static Map<Integer, List<ItemStack>> phaseBrew = new HashMap<Integer, List<ItemStack>>();
 //	private static Map<Integer, List<Integer>> phaseBrewSlots = new HashMap<Integer, List<Integer>>();
-	private static Map<Integer, Integer> wepPrice = new HashMap<>();
-	private static Map<Integer, Integer> brewPrice = new HashMap<>();
+    private static Map<Integer, Integer> wepPrice = new HashMap<>();
+    private static Inventory wepShop = null;
 
-	public static void addSign(String type, Location loc, Player player, Block block, BlockFace clickedBlockFace) {
-		Material signType = getSignType(clickedBlockFace);
-		if(signType == null) return;
-		if(signType.equals(Material.WALL_SIGN)){
+    public static void addSign(String type, Location loc, Player player, Block block, BlockFace clickedBlockFace) {
+        Material signType = getSignType(clickedBlockFace);
+        if (signType == null) return;
+        if (signType.equals(Material.WALL_SIGN)) {
 //			loc.getWorld().getBlockAt(loc).getRelative(Main.getPlayerDirection(player).getOppositeFace()).setType(signType);
-			loc.getWorld().getBlockAt(loc).getRelative(clickedBlockFace).setType(signType);
+            loc.getWorld().getBlockAt(loc).getRelative(clickedBlockFace).setType(signType);
 //			loc = loc.getWorld().getBlockAt(loc).getRelative(Main.getPlayerDirection(player).getOppositeFace()).getLocation();
-			loc = loc.getWorld().getBlockAt(loc).getRelative(clickedBlockFace).getLocation();
-			setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block, clickedBlockFace);
-		}else if(signType.equals(Material.SIGN_POST)){
-			loc.getWorld().getBlockAt(loc).getRelative(BlockFace.UP).setType(signType);
-			loc = loc.getWorld().getBlockAt(loc).getRelative(BlockFace.UP).getLocation();
-			setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block, clickedBlockFace);
-		}
-	}
+            loc = loc.getWorld().getBlockAt(loc).getRelative(clickedBlockFace).getLocation();
+            setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block, clickedBlockFace);
+        } else if (signType.equals(Material.SIGN_POST)) {
+            loc.getWorld().getBlockAt(loc).getRelative(BlockFace.UP).setType(signType);
+            loc = loc.getWorld().getBlockAt(loc).getRelative(BlockFace.UP).getLocation();
+            setSignFaceDirection(type, player, (Sign) loc.getWorld().getBlockAt(loc).getState(), block, clickedBlockFace);
+        }
+    }
 
-	private static void setSignFaceDirection(String type, Player player, Sign sign, Block block, BlockFace blockFace){
-		org.bukkit.material.Sign signData = null;
-		if(sign.getType().equals(Material.WALL_SIGN)){
-			updateWallSign(sign, block, blockFace);
-		}else if(sign.getType().equals(Material.SIGN)){
-			signData = new org.bukkit.material.Sign(Material.SIGN);
-			signData.setFacingDirection(blockFace.getOppositeFace());
-			sign.setData(signData);
-		}else if(sign.getType().equals(Material.SIGN_POST)){
-			signData = new org.bukkit.material.Sign(Material.SIGN_POST);
-			signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
-			sign.setData(signData);
-		}
-		if(type.equalsIgnoreCase("change kit")){
-			sign.setLine(1,MessageFile.formatMessage("signs.change-kit"));
-			sign.update();
-			return;
-		}
+    private static void setSignFaceDirection(String type, Player player, Sign sign, Block block, BlockFace blockFace) {
+        org.bukkit.material.Sign signData = null;
+        if (sign.getType().equals(Material.WALL_SIGN)) {
+            updateWallSign(sign, block, blockFace);
+        } else if (sign.getType().equals(Material.SIGN)) {
+            signData = new org.bukkit.material.Sign(Material.SIGN);
+            signData.setFacingDirection(blockFace.getOppositeFace());
+            sign.setData(signData);
+        } else if (sign.getType().equals(Material.SIGN_POST)) {
+            signData = new org.bukkit.material.Sign(Material.SIGN_POST);
+            signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
+            sign.setData(signData);
+        }
+        if (type.equalsIgnoreCase("change kit")) {
+            sign.setLine(1, MessageFile.formatMessage("signs.change-kit"));
+            sign.update();
+            return;
+        }
 
-		sign.setLine(0, ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]");
-		if(type.equalsIgnoreCase("brewing")){
-			sign.setLine(1, "Brewing");
-		}else if(type.equalsIgnoreCase("weapon")){
-			sign.setLine(1, "Weapon");
-		}
-		sign.update();
-	}
+        sign.setLine(0, ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]");
+        if (type.equalsIgnoreCase("brewing")) {
+            sign.setLine(1, "Brewing");
+        } else if (type.equalsIgnoreCase("weapon")) {
+            sign.setLine(1, "Weapon");
+        }
+        sign.update();
+    }
 
-	public static void setSignFaceDirection(String type, Player player, Sign sign, Block block) {
-		org.bukkit.material.Sign signData = null;
-		if(sign.getType().equals(Material.WALL_SIGN)){
-			updateWallSign(sign, block);
-		}else if(sign.getType().equals(Material.SIGN)){
-			signData = new org.bukkit.material.Sign(Material.SIGN);
-			signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
-			sign.setData(signData);
-		}else if(sign.getType().equals(Material.SIGN_POST)){
-			signData = new org.bukkit.material.Sign(Material.SIGN_POST);
-			signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
-			sign.setData(signData);
-		}
-		sign.setLine(0, ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]");
-		if(type.equalsIgnoreCase("brewing")){
-			sign.setLine(1, "Brewing");
-		}else if(type.equalsIgnoreCase("weapon")){
-			sign.setLine(1, "Weapon");
-		}
-		sign.update();
-	}
+    public static void setSignFaceDirection(String type, Player player, Sign sign, Block block) {
+        org.bukkit.material.Sign signData = null;
+        if (sign.getType().equals(Material.WALL_SIGN)) {
+            updateWallSign(sign, block);
+        } else if (sign.getType().equals(Material.SIGN)) {
+            signData = new org.bukkit.material.Sign(Material.SIGN);
+            signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
+            sign.setData(signData);
+        } else if (sign.getType().equals(Material.SIGN_POST)) {
+            signData = new org.bukkit.material.Sign(Material.SIGN_POST);
+            signData.setFacingDirection(Main.getPlayerDirection(player).getOppositeFace());
+            sign.setData(signData);
+        }
+        sign.setLine(0, ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]");
+        if (type.equalsIgnoreCase("brewing")) {
+            sign.setLine(1, "Brewing");
+        } else if (type.equalsIgnoreCase("weapon")) {
+            sign.setLine(1, "Weapon");
+        }
+        sign.update();
+    }
 
-	private static Material getSignType(BlockFace face){
-		if(face.equals(BlockFace.UP)){
-			return Material.SIGN_POST;
-		}
+    private static Material getSignType(BlockFace face) {
+        if (face.equals(BlockFace.UP)) {
+            return Material.SIGN_POST;
+        }
 
-		if(face.equals(BlockFace.DOWN)){
-			return null;
-		}
+        if (face.equals(BlockFace.DOWN)) {
+            return null;
+        }
 
-		return Material.WALL_SIGN;
-	}
-	
-	private static Material getSignType(Player player, Location loc){
-		Block block = loc.getWorld().getBlockAt(loc);
-		if(block.getRelative(Main.getPlayerDirection(player).getOppositeFace()).getType().equals(Material.AIR)){
-			return Material.WALL_SIGN;
-		}else{
-			return Material.SIGN_POST;
-		}
-	}
+        return Material.WALL_SIGN;
+    }
 
-	private static void updateWallSign(Sign sign, Block block, BlockFace blockFace) {
-		((org.bukkit.material.Sign)sign.getData()).setFacingDirection(blockFace);
-		sign.update();
-	}
+    private static Material getSignType(Player player, Location loc) {
+        Block block = loc.getWorld().getBlockAt(loc);
+        if (block.getRelative(Main.getPlayerDirection(player).getOppositeFace()).getType().equals(Material.AIR)) {
+            return Material.WALL_SIGN;
+        } else {
+            return Material.SIGN_POST;
+        }
+    }
 
-	private static void updateWallSign(Sign sign, Block block) {
-		BlockFace[] blockFaces = {BlockFace.EAST, BlockFace.NORTH, BlockFace.WEST, BlockFace.SOUTH};
-		for (BlockFace bf : blockFaces) {
-			Block bu = sign.getBlock().getRelative(bf);
-			if ((bu.getType() == block.getType())) {
-				((org.bukkit.material.Sign)sign.getData()).setFacingDirection(bf.getOppositeFace());
-				sign.update();
-			}
-		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	public static void setupShops(){
-		// Lazy Instantiation Rule: only set up the shops when a player needs to access it.
-		wepShop = null;
-		brewShop = null;
+    private static void updateWallSign(Sign sign, Block block, BlockFace blockFace) {
+        ((org.bukkit.material.Sign) sign.getData()).setFacingDirection(blockFace);
+        sign.update();
+    }
 
-		wepPrice.clear();
-		brewPrice.clear();
+    private static void updateWallSign(Sign sign, Block block) {
+        BlockFace[] blockFaces = {BlockFace.EAST, BlockFace.NORTH, BlockFace.WEST, BlockFace.SOUTH};
+        for (BlockFace bf : blockFaces) {
+            Block bu = sign.getBlock().getRelative(bf);
+            if ((bu.getType() == block.getType())) {
+                ((org.bukkit.material.Sign) sign.getData()).setFacingDirection(bf.getOppositeFace());
+                sign.update();
+            }
+        }
+    }
 
-		// Reload the shops for players who have the shops open when the phase changes.
-		for(Player p:Bukkit.getOnlinePlayers()){
-			if(p.getOpenInventory() != null && p.getOpenInventory().getTitle().equals(MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")))){
-				p.closeInventory();
-				Signs.openWeaponShop(p);
-			}
+    @SuppressWarnings("deprecation")
+    public static void setupShops() {
+        // Lazy Instantiation Rule: only set up the shops when a player needs to access it.
+        wepShop = null;
+        brewShop = null;
 
-			if(p.getOpenInventory() != null && p.getOpenInventory().getTitle().equals(MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")))){
-				p.closeInventory();
-				Signs.openBrewingShop(p);
-			}
-		}
+        wepPrice.clear();
+        brewPrice.clear();
+
+        // Reload the shops for players who have the shops open when the phase changes.
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getOpenInventory() != null && p.getOpenInventory().getTitle().equals(MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")))) {
+                p.closeInventory();
+                Signs.openWeaponShop(p);
+            }
+
+            if (p.getOpenInventory() != null && p.getOpenInventory().getTitle().equals(MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")))) {
+                p.closeInventory();
+                Signs.openBrewingShop(p);
+            }
+        }
 
 //		// WEAPONS
 //		wepShop = Bukkit.createInventory(null, ShopFile.config.getInt("weapons.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")));
@@ -204,9 +204,9 @@ public class Signs {
 //			phaseBrewSlots.put(phase, slots);
 //			phaseBrew.put(phase, items);
 //		}
-	}
-	
-	private static void setupWeaponsShop(){
+    }
+
+    private static void setupWeaponsShop() {
 //		int phase = Game.getPhase() + 1;
 //		if(phaseWep.get(phase) == null) return;
 //		int i = 0;
@@ -215,29 +215,29 @@ public class Signs {
 //			i++;
 //		}
 
-		wepShop = Bukkit.createInventory(null, ShopFile.config.getInt("weapons.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")));
-		String path;
-		int slotNumber = 0;
-		for(String id:ShopFile.config.getConfigurationSection("weapons.items").getKeys(false)){
-			path = "weapons.items." + id;
-			int phase = ShopFile.config.getInt(path + ".phase",1);
-			if(Game.getPhase() >= phase) {
-				int type = ShopFile.config.getInt(path + ".id");
-				int amount = ShopFile.config.getInt(path + ".amount",1);
-				int data = ShopFile.config.getInt(path + ".data",0);
-				int price = ShopFile.config.getInt(path + ".price");
-				String name = MessageHandler.format(ShopFile.config.getString(path + ".name"));
-				List<String> lore = Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), price));
-				ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(type),amount,data,name,lore);
-				wepShop.setItem(slotNumber,item);
-				wepPrice.put(slotNumber,price);
-				slotNumber++;
-			}
-		}
+        wepShop = Bukkit.createInventory(null, ShopFile.config.getInt("weapons.inventory.rows") * 9, MessageHandler.format(ShopFile.config.getString("weapons.inventory.name")));
+        String path;
+        int slotNumber = 0;
+        for (String id : ShopFile.config.getConfigurationSection("weapons.items").getKeys(false)) {
+            path = "weapons.items." + id;
+            int phase = ShopFile.config.getInt(path + ".phase", 1);
+            if (Game.getPhase() >= phase) {
+                int type = ShopFile.config.getInt(path + ".id");
+                int amount = ShopFile.config.getInt(path + ".amount", 1);
+                int data = ShopFile.config.getInt(path + ".data", 0);
+                int price = ShopFile.config.getInt(path + ".price");
+                String name = MessageHandler.format(ShopFile.config.getString(path + ".name"));
+                List<String> lore = Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), price));
+                ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(type), amount, data, name, lore);
+                wepShop.setItem(slotNumber, item);
+                wepPrice.put(slotNumber, price);
+                slotNumber++;
+            }
+        }
 
-	}
-	
-	private static void setupBrewingShop(){
+    }
+
+    private static void setupBrewingShop() {
 //		int phase = Game.getPhase() + 1;
 //		if(phaseBrew.get(phase) == null) return;
 //		int i = 0;
@@ -246,62 +246,62 @@ public class Signs {
 //			i++;
 //		}
 
-		brewShop = Bukkit.createInventory(null, ShopFile.config.getInt("brewing.inventory.rows")*9, MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")));
-		String path;
-		int slotNumber = 0;
-		for(String id:ShopFile.config.getConfigurationSection("brewing.items").getKeys(false)){
-			path = "brewing.items." + id;
-			int phase = ShopFile.config.getInt(path + ".phase",1);
-			if(Game.getPhase() >= phase) {
-				int type = ShopFile.config.getInt(path + ".id");
-				int amount = ShopFile.config.getInt(path + ".amount",1);
-				int data = ShopFile.config.getInt(path + ".data",0);
-				int price = ShopFile.config.getInt(path + ".price");
-				String name = MessageHandler.format(ShopFile.config.getString(path + ".name"));
-				List<String> lore = Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), price));
-				ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(type),amount,data,name,lore);
-				brewShop.setItem(slotNumber,item);
-				brewPrice.put(slotNumber, price);
-				slotNumber++;
-			}
-		}
-	}
-	
-	public static void openWeaponShop(Player player) {
-		// Lazy instantiation
-		if (wepShop == null){
-			setupWeaponsShop();
-		}
-		player.openInventory(wepShop);
-	}
-	
-	public static void openBrewingShop(Player player) {
-		// Lazy instantiation
-		if(brewShop == null){
-			setupBrewingShop();
-		}
-		player.openInventory(brewShop);
-	}
+        brewShop = Bukkit.createInventory(null, ShopFile.config.getInt("brewing.inventory.rows") * 9, MessageHandler.format(ShopFile.config.getString("brewing.inventory.name")));
+        String path;
+        int slotNumber = 0;
+        for (String id : ShopFile.config.getConfigurationSection("brewing.items").getKeys(false)) {
+            path = "brewing.items." + id;
+            int phase = ShopFile.config.getInt(path + ".phase", 1);
+            if (Game.getPhase() >= phase) {
+                int type = ShopFile.config.getInt(path + ".id");
+                int amount = ShopFile.config.getInt(path + ".amount", 1);
+                int data = ShopFile.config.getInt(path + ".data", 0);
+                int price = ShopFile.config.getInt(path + ".price");
+                String name = MessageHandler.format(ShopFile.config.getString(path + ".name"));
+                List<String> lore = Arrays.asList(MessageHandler.formatInteger(MessageFile.getMessage("shop.price"), price));
+                ItemStack item = ItemStackGenerator.createItem(Material.getMaterial(type), amount, data, name, lore);
+                brewShop.setItem(slotNumber, item);
+                brewPrice.put(slotNumber, price);
+                slotNumber++;
+            }
+        }
+    }
 
-	public static int getPriceOfWeapon(int slot){
-		if(wepPrice.get(slot)==null){
-			Bukkit.getLogger().info("AnnihilationDW encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
-			return 0;
-		}
-		return wepPrice.get(slot);
-	}
+    public static void openWeaponShop(Player player) {
+        // Lazy instantiation
+        if (wepShop == null) {
+            setupWeaponsShop();
+        }
+        player.openInventory(wepShop);
+    }
 
-	public static int getPriceOfBrewingItem(int slot){
-		if(brewPrice.get(slot)==null){
-			Bukkit.getLogger().info("AnnihilationDW encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
-			return 0;
-		}
-		return brewPrice.get(slot);
-	}
+    public static void openBrewingShop(Player player) {
+        // Lazy instantiation
+        if (brewShop == null) {
+            setupBrewingShop();
+        }
+        player.openInventory(brewShop);
+    }
 
-	public static boolean signIsSpecialSign(Sign sign) {
-		return sign.getLine(0).equals(ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]")
-				|| sign.getLine(1).equals(MessageFile.formatMessage("signs.change-kit"));
+    public static int getPriceOfWeapon(int slot) {
+        if (wepPrice.get(slot) == null) {
+            Bukkit.getLogger().info("AnnihilationDW encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
+            return 0;
+        }
+        return wepPrice.get(slot);
+    }
 
-	}
+    public static int getPriceOfBrewingItem(int slot) {
+        if (brewPrice.get(slot) == null) {
+            Bukkit.getLogger().info("AnnihilationDW encountered an unexpected error with the shops. Please report this at https://www.spigotmc.org/resources/drizzardwars-annihilation-beta-sale.18165/");
+            return 0;
+        }
+        return brewPrice.get(slot);
+    }
+
+    public static boolean signIsSpecialSign(Sign sign) {
+        return sign.getLine(0).equals(ChatColor.DARK_RED + "[" + ChatColor.DARK_PURPLE + "Shop" + ChatColor.DARK_RED + "]")
+                || sign.getLine(1).equals(MessageFile.formatMessage("signs.change-kit"));
+
+    }
 }

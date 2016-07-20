@@ -4,6 +4,7 @@ import com.drizzard.annihilationdw.Main;
 import com.drizzard.annihilationdw.handlers.MessageHandler;
 import com.drizzard.annihilationdw.utils.ConfigLoader;
 import com.drizzard.annihilationdw.utils.ItemStackGenerator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +19,8 @@ import java.util.List;
 
 public class ConfigFile {
 
-    static File file;
     public static FileConfiguration config;
-
+    static File file;
     private Main pl;
 
     public ConfigFile(Main plugin) {

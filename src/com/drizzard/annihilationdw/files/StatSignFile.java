@@ -1,8 +1,10 @@
 package com.drizzard.annihilationdw.files;
 
-import com.drizzard.annihilationdw.statsigns.StatSign;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
+import com.drizzard.annihilationdw.statsigns.StatSign;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,128 +20,128 @@ import java.util.UUID;
 
 public class StatSignFile {
 
-	private static File file = new File("plugins" + File.separator + "AnnihilationDW" + File.separator + "statsigns.yml");
-	private static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+    private static File file = new File("plugins" + File.separator + "AnnihilationDW" + File.separator + "statsigns.yml");
+    private static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-	static {
-		saveConfig();
-	}
+    static {
+        saveConfig();
+    }
 
-	public static void setStatSigns(List<StatSign> signs) {
-		config.set("signs", Lists.transform(signs, new Function<StatSign, String>() {
+    public static List<StatSign> getStatSigns() {
+        return Lists.transform(config.getStringList("signs"), new Function<String, StatSign>() {
 
-			@Override
-			public String apply(StatSign statSign) {
-				Location loc = statSign.getLocation();
-				return loc.getWorld().getName() + "," + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ";" + statSign
-						.getStatType() + ";" + statSign.getTop();
-			}
+            @Override
+            public StatSign apply(String s) {
+                String[] split = s.split(";");
+                String[] locSplit = split[0].split(",");
+                Location loc = new Location(Bukkit.getWorld(locSplit[0]), Integer.parseInt(locSplit[1]), Integer.parseInt(locSplit[2]), Integer
+                        .parseInt(locSplit[3]));
+                StatType signType = StatType.valueOf(split[1]);
+                int top = Integer.parseInt(split[2]);
+                return new StatSign(loc, top, signType);
+            }
 
-		}));
-		saveConfig();
-	}
+        });
+    }
 
-	public static List<StatSign> getStatSigns() {
-		return Lists.transform(config.getStringList("signs"), new Function<String, StatSign>() {
+    public static void setStatSigns(List<StatSign> signs) {
+        config.set("signs", Lists.transform(signs, new Function<StatSign, String>() {
 
-			@Override
-			public StatSign apply(String s) {
-				String[] split = s.split(";");
-				String[] locSplit = split[0].split(",");
-				Location loc = new Location(Bukkit.getWorld(locSplit[0]), Integer.parseInt(locSplit[1]), Integer.parseInt(locSplit[2]), Integer
-						.parseInt(locSplit[3]));
-				StatType signType = StatType.valueOf(split[1]);
-				int top = Integer.parseInt(split[2]);
-				return new StatSign(loc, top, signType);
-			}
+            @Override
+            public String apply(StatSign statSign) {
+                Location loc = statSign.getLocation();
+                return loc.getWorld().getName() + "," + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ";" + statSign
+                        .getStatType() + ";" + statSign.getTop();
+            }
 
-		});
-	}
+        }));
+        saveConfig();
+    }
 
-	public static List<StatData> getStatData(StatType statType) {
-		List<StatData> list = new ArrayList<>();
+    public static List<StatData> getStatData(StatType statType) {
+        List<StatData> list = new ArrayList<>();
 
-		if (config.isSet(statType.name().toLowerCase()) && config.isConfigurationSection(statType.name().toLowerCase())) {
-			ConfigurationSection section = config.getConfigurationSection(statType.name().toLowerCase());
-			for (String key : section.getKeys(false)) {
-				try {
-					UUID playerId = UUID.fromString(key);
-					int value = section.getInt(key);
-					list.add(new StatData(playerId, value));
-				} catch (Exception ex) {
-					System.out.println("Error loading stats, key: " + key + ", value: " + section.get(key));
-				}
-			}
-		}
+        if (config.isSet(statType.name().toLowerCase()) && config.isConfigurationSection(statType.name().toLowerCase())) {
+            ConfigurationSection section = config.getConfigurationSection(statType.name().toLowerCase());
+            for (String key : section.getKeys(false)) {
+                try {
+                    UUID playerId = UUID.fromString(key);
+                    int value = section.getInt(key);
+                    list.add(new StatData(playerId, value));
+                } catch (Exception ex) {
+                    System.out.println("Error loading stats, key: " + key + ", value: " + section.get(key));
+                }
+            }
+        }
 
-		list.sort(new Comparator<StatData>() {
+        list.sort(new Comparator<StatData>() {
 
-			@Override
-			public int compare(StatData o1, StatData o2) {
-				return Integer.compare(o2.getAmount(), o1.getAmount());
-			}
-		});
-		return list;
-	}
+            @Override
+            public int compare(StatData o1, StatData o2) {
+                return Integer.compare(o2.getAmount(), o1.getAmount());
+            }
+        });
+        return list;
+    }
 
-	public static void update(StatType statType, UUID playerId, int value) {
-		config.set(statType.name().toLowerCase() + "." + playerId.toString(), value);
-		saveConfig();
-	}
+    public static void update(StatType statType, UUID playerId, int value) {
+        config.set(statType.name().toLowerCase() + "." + playerId.toString(), value);
+        saveConfig();
+    }
 
-	private static void saveConfig() {
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    private static void saveConfig() {
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static class StatData {
+    public enum StatType {
 
-		private final UUID playerId;
-		private final int amount;
+        POINTS,
+        KILLS,
+        GAMES,
+        WINS;
 
-		public StatData(UUID playerId, int amount) {
-			this.playerId = playerId;
-			this.amount = amount;
-		}
+        public static StatType fromName(String name) {
+            for (StatType statType : values()) {
+                if (statType.name().equalsIgnoreCase(name)) {
+                    return statType;
+                }
+            }
+            return null;
+        }
 
-		public UUID getPlayerId() {
-			return playerId;
-		}
+    }
 
-		public int getAmount() {
-			return amount;
-		}
+    public static class StatData {
 
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == null || !obj.getClass().equals(this.getClass())) {
-				return false;
-			}
-			StatData data = (StatData) obj;
-			return ((playerId == null && data.playerId == null) || (playerId != null && data.playerId != null && playerId.equals(data.playerId)))
-					&& amount == data.amount;
-		}
-	}
+        private final int amount;
+        private final UUID playerId;
 
-	public enum StatType {
+        public StatData(UUID playerId, int amount) {
+            this.playerId = playerId;
+            this.amount = amount;
+        }
 
-		POINTS,
-		KILLS,
-		GAMES,
-		WINS;
+        public UUID getPlayerId() {
+            return playerId;
+        }
 
-		public static StatType fromName(String name) {
-			for (StatType statType : values()) {
-				if (statType.name().equalsIgnoreCase(name)) {
-					return statType;
-				}
-			}
-			return null;
-		}
+        public int getAmount() {
+            return amount;
+        }
 
-	}
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null || !obj.getClass().equals(this.getClass())) {
+                return false;
+            }
+            StatData data = (StatData) obj;
+            return ((playerId == null && data.playerId == null) || (playerId != null && data.playerId != null && playerId.equals(data.playerId)))
+                    && amount == data.amount;
+        }
+    }
 
 }

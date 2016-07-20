@@ -1,57 +1,55 @@
 package com.drizzard.annihilationdw.handlers;
 
 public class GameMap {
-	
-	private int votes;
-	private String name;
 
-	/**
-	 * @deprecated Use GameMap#name instead.
-	 */
-	@Deprecated
-	private int id;
-	
-	public GameMap(int id, String name){
-		setId(id);
-		setName(name);
-		setVotes(0);
-	}
+    /**
+     * @deprecated Use GameMap#name instead.
+     */
+    @Deprecated
+    private int id;
+    private String name;
+    private int votes;
 
-	public int getVotes() {
-		return votes;
-	}
+    public GameMap(int id, String name) {
+        setId(id);
+        setName(name);
+        setVotes(0);
+    }
 
-	public void setVotes(int votes) {
-		this.votes = votes;
-	}
-	
-	public void addVote() {
-		this.votes++;
-	}
-	
-	public void removeVote() {
-		this.votes--;
-	}
+    public int getVotes() {
+        return votes;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void addVote() {
+        this.votes++;
+    }
 
-	/**
-	 * @deprecated Use GameMap#getName() instead.
-	 * @return
-	 */
-	@Deprecated
-	public int getId() {
-		return id;
-	}
+    public void removeVote() {
+        this.votes--;
+    }
 
-	@Deprecated
-	public void setId(int id) {
-		this.id = id;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @deprecated Use GameMap#getName() instead.
+     */
+    @Deprecated
+    public int getId() {
+        return id;
+    }
+
+    @Deprecated
+    public void setId(int id) {
+        this.id = id;
+    }
 }

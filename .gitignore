@@ -31,6 +31,9 @@
 *.ipr
 *.iws
 .idea/
+output/
 
 pom.xml
 lib/
+target/
+jar/

@@ -2,7 +2,9 @@ package com.drizzard.annihilationdw.utils;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
 
 /*
  * Util by ThunderWaffeMC
@@ -10,18 +12,18 @@ import java.io.*;
  */
 
 public class CopyWorld {
-	
-	public static void copyWorld(File source, File target){
-	    try {
 
-		    FileFilter filter = new FileFilter() {
-			    @Override
-			    public boolean accept(File pathname) {
-				    return !(pathname.getName().equals("uid.dat") || pathname.getName().equals("session.dat"));
-			    }
-		    };
+    public static void copyWorld(File source, File target) {
+        try {
 
-		    FileUtils.copyDirectory(source, target,filter);
+            FileFilter filter = new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    return !(pathname.getName().equals("uid.dat") || pathname.getName().equals("session.dat"));
+                }
+            };
+
+            FileUtils.copyDirectory(source, target, filter);
 
 //	        ArrayList<String> ignore = new ArrayList<String>(Arrays.asList("uid.dat", "session.dat"));
 //	        if(!ignore.contains(source.getName())) {
@@ -45,9 +47,9 @@ public class CopyWorld {
 //	                out.close();
 //	            }
 //	        }
-	    } catch (IOException e) {
-		    e.printStackTrace();
-	    }
-	}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

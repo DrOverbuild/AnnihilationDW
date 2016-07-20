@@ -1,25 +1,31 @@
 package com.drizzard.annihilationdw;
 
-import com.drizzard.annihilationdw.abilities.*;
+import com.drizzard.annihilationdw.abilities.Archer;
+import com.drizzard.annihilationdw.abilities.Assassin;
+import com.drizzard.annihilationdw.abilities.Berserker;
+import com.drizzard.annihilationdw.abilities.Bloodmage;
+import com.drizzard.annihilationdw.abilities.Defender;
+import com.drizzard.annihilationdw.abilities.Enchanter;
 import com.drizzard.annihilationdw.database.Database;
 import com.drizzard.annihilationdw.database.flatfile.FlatFile;
 import com.drizzard.annihilationdw.database.mysql.MySQL;
 import com.drizzard.annihilationdw.files.ConfigFile;
+import com.drizzard.annihilationdw.handlers.Game;
+import com.drizzard.annihilationdw.handlers.Lobby;
 import com.drizzard.annihilationdw.handlers.MessageHandler;
 import com.drizzard.annihilationdw.handlers.PlayerHandler;
 import com.drizzard.annihilationdw.handlers.TabHandler;
 import com.drizzard.annihilationdw.managers.BarManager;
-import com.drizzard.annihilationdw.managers.FileManager;
-import com.drizzard.annihilationdw.managers.TeamManager;
-import com.drizzard.annihilationdw.statsigns.StatSignManager;
-import com.drizzard.annihilationdw.handlers.Game;
-import com.drizzard.annihilationdw.handlers.Lobby;
 import com.drizzard.annihilationdw.managers.CommandManager;
+import com.drizzard.annihilationdw.managers.FileManager;
 import com.drizzard.annihilationdw.managers.ListenerManager;
 import com.drizzard.annihilationdw.managers.MapManager;
 import com.drizzard.annihilationdw.managers.PartyManager;
+import com.drizzard.annihilationdw.managers.TeamManager;
+import com.drizzard.annihilationdw.statsigns.StatSignManager;
 import com.drizzard.annihilationdw.utils.AsyncUtil;
 import com.drizzard.annihilationdw.utils.Convert;
+
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -41,129 +47,22 @@ public class Main extends JavaPlugin {
 	// RECONNECT AND CAN VOTE AGAIN ON MAP
 	// COLORED NAMES MUST
 
-	private FileManager fm;
-	private ListenerManager lm;
-	private TeamManager tm;
-	private MapManager mm;
-	private CommandManager cm;
-	private PartyManager pm;
 	//	private TitleManager tlm;
 	private static Database database;
+	private CommandManager cm;
+	private FileManager fm;
+	private ListenerManager lm;
+	private MapManager mm;
+	private PartyManager pm;
+	private TeamManager tm;
 
 	public static void println(String s) {
 		Bukkit.getPluginManager().getPlugin("AnnihilationDW").getLogger().info(s);
 	}
 
-	public void onEnable() {
-		load();
-
-		loadDefaultAbilities();
-		new BukkitRunnable() {
-
-			@Override
-			public void run() {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					database.loadStats(p);
-					Lobby.setupLobby(p);
-					TabHandler.update(p);
-					BarManager.removeBar(p);
-				}
-			}
-		}.runTaskLater(this, 10L);
-
-		switch (ConfigFile.config.getString("database.type", "MySQL").toLowerCase()) {
-			case "flatfile":
-			case "file":
-				database = new FlatFile();
-				break;
-			default:
-				database = new MySQL(ConfigFile.config.getString("database.mysql.host", "localhost"), ConfigFile.config.getInt("database.mysql"
-						+ ".port", 3306), ConfigFile.config.getString("database.mysql.username", "user"), ConfigFile.config.getString("database"
-						+ ".mysql.password", "password"), ConfigFile.config.getString("database.mysql.database", "database"));
-				break;
-		}
-		database.connect();
-		database.prepare();
-	}
-
-	public void onDisable() {
-		if (Bukkit.getPluginManager().isPluginEnabled(this)) {
-			if (Game.isGameStarted()) {
-				Game.finish(TeamManager.getMostKills());
-			}
-		}
-		database.disconnect();
-		database = null;
-		AsyncUtil.stop();
-	}
-
-	private void load() {
-		fm = new FileManager(this);
-		lm = new ListenerManager(this);
-		mm = new MapManager(this);
-		cm = new CommandManager(this);
-		pm = new PartyManager(this);
-		new StatSignManager(this);
-//		tlm = new TitleManager(this);
-		MessageHandler.loadMessages();
-		registerMultiplierPermissions();
-
-		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-	}
-
-	/**
-	 * Adds default abilities
-	 */
-	private void loadDefaultAbilities() {
-		new Archer();
-		new Assassin();
-		new Berserker();
-		new Defender();
-		new Enchanter();
-		new Bloodmage();
-	}
-
-	public FileManager getFileManager() {
-		return fm;
-	}
-
-	public ListenerManager getListenerManager() {
-		return lm;
-	}
-
-	public TeamManager getTeamManager() {
-		return tm;
-	}
-
-	public MapManager getMapManager() {
-		return mm;
-	}
-
-	public CommandManager getCommandManager() {
-		return cm;
-	}
-
-	public PartyManager getPartyManager() {
-		return pm;
-	}
-
 	// Can't name it getDatabase because it's an existing method in the JavaPlugin class (or it's super classes) T_T
 	public static Database getDatabaseImpl() {
 		return database;
-	}
-
-	//	public TitleManager getTitleManager() {
-//		return tlm;
-//	}
-
-	/**
-	 * Not sure if this is really required, but could be helpful to some people... maybe...
-	 */
-	public void registerMultiplierPermissions() {
-		int max = ConfigFile.config.getInt("max-points-multiplier", 10);
-		for (int i = 1; i <= max; i++) {
-			getServer().getPluginManager().addPermission(new Permission("dw.multiplier." + i, PermissionDefault.FALSE));
-		}
 	}
 
 	public static int getRandom(int min, int max) {
@@ -287,7 +186,6 @@ public class Main extends JavaPlugin {
 	}
 
 	/**
-	 * @param symbol
 	 * @return returns if given symbol is a number
 	 */
 	private static boolean isNumber(char symbol) {
@@ -315,8 +213,6 @@ public class Main extends JavaPlugin {
 
 	/**
 	 * Returns all players on the server who is not in spectator mode.
-	 *
-	 * @return
 	 */
 	public static List<Player> getAlivePlayers() {
 		List<Player> alivePlayers = new ArrayList<>();
@@ -326,5 +222,112 @@ public class Main extends JavaPlugin {
 			}
 		}
 		return alivePlayers;
+	}
+
+	public void onEnable() {
+		load();
+
+		loadDefaultAbilities();
+		new BukkitRunnable() {
+
+			@Override
+			public void run() {
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					database.loadStats(p);
+					Lobby.setupLobby(p);
+					TabHandler.update(p);
+					BarManager.removeBar(p);
+				}
+			}
+		}.runTaskLater(this, 10L);
+
+		switch (ConfigFile.config.getString("database.type", "MySQL").toLowerCase()) {
+			case "flatfile":
+			case "file":
+				database = new FlatFile();
+				break;
+			default:
+				database = new MySQL(ConfigFile.config.getString("database.mysql.host", "localhost"), ConfigFile.config.getInt("database.mysql"
+						+ ".port", 3306), ConfigFile.config.getString("database.mysql.username", "user"), ConfigFile.config.getString("database"
+						+ ".mysql.password", "password"), ConfigFile.config.getString("database.mysql.database", "database"));
+				break;
+		}
+		database.connect();
+		database.prepare();
+	}
+
+	//	public TitleManager getTitleManager() {
+//		return tlm;
+//	}
+
+	public void onDisable() {
+		if (Bukkit.getPluginManager().isPluginEnabled(this)) {
+			if (Game.isGameStarted()) {
+				Game.finish(TeamManager.getMostKills());
+			}
+		}
+		database.disconnect();
+		database = null;
+		AsyncUtil.stop();
+	}
+
+	private void load() {
+		fm = new FileManager(this);
+		lm = new ListenerManager(this);
+		mm = new MapManager(this);
+		cm = new CommandManager(this);
+		pm = new PartyManager(this);
+		new StatSignManager(this);
+//		tlm = new TitleManager(this);
+		MessageHandler.loadMessages();
+		registerMultiplierPermissions();
+
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+	}
+
+	/**
+	 * Adds default abilities
+	 */
+	private void loadDefaultAbilities() {
+		new Archer();
+		new Assassin();
+		new Berserker();
+		new Defender();
+		new Enchanter();
+		new Bloodmage();
+	}
+
+	public FileManager getFileManager() {
+		return fm;
+	}
+
+	public ListenerManager getListenerManager() {
+		return lm;
+	}
+
+	public TeamManager getTeamManager() {
+		return tm;
+	}
+
+	public MapManager getMapManager() {
+		return mm;
+	}
+
+	public CommandManager getCommandManager() {
+		return cm;
+	}
+
+	public PartyManager getPartyManager() {
+		return pm;
+	}
+
+	/**
+	 * Not sure if this is really required, but could be helpful to some people... maybe...
+	 */
+	public void registerMultiplierPermissions() {
+		int max = ConfigFile.config.getInt("max-points-multiplier", 10);
+		for (int i = 1; i <= max; i++) {
+			getServer().getPluginManager().addPermission(new Permission("dw.multiplier." + i, PermissionDefault.FALSE));
+		}
 	}
 }
