@@ -1,40 +1,42 @@
 package com.drizzard.annihilationdw.handlers;
 
 import com.drizzard.annihilationdw.Main;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 
 public class TabHandler {
-	
-	
-	//private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AnnihilationDW");
-	
-	//public static String pts;
-	
-	//Temp solution
 
-	/**
-	 * All this method does is, if the player is spectating, change the list name to ChatColor.gray + player.getName().
-	 * If the player already has a team, then his nametag and his name on the tab list is already the color of his team.
-	 * @param player
-	 */
-	public static void setColor(Player player){
-		// We don't need to do any team managing here if players can't see the main scoreboard.
 
-		String name = player.getName();
+    //private static Main plugin = (Main)Bukkit.getPluginManager().getPlugin("AnnihilationDW");
 
-		if(PlayerHandler.isSpectating(player)){
-			if(player.getName().length() >= 14){
-				name = player.getName().substring(0, 14);
-			}
-			ChatColor color = ChatColor.GRAY;
-			player.setPlayerListName(color+name);
-			Main.println("Setting " + player.getName() + "'s tab color to Gray because he is spectating");
-		}else{
-			Main.println("Setting " + player.getName() + "'s tab color to his team's color because he is not spectating.");
-			player.setPlayerListName(player.getName());
-		}
+    //public static String pts;
+
+    //Temp solution
+
+    /**
+     * All this method does is, if the player is spectating, change the list name to ChatColor.gray
+     * + player.getName().
+     * If the player already has a team, then his nametag and his name on the tab list is already
+     * the color of his team.
+     */
+    public static void setColor(Player player) {
+        // We don't need to do any team managing here if players can't see the main scoreboard.
+
+        String name = player.getName();
+
+        if (PlayerHandler.isSpectating(player)) {
+            if (player.getName().length() >= 14) {
+                name = player.getName().substring(0, 14);
+            }
+            ChatColor color = ChatColor.GRAY;
+            player.setPlayerListName(color + name);
+            Main.println("Setting " + player.getName() + "'s tab color to Gray because he is spectating");
+        } else {
+            Main.println("Setting " + player.getName() + "'s tab color to his team's color because he is not spectating.");
+            player.setPlayerListName(player.getName());
+        }
 
 //		if(Game.isGameStarted()){
 //			if(!TeamManager.hasTeam(player)){
@@ -48,18 +50,18 @@ public class TabHandler {
 //		}else{
 //			player.setPlayerListName(color + name);
 //		}
-	}
-	
-	public static void updateAll(){
-		/*
-		for(Player p : Bukkit.getOnlinePlayers()){
+    }
+
+    public static void updateAll() {
+        /*
+        for(Player p : Bukkit.getOnlinePlayers()){
 			update(p);
 		}
 		*/
-	}
-	
-	public static void update(Player player) {
-		/*
+    }
+
+    public static void update(Player player) {
+        /*
 		TabAPI.resetTabList(player);
 		Team team = TeamManager.getTeam(player);
 		TabAPI.setTabString(plugin, player, 0, 0, ChatColor.GOLD   + "------------");
@@ -78,8 +80,8 @@ public class TabHandler {
 		fillPlayers(player);
 		TabAPI.updatePlayer(player);
 		*/
-	}
-	
+    }
+
 	/*
 	private static void fillPlayers(Player player) {
 		boolean started = Game.isGameStarted();
@@ -114,5 +116,5 @@ public class TabHandler {
 		return players;
 	}
 	*/
-	
+
 }

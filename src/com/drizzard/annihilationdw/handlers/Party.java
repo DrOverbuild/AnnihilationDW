@@ -1,60 +1,60 @@
-
 package com.drizzard.annihilationdw.handlers;
+
+import com.drizzard.annihilationdw.files.ConfigFile;
+
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.drizzard.annihilationdw.files.ConfigFile;
-import org.bukkit.entity.Player;
-
 public class Party {
 
-	private Player leader;
-	private List<Player> players;
-	
-	public Party(Player leader, List<Player> members) {
-		setLeader(leader);
-		setPlayers(members);
-	}
+    private Player leader;
+    private List<Player> players;
 
-	public boolean isFull(){
-		List<Player> playersInParty = new ArrayList<>(getPlayers());
-		if(!playersInParty.contains(getLeader())){
-			playersInParty.add(getLeader());
-		}
+    public Party(Player leader, List<Player> members) {
+        setLeader(leader);
+        setPlayers(members);
+    }
 
-		return playersInParty.size() >= ConfigFile.getPartyPlayerLimit();
-	}
+    public boolean isFull() {
+        List<Player> playersInParty = new ArrayList<>(getPlayers());
+        if (!playersInParty.contains(getLeader())) {
+            playersInParty.add(getLeader());
+        }
 
-	public List<Player> getPlayers() {
-		return players;
-	}
+        return playersInParty.size() >= ConfigFile.getPartyPlayerLimit();
+    }
 
-	public void setPlayers(List<Player> players) {
-		this.players = players;
-	}
+    public List<Player> getPlayers() {
+        return players;
+    }
 
-	public Player getLeader() {
-		return leader;
-	}
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
 
-	public void setLeader(Player leader) {
-		this.leader = leader;
-	}
-	
-	public void addPlayer(Player player){
-		players.add(player);
-	}
-	
-	public void removePlayer(Player player){
-		players.remove(player);
-	}
-	
-	public boolean isLeader(Player player) {
-		return player.equals(leader);
-	}
-	
-	public boolean isMember(Player player){
-		return players.contains(player);
-	}
+    public Player getLeader() {
+        return leader;
+    }
+
+    public void setLeader(Player leader) {
+        this.leader = leader;
+    }
+
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
+
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
+
+    public boolean isLeader(Player player) {
+        return player.equals(leader);
+    }
+
+    public boolean isMember(Player player) {
+        return players.contains(player);
+    }
 }

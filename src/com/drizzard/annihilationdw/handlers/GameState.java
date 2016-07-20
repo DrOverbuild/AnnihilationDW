@@ -5,6 +5,6 @@ package com.drizzard.annihilationdw.handlers;
  */
 public enum GameState {
 
-	LOBBY, IN_GAME, END_OF_GAME
+    LOBBY, IN_GAME, END_OF_GAME
 
 }

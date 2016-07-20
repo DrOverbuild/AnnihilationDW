@@ -7,6 +7,7 @@ import com.drizzard.annihilationdw.files.MessageFile;
 import com.drizzard.annihilationdw.managers.BarManager;
 import com.drizzard.annihilationdw.managers.MapManager;
 import com.drizzard.annihilationdw.managers.TeamManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,14 +24,14 @@ import java.util.Map;
 
 public class PlayerHandler {
 
-    static Map<String, Integer> vote = new HashMap<String, Integer>();
-    static Map<String, Boolean> playing = new HashMap<String, Boolean>();
-    static Map<String, String> kit = new HashMap<String, String>();
-    static Map<String, Integer> compassStatus = new HashMap<String, Integer>();
-    static Map<String, Boolean> spectating = new HashMap<String, Boolean>();
-    static Map<String, Integer> gold = new HashMap<String, Integer>();
     static Map<String, List<Ability>> abilities = new HashMap<String, List<Ability>>();
+    static Map<String, Integer> compassStatus = new HashMap<String, Integer>();
+    static Map<String, Integer> gold = new HashMap<String, Integer>();
     static List<String> hidden = new ArrayList<String>();
+    static Map<String, String> kit = new HashMap<String, String>();
+    static Map<String, Boolean> playing = new HashMap<String, Boolean>();
+    static Map<String, Boolean> spectating = new HashMap<String, Boolean>();
+    static Map<String, Integer> vote = new HashMap<String, Integer>();
 
     public static void quit(Player player) {
         vote.remove(player.getName());
@@ -165,7 +166,7 @@ public class PlayerHandler {
             }
             player.teleport(loc);
             //player.getInventory().addItem(ItemStackGenerator.createItem(Material.COMPASS, 0, 0, MessageHandler.format(MessageFile.getMessage
-			// ("compass.default")), null));
+            // ("compass.default")), null));
             player.setGameMode(GameMode.SURVIVAL);
             player.setAllowFlight(true);
             player.setFlying(true);

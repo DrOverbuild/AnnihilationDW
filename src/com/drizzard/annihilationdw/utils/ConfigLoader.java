@@ -1,6 +1,7 @@
 package com.drizzard.annihilationdw.utils;
 
 import com.drizzard.annihilationdw.Main;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -16,24 +17,24 @@ import java.util.logging.Level;
  */
 public class ConfigLoader {
 
-	public static YamlConfiguration loadConfiguration(File file){
-		Validate.notNull(file, "File cannot be null");
+    public static YamlConfiguration loadConfiguration(File file) {
+        Validate.notNull(file, "File cannot be null");
 
-		YamlConfiguration config = new YamlConfiguration();
+        YamlConfiguration config = new YamlConfiguration();
 
-		try {
-			config.load(file);
-		}catch (FileNotFoundException e){
-		}catch (IOException e){
-			Bukkit.getPluginManager().getPlugin("AnnihilationDW").getLogger().log(Level.SEVERE, "Cannot load " + file, e);
-		}catch (InvalidConfigurationException e){
-			Main.println(file + " cannot be loaded because it is incorrectly configured.");
-			Main.println("Renaming " + file + " to " + file + ".broken and creating a new config.");
-			File newFile = new File(file.getAbsolutePath());
-			newFile.renameTo(new File(file.getAbsolutePath() + ".broken"));
-		}
+        try {
+            config.load(file);
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+            Bukkit.getPluginManager().getPlugin("AnnihilationDW").getLogger().log(Level.SEVERE, "Cannot load " + file, e);
+        } catch (InvalidConfigurationException e) {
+            Main.println(file + " cannot be loaded because it is incorrectly configured.");
+            Main.println("Renaming " + file + " to " + file + ".broken and creating a new config.");
+            File newFile = new File(file.getAbsolutePath());
+            newFile.renameTo(new File(file.getAbsolutePath() + ".broken"));
+        }
 
-		return config;
-	}
+        return config;
+    }
 
 }

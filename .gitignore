@@ -34,3 +34,5 @@
 
 pom.xml
 lib/
+target/
+jar/
