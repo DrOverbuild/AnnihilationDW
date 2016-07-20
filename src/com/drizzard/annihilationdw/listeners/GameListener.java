@@ -587,22 +587,26 @@ public class GameListener implements Listener {
 					}
 					event.setCancelled(killPlayer(damager, victim));
 				}
+				else if(victim.getHealth() - event.getDamage() <= 0){
+					if(victim.isDead()) return;
+					if(!victim.isValid()) return;
+					event.setCancelled(killPlayer(damager,victim));
+				}
 			}
 		}
 	}
 
-	public boolean killPlayer(Player damager, Player victim) {
+	public boolean killPlayer(Player damager, Player victim){
 		PlayerDeathByPlayerEvent event = new PlayerDeathByPlayerEvent(victim, damager);
 
 		Bukkit.getPluginManager().callEvent(event);
 
-		if (!event.isCancelled()) {
+		if(!event.isCancelled()) {
 			Stats.getStats(damager).addPoints(Stats.killPoints);
 			Stats.getStats(damager).addKill();
 			TabHandler.update(event.getDamager());
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				MessageHandler
-						.sendMessage(p, MessageHandler.formatPlayer(MessageFile.getMessage("player.kill"), event.getVictim(), event.getDamager()));
+				MessageHandler.sendMessage(p, MessageHandler.formatPlayer(MessageFile.getMessage("player.kill"), event.getVictim(), event.getDamager()));
 			}
 			TeamManager.getTeam(event.getDamager()).addKill();
 			for (Player p : TeamManager.getTeam(event.getDamager()).getAlivePlayers()) {
@@ -612,7 +616,7 @@ public class GameListener implements Listener {
 			victim.setHealth(0);
 
 			return false;
-		} else {
+		}else{
 			return true;
 		}
 	}
