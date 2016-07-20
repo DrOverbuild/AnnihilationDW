@@ -631,6 +631,11 @@ public class GameListener implements Listener {
             event.setCancelled(true);
             return;
         }
+
+        // Cannot drop kit selector item
+        if (ConfigFile.getKitSelectorItem().isSimilar(event.getItemDrop().getItemStack())) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
