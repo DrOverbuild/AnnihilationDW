@@ -23,12 +23,13 @@ public class Lobby {
             }
         }
         ScoreboardHandler.update(player);
-        player.setMaxHealth(20D);
+        player.resetMaxHealth();
         player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
         player.getInventory().clear();
         player.getEnderChest().clear();
         player.setGameMode(GameMode.SURVIVAL);
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -58,6 +59,7 @@ public class Lobby {
                     setupItems(player);
                     player.setLevel(0);
                     player.setExp(0F);
+
                     if (teleportPlayer) {
                         if (ConfigFile.config.getString("spawn-location") == null) {
                             player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());

@@ -551,11 +551,15 @@ public class GameListener implements Listener {
             }
             Player victim = (Player) event.getEntity();
             Player damager = (Player) event.getDamager();
+            Team victimTeam = TeamManager.getTeam(victim);
+            Team damagerTeam = TeamManager.getTeam(damager);
+
             if (PlayerHandler.isSpectating(victim) || PlayerHandler.isSpectating(damager)) {
                 event.setCancelled(true);
-            } else if (TeamManager.getTeam(damager).equals(TeamManager.getTeam(victim))) {
+            } else if (victimTeam == null || damagerTeam == null) {
                 event.setCancelled(true);
-                return;
+            } else if (victimTeam.equals(damagerTeam)) {
+                event.setCancelled(true);
             } else if (victim.getHealth() - event.getDamage() <= 0) {
                 if (victim.isDead()) {
                     return;
@@ -578,11 +582,14 @@ public class GameListener implements Listener {
                 }
                 Player victim = (Player) event.getEntity();
                 Player damager = (Player) arrow.getShooter();
+                Team victimTeam = TeamManager.getTeam(victim);
+                Team damagerTeam = TeamManager.getTeam(damager);
                 if (PlayerHandler.isSpectating(victim) || PlayerHandler.isSpectating(damager)) {
                     event.setCancelled(true);
-                } else if (TeamManager.getTeam(damager).equals(TeamManager.getTeam(victim))) {
+                } else if (victimTeam == null || damagerTeam == null) {
                     event.setCancelled(true);
-                    return;
+                } else if (victimTeam.equals(damagerTeam)) {
+                    event.setCancelled(true);
                 } else if (victim.getHealth() - event.getDamage() <= 0) {
                     if (victim.isDead()) {
                         return;
