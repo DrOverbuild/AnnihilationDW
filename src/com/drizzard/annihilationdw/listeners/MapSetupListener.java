@@ -14,6 +14,7 @@ import com.drizzard.annihilationdw.managers.TeamManager;
 import com.drizzard.annihilationdw.utils.Convert;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.List;
 
@@ -687,6 +689,14 @@ public class MapSetupListener implements Listener {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.GRAY + "To add Diamonds use " + ChatColor.GOLD + "MapSetup (/annihilationdw)");
             }
+        }
+    }
+
+    @EventHandler
+    public void onChunkGen(ChunkLoadEvent event) {
+        if (event.isNewChunk()) {
+            Chunk chunk = event.getChunk();
+            chunk.unload(false);
         }
     }
 
