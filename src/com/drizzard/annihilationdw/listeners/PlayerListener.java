@@ -108,10 +108,6 @@ public class PlayerListener implements Listener {
         BarManager.removeBar(player);
         PlayerFile.createConfig(player);
 
-        if (!player.hasPermission("dw.vip")) {
-            Kits.clearKits(player);
-        }
-
         if (Game.getGameState().equals(GameState.LOBBY)) {
             String msg = MessageFile.getMessage("player.join");
             msg = MessageHandler.formatPlayer(msg, player).replace("%cp", "" + Bukkit.getOnlinePlayers().size()).replace("%mp", ""

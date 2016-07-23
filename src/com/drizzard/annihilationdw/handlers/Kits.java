@@ -25,6 +25,16 @@ public class Kits {
 
     public static void loadKitData(UUID playerId) {
         playerKitData.put(playerId, new KitData(playerId, Main.getDatabaseImpl().getKits(playerId)));
+
+        Player player = Bukkit.getPlayer(playerId);
+
+        if (playerId != null) {
+            if (!Bukkit.getPlayer(playerId).hasPermission("dw.vip")) {
+                clearKits(player);
+            }
+        } else {
+            System.out.println("Clearing kits for unknown player " + playerId);
+        }
     }
 
     public static KitData getKitData(Player player) {
