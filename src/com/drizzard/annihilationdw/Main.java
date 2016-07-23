@@ -23,7 +23,6 @@ import com.drizzard.annihilationdw.managers.MapManager;
 import com.drizzard.annihilationdw.managers.PartyManager;
 import com.drizzard.annihilationdw.managers.TeamManager;
 import com.drizzard.annihilationdw.statsigns.StatSignManager;
-import com.drizzard.annihilationdw.utils.AsyncUtil;
 import com.drizzard.annihilationdw.utils.Convert;
 
 import org.apache.commons.io.FileUtils;
@@ -55,6 +54,7 @@ public class Main extends JavaPlugin {
 	private MapManager mm;
 	private PartyManager pm;
 	private TeamManager tm;
+	public static Main instance;
 
 	public static void println(String s) {
 		Bukkit.getPluginManager().getPlugin("AnnihilationDW").getLogger().info(s);
@@ -226,6 +226,7 @@ public class Main extends JavaPlugin {
 
 	public void onEnable() {
 		load();
+		instance = this;
 
 		loadDefaultAbilities();
 		new BukkitRunnable() {
@@ -268,7 +269,6 @@ public class Main extends JavaPlugin {
 		}
 		database.disconnect();
 		database = null;
-		AsyncUtil.stop();
 	}
 
 	private void load() {

@@ -3,8 +3,8 @@ package com.drizzard.annihilationdw.handlers;
 import com.drizzard.annihilationdw.Main;
 import com.drizzard.annihilationdw.files.ConfigFile;
 import com.drizzard.annihilationdw.files.StatSignFile;
-import com.drizzard.annihilationdw.utils.AsyncUtil;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class Stats {
     }
 
     private void refresh() {
-        AsyncUtil.run(new Runnable() {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, new Runnable() {
 
             @Override
             public void run() {
@@ -84,7 +84,7 @@ public class Stats {
     public Stats setPoints(int points) {
         this.points = points;
         StatSignFile.update(StatSignFile.StatType.POINTS, playerId, this.points);
-        AsyncUtil.run(() -> Main.getDatabaseImpl().setPoints(playerId, points));
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> Main.getDatabaseImpl().setPoints(playerId, points));
         return this;
     }
 
@@ -107,21 +107,21 @@ public class Stats {
     public Stats addKill() {
         this.kills++;
         StatSignFile.update(StatSignFile.StatType.KILLS, playerId, this.kills);
-        AsyncUtil.run(() -> Main.getDatabaseImpl().setKills(playerId, kills));
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> Main.getDatabaseImpl().setKills(playerId, kills));
         return this;
     }
 
     public Stats addGame() {
         this.games++;
         StatSignFile.update(StatSignFile.StatType.GAMES, playerId, this.games);
-        AsyncUtil.run(() -> Main.getDatabaseImpl().setKills(playerId, games));
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> Main.getDatabaseImpl().setKills(playerId, games));
         return this;
     }
 
     public Stats addWin() {
         this.wins++;
         StatSignFile.update(StatSignFile.StatType.WINS, playerId, this.wins);
-        AsyncUtil.run(() -> Main.getDatabaseImpl().setKills(playerId, wins));
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> Main.getDatabaseImpl().setKills(playerId, wins));
         return this;
     }
 }

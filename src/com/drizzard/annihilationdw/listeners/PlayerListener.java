@@ -18,7 +18,6 @@ import com.drizzard.annihilationdw.handlers.Team;
 import com.drizzard.annihilationdw.handlers.mapsetup.Phase;
 import com.drizzard.annihilationdw.managers.BarManager;
 import com.drizzard.annihilationdw.managers.TeamManager;
-import com.drizzard.annihilationdw.utils.AsyncUtil;
 import com.drizzard.annihilationdw.utils.Convert;
 
 import net.md_5.bungee.api.ChatColor;
@@ -64,7 +63,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPreLogin(AsyncPlayerPreLoginEvent evt) {
         if (evt.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            AsyncUtil.run(() -> {
+            Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
                 Main.getDatabaseImpl().loadStats(evt.getUniqueId());
                 Kits.loadKitData(evt.getUniqueId());
             });

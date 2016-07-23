@@ -4,7 +4,6 @@ import com.drizzard.annihilationdw.Main;
 import com.drizzard.annihilationdw.abilities.Ability;
 import com.drizzard.annihilationdw.files.KitsFile;
 import com.drizzard.annihilationdw.files.MessageFile;
-import com.drizzard.annihilationdw.utils.AsyncUtil;
 import com.drizzard.annihilationdw.utils.ItemStackGenerator;
 
 import org.bukkit.Bukkit;
@@ -230,14 +229,14 @@ public class Kits {
         public void addKit(String kit) {
             if (!kits.contains(kit)) {
                 kits.add(kit);
-                AsyncUtil.run(() -> Main.getDatabaseImpl().addKit(playerId, kit));
+                Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> Main.getDatabaseImpl().addKit(playerId, kit));
             }
         }
 
         public void clearKits() {
             if (kits.size() > 0) {
                 kits.clear();
-                AsyncUtil.run(() -> Main.getDatabaseImpl().clearKits(playerId));
+                Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> Main.getDatabaseImpl().clearKits(playerId));
             }
         }
 
