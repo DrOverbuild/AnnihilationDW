@@ -84,14 +84,7 @@ public class Stats {
     public Stats setPoints(int points) {
         this.points = points;
         StatSignFile.update(StatSignFile.StatType.POINTS, playerId, this.points);
-        AsyncUtil.run(new Runnable() {
-
-            @Override
-            public void run() {
-                Main.getDatabaseImpl().setPoints(playerId, points);
-            }
-
-        });
+        AsyncUtil.run(() -> Main.getDatabaseImpl().setPoints(playerId, points));
         return this;
     }
 
@@ -114,42 +107,21 @@ public class Stats {
     public Stats addKill() {
         this.kills++;
         StatSignFile.update(StatSignFile.StatType.KILLS, playerId, this.kills);
-        AsyncUtil.run(new Runnable() {
-
-            @Override
-            public void run() {
-                Main.getDatabaseImpl().setKills(playerId, kills);
-            }
-
-        });
+        AsyncUtil.run(() -> Main.getDatabaseImpl().setKills(playerId, kills));
         return this;
     }
 
     public Stats addGame() {
         this.games++;
         StatSignFile.update(StatSignFile.StatType.GAMES, playerId, this.games);
-        AsyncUtil.run(new Runnable() {
-
-            @Override
-            public void run() {
-                Main.getDatabaseImpl().setKills(playerId, games);
-            }
-
-        });
+        AsyncUtil.run(() -> Main.getDatabaseImpl().setKills(playerId, games));
         return this;
     }
 
     public Stats addWin() {
         this.wins++;
         StatSignFile.update(StatSignFile.StatType.WINS, playerId, this.wins);
-        AsyncUtil.run(new Runnable() {
-
-            @Override
-            public void run() {
-                Main.getDatabaseImpl().setKills(playerId, wins);
-            }
-
-        });
+        AsyncUtil.run(() -> Main.getDatabaseImpl().setKills(playerId, wins));
         return this;
     }
 }

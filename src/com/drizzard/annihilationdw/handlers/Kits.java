@@ -230,28 +230,14 @@ public class Kits {
         public void addKit(String kit) {
             if (!kits.contains(kit)) {
                 kits.add(kit);
-                AsyncUtil.run(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Main.getDatabaseImpl().addKit(playerId, kit);
-                    }
-
-                });
+                AsyncUtil.run(() -> Main.getDatabaseImpl().addKit(playerId, kit));
             }
         }
 
         public void clearKits() {
             if (kits.size() > 0) {
                 kits.clear();
-                AsyncUtil.run(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Main.getDatabaseImpl().clearKits(playerId);
-                    }
-
-                });
+                AsyncUtil.run(() -> Main.getDatabaseImpl().clearKits(playerId));
             }
         }
 
