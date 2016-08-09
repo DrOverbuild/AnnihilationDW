@@ -79,7 +79,7 @@ public class MySQL implements Database {
     public void prepare() {
         if (isConnected()) {
             try {
-                update("CREATE TABLE IF NOT EXISTS " + playerStatsTable + "(uuid CHAR(36), points BIGINT DEFAULT 0, kills INT DEfAULT 0, games "
+                update("CREATE TABLE IF NOT EXISTS " + playerStatsTable + "(uuid CHAR(36), points BIGINT DEFAULT 0, kills INT DEFAULT 0, games "
                         + "INT DEFAULT 0, wins INT DEFAULT 0, PRIMARY KEY" + "(uuid));");
                 update("CREATE TABLE IF NOT EXISTS " + playerKitsTable + "(uuid CHAR(36), kit VARCHAR(255), PRIMARY KEY(uuid, kit));");
             } catch (SQLException ex) {
