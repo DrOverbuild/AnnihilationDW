@@ -1,14 +1,19 @@
 package com.drizzard.annihilationdw.statsigns;
 
-import com.drizzard.annihilationdw.files.StatSignFile;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.SkullType;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 
-import java.util.List;
+import com.drizzard.annihilationdw.files.StatSignFile;
 
 public class StatSign {
 
@@ -48,6 +53,27 @@ public class StatSign {
             sign.setLine(2, ChatColor.DARK_RED + "N/A");
         }
         sign.update();
+        
+        // Player heads -- added by Zach Sents
+        org.bukkit.material.Sign materialSign = (org.bukkit.material.Sign) sign.getData();
+        Block testPoint = sign.getBlock().getRelative(materialSign.getAttachedFace());
+        
+        for(int i = -1; i <= 1; i++) {
+        	if(i == 0) continue;
+        	
+        	BlockState sample = testPoint.getRelative(0, i, 0).getState();
+        	
+        	if(sample instanceof Skull) {
+        		Skull skull = (Skull) sample;
+        		skull.setSkullType(SkullType.PLAYER);
+
+        		if(statData != null) {
+        			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(statData.getPlayerId());
+        			skull.setOwner(offlinePlayer.getName());
+        		}
+        		skull.update();
+        	}
+        }
     }
 
     @Override
