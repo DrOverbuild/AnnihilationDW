@@ -62,7 +62,10 @@ public class PartyCommand implements CommandExecutor {
                 invite(player, args[1]);
                 return true;
             }
-
+            if (args[0].equalsIgnoreCase("kick")) {
+                kick(player, args[1]);
+                return true;
+            }
         }
         return false;
     }
@@ -164,6 +167,34 @@ public class PartyCommand implements CommandExecutor {
         MessageHandler.sendMessage(target, MessageHandler.formatPlayer(MessageFile.getMessage("party.invited"), player));
         PartyManager.sendInvite(target, player);
     }
+    
+    public void kick(Player player, String toKick) {
+    	if (!player.hasPermission("dw.party")) {
+            MessageHandler.sendMessage(player, MessageFile.getMessage("commands.not-vip"));
+            return;
+        }
+    	if (Bukkit.getPlayer(toKick) == null) {
+            MessageHandler.sendMessage(player, MessageFile.getMessage("party.offline"));
+            return;
+        }
+    	Party party = PartyManager.getParty(player);
+    	if(party == null) {
+    		MessageHandler.sendMessage(player, MessageFile.getMessage("party.alone"));
+    		return;
+    	}
+    	if(!party.isLeader(player)) return;
+    	
+    	Player target = Bukkit.getPlayer(toKick);
+    	if(!party.isMember(target)) {
+    		MessageHandler.sendMessage(player, MessageFile.getMessage("party.offline"));
+    		return;
+    	}
+    	
+        MessageHandler.sendMessage(player, MessageHandler.formatPlayer(MessageFile.getMessage("party.kick"), target));
+        MessageHandler.sendMessage(target, MessageHandler.formatPlayer(MessageFile.getMessage("party.kicked"), player));
+        party.removePlayer(target);
+        ScoreboardHandler.updateAll();
+    }
 
     public void help(Player player, String label) {
         List<String> messages = new ArrayList<>();
@@ -174,6 +205,7 @@ public class PartyCommand implements CommandExecutor {
         messages.add(ChatColor.GOLD + "/" + label + " accept: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.accept"));
         messages.add(ChatColor.GOLD + "/" + label + " deny: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.deny"));
         messages.add(ChatColor.GOLD + "/" + label + " leave: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.leave"));
+        messages.add(ChatColor.GOLD + "/" + label + " kick <player>: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.kick"));
         messages.add(ChatColor.GOLD + "/" + label + " list: " + ChatColor.RESET + MessageFile.formatMessage("commands.party_help.list"));
 
         player.sendMessage(messages.toArray(new String[]{}));

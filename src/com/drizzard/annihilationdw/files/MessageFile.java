@@ -77,6 +77,7 @@ public class MessageFile {
         config.addDefault("commands.party_help.accept", "Accept an invitation to a party.");
         config.addDefault("commands.party_help.deny", "Deny an invitation to a party.");
         config.addDefault("commands.party_help.leave", "Leave your party.");
+        config.addDefault("commands.party_help.kick", "Kick a player from your party.");
         config.addDefault("commands.party_help.list", "List players in your party.");
         config.addDefault("commands.descriptions.dw", "Manage AnnihilationDW.");
         config.addDefault("commands.descriptions.help", "Show commands.");
@@ -114,6 +115,8 @@ public class MessageFile {
         config.addDefault("party.invite", "&7You've invited %p to party!");
         config.addDefault("party.invited", "&7You've been invited to %p party! Write /party accept or /party deny");
         config.addDefault("party.joined", "&7%p has joined your party!");
+        config.addDefault("party.kick", "&7You've kicked %p from the party.");
+        config.addDefault("party.kicked", "&7You've been kicked from %p party.");
         config.addDefault("party.left", "&7%p has leaved your party!");
         config.addDefault("party.leave", "&7You've left your party!");
         config.addDefault("party.accept", "&7You've accepted to join %p party!");
