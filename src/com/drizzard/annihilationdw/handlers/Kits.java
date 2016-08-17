@@ -23,13 +23,12 @@ public class Kits {
 
     private static Map<UUID, KitData> playerKitData = new HashMap<>();
 
-    public static void loadKitData(UUID playerId) {
-        playerKitData.put(playerId, new KitData(playerId, Main.getDatabaseImpl().getKits(playerId)));
-
-        Player player = Bukkit.getPlayer(playerId);
+    public static void loadKitData(Player player) {
+        UUID playerId = player.getUniqueId();
+    	playerKitData.put(playerId, new KitData(playerId, Main.getDatabaseImpl().getKits(playerId)));
 
         if (playerId != null) {
-            if (!Bukkit.getPlayer(playerId).hasPermission("dw.vip")) {
+            if (!player.hasPermission("dw.vip")) {
                 clearKits(player);
             }
         } else {

@@ -62,17 +62,21 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPreLogin(AsyncPlayerPreLoginEvent evt) {
-        if (evt.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
-                Main.getDatabaseImpl().loadStats(evt.getUniqueId());
-                Kits.loadKitData(evt.getUniqueId());
-            });
-        }
+//        if (evt.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+//            Bukkit.getScheduler().runTaskAsynchronously(pl, () -> {
+//                Main.getDatabaseImpl().loadStats(evt.getUniqueId());
+//                Kits.loadKitData(evt.getUniqueId());
+//            });
+//        }
     }
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
-        PlayerHandler.setAbilities(event.getPlayer(), new ArrayList<Ability>());
+        
+    	Main.getDatabaseImpl().loadStats(event.getPlayer().getUniqueId());
+        Kits.loadKitData(event.getPlayer());
+    	
+    	PlayerHandler.setAbilities(event.getPlayer(), new ArrayList<Ability>());
         if (Bukkit.getOnlinePlayers().size() >= ConfigFile.config.getInt("team-size") * 4) {
             if (!event.getPlayer().hasPermission("dw.spectator")) {
                 event.disallow(Result.KICK_FULL, MessageHandler.format(MessageFile.getMessage("kick.full")));
